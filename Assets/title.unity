@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028334, g: 0.2257134, b: 0.30692226, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -86,7 +86,8 @@ LightmapSettings:
     m_PVRFilteringAtrousColorSigma: 1
     m_PVRFilteringAtrousNormalSigma: 1
     m_PVRFilteringAtrousPositionSigma: 1
-  m_LightingDataAsset: {fileID: 0}
+  m_LightingDataAsset: {fileID: 112000002, guid: 6169f01f6ae1c0f48943aedf6d16fa96,
+    type: 2}
   m_ShadowMaskMode: 2
 --- !u!196 &4
 NavMeshSettings:
@@ -268,7 +269,7 @@ RectTransform:
   m_Children:
   - {fileID: 1606787580}
   m_Father: {fileID: 537563648}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -447,8 +448,8 @@ RectTransform:
   m_Children:
   - {fileID: 1371978089}
   - {fileID: 1006638126}
-  - {fileID: 483901618}
   - {fileID: 733237249}
+  - {fileID: 483901618}
   - {fileID: 743302042}
   m_Father: {fileID: 0}
   m_RootOrder: 2
@@ -553,7 +554,7 @@ RectTransform:
   m_Children:
   - {fileID: 859000344}
   m_Father: {fileID: 537563648}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -941,7 +942,7 @@ GameObject:
   - component: {fileID: 1006638128}
   - component: {fileID: 1006638127}
   m_Layer: 5
-  m_Name: mode1
+  m_Name: sameComputer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1006,14 +1007,14 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 109639532}
-        m_MethodName: changeToScene
-        m_Mode: 5
+        m_MethodName: playSameComputer
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: main$
+          m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
@@ -1076,7 +1077,7 @@ RectTransform:
   m_GameObject: {fileID: 1371978088}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 3.0593746, y: 1.5875001, z: 1}
+  m_LocalScale: {x: 51.894646, y: 5.7745743, z: 1}
   m_Children: []
   m_Father: {fileID: 537563648}
   m_RootOrder: 0
@@ -1244,12 +1245,15 @@ MonoBehaviour:
   m_ScriptCRCCheck: 1
   m_MaxDelay: 0.01
   m_LogLevel: 2
-  m_PlayerPrefab: {fileID: 0}
+  m_PlayerPrefab: {fileID: 1224811657260118, guid: 487276faebce0064bae0aa7c5c5f3246,
+    type: 2}
   m_AutoCreatePlayer: 1
   m_PlayerSpawnMethod: 0
-  m_OfflineScene: 
-  m_OnlineScene: 
-  m_SpawnPrefabs: []
+  m_OfflineScene: title
+  m_OnlineScene: game_Local
+  m_SpawnPrefabs:
+  - {fileID: 1850602137330356, guid: 4e8f2d18022d0c044ac9dff6163bc6f8, type: 2}
+  - {fileID: 1023673143187408, guid: 52057636d859a9343acdb6856a39451c, type: 2}
   m_CustomConfig: 0
   m_MaxConnections: 4
   m_ConnectionConfig:
@@ -1292,7 +1296,7 @@ MonoBehaviour:
     m_MaxTimerTimeout: 12000
     m_MinNetSimulatorTimeout: 1
     m_MaxNetSimulatorTimeout: 12000
-  m_Channels: 
+  m_Channels: 0500000000000000
   m_UseWebSockets: 0
   m_UseSimulator: 0
   m_SimulatedLatency: 1
@@ -1302,7 +1306,7 @@ MonoBehaviour:
   m_MatchHost: mm.unet.unity3d.com
   m_MatchPort: 443
   matchName: default
-  matchSize: 4
+  matchSize: 2
   isNetworkActive: 0
   matchMaker: {fileID: 0}
 --- !u!4 &1633835521

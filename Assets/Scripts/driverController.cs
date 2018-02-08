@@ -20,19 +20,16 @@ public class driverController : MonoBehaviour
 
     void Update()
     {
+        // Detect and manage driver death
         if(transform.position.y < -10)
         {
             Debug.Log("death");
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
-        //currentSpeedModifier = Input.GetAxis("Vertical") * maxSpeedModifier;
-        //rb.velocity = new Vector3(Input.GetAxis("Horizontal"), rb.velocity.y, defaultSpeed + currentSpeedModifier);
-    }
 
-    void LateUpdate()
-    {
-        //camera.transform.position = transform.position + cameraOffset;
-        //camera.transform.LookAt(transform.position);
+        // Can't stop driving ;-)
+        currentSpeedModifier = Input.GetAxis("Vertical") * maxSpeedModifier;
+        //rb.velocity = new Vector3(Input.GetAxis("Horizontal"), rb.velocity.y, defaultSpeed + currentSpeedModifier);
     }
 
 }

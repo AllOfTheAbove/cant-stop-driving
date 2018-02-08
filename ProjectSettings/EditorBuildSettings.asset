@@ -9,5 +9,8 @@ EditorBuildSettings:
     path: Assets/title.unity
     guid: a715063fa60f55f41b89a18b0fc65c54
   - enabled: 1
-    path: Assets/main$.unity
-    guid: 0a84f2cbe872a0142b1a0fe48cb19d90
+    path: Assets/game_SameComputer.unity
+    guid: 1df005a82edf26d419269ba25d042ad8
+  - enabled: 1
+    path: Assets/game_Local.unity
+    guid: de5d54522f50152488225b0b0c0cecab

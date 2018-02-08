@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class ButtonsManager : MonoBehaviour {
+public class titleController : MonoBehaviour {
 
     public NetworkManager networkManager;
 
-    public void changeToScene (string id)
+    public void playSameComputer()
     {
-        UnityEngine.SceneManagement.SceneManager.LoadScene(id);
+        UnityEngine.SceneManagement.SceneManager.LoadScene("game_SameComputer");
     }
 
     public void createLocalGame()
