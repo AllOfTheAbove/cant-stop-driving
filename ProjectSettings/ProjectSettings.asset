@@ -586,11 +586,12 @@ PlayerSettings:
     daydream:
       daydreamIconForeground: {fileID: 0}
       daydreamIconBackground: {fileID: 0}
-  cloudServicesEnabled: {}
+  cloudServicesEnabled:
+    UNet: 1
   facebookSdkVersion: 7.9.1
   apiCompatibilityLevel: 2
-  cloudProjectId: 
-  projectName: 
-  organizationId: 
+  cloudProjectId: 09cb713f-51a9-4806-91bf-9a21ac91b3a3
+  projectName: CantStopDriving
+  organizationId: thdoteo
   cloudEnabled: 0
   enableNewInputSystem: 0
