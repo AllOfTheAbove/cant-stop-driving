@@ -17,7 +17,7 @@ public class NetworkMatch : NetworkBehaviour
 
     void OnGUI()
     {
-        roomName = GUI.TextField(new Rect(60, 60, 200, 20), roomName, 16);
+        roomName = GUI.TextField(new Rect(100, 0, 200, 20), roomName, 16);
 
         if (GUILayout.Button("Create Room"))
         {

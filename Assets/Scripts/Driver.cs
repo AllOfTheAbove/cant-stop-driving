@@ -6,7 +6,6 @@ using UnityEngine.Networking;
 public class Driver : Player
 {
     private Rigidbody rb;
-
     private float currentSpeedModifier = 0;
     public int defaultSpeed = 10;
     public float maxSpeedModifier = 1.2f;
@@ -24,12 +23,16 @@ public class Driver : Player
     void Update()
     {
         if (!isLocalPlayer)
+        {
+            GetComponent<CarController>().enabled = false;
             return;
+        }
+        GetComponent<CarController>().enabled = true;
 
-        currentSpeedModifier = Input.GetAxis("Vertical") * maxSpeedModifier;
-        rb.velocity = new Vector3(Input.GetAxis("Horizontal"), rb.velocity.y, defaultSpeed + currentSpeedModifier);
+        //currentSpeedModifier = Input.GetAxis("Vertical") * maxSpeedModifier;
+        //rb.velocity = new Vector3(rb.velocity.x, rb.velocity.y, defaultSpeed + currentSpeedModifier);
 
-        if (transform.position.y < -8 || (rb.velocity.z / defaultSpeed) < 0.85)
+        if (Input.GetKey(KeyCode.R) || transform.position.y < -8) // || (rb.velocity.z / defaultSpeed) < 0.85
         {
             CmdDeath();
         }

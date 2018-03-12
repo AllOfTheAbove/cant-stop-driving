@@ -81,7 +81,7 @@ public class Architect : Player
     {
         // Spawn platform
         int randomBlockID = random.Next(0, blocks.Count);
-        currentBlock = Instantiate(blocks[randomBlockID], new Vector3(currentX, 0, currentZ), Quaternion.identity);
+        currentBlock = Instantiate(blocks[randomBlockID], new Vector3(currentX, blocks[randomBlockID].transform.position.y, currentZ), Quaternion.identity);
         NetworkServer.SpawnWithClientAuthority(currentBlock, this.gameObject);
 
         // Make it a preview platform (transparent and not solid)

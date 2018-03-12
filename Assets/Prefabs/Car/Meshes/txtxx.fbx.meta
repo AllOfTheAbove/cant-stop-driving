@@ -1,0 +1,154 @@
+fileFormatVersion: 2
+guid: 5a791a3922fabec4bac9e7039635e88e
+timeCreated: 1520612590
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: detail_engine_5
+    100002: detail_fenderSquare_21
+    100004: detail_fenderSquare_22
+    100006: detail_fenderSquare_23
+    100008: detail_fenderSquare_24
+    100010: detail_mirror_25
+    100012: detail_mirror_26
+    100014: detail_spoiler_27
+    100016: hood_square_4
+    100018: trunk_default_12
+    100020: //RootNode
+    100022: wheel_smallSports_14
+    100024: wheel_smallSports_15
+    100026: wheel_smallSports_18
+    100028: wheel_smallSports_19
+    100030: windshield_default_3
+    400000: detail_engine_5
+    400002: detail_fenderSquare_21
+    400004: detail_fenderSquare_22
+    400006: detail_fenderSquare_23
+    400008: detail_fenderSquare_24
+    400010: detail_mirror_25
+    400012: detail_mirror_26
+    400014: detail_spoiler_27
+    400016: hood_square_4
+    400018: trunk_default_12
+    400020: //RootNode
+    400022: wheel_smallSports_14
+    400024: wheel_smallSports_15
+    400026: wheel_smallSports_18
+    400028: wheel_smallSports_19
+    400030: windshield_default_3
+    2300000: detail_engine_5
+    2300002: detail_fenderSquare_21
+    2300004: detail_fenderSquare_22
+    2300006: detail_fenderSquare_23
+    2300008: detail_fenderSquare_24
+    2300010: detail_mirror_25
+    2300012: detail_mirror_26
+    2300014: detail_spoiler_27
+    2300016: hood_square_4
+    2300018: trunk_default_12
+    2300020: wheel_smallSports_14
+    2300022: wheel_smallSports_15
+    2300024: wheel_smallSports_18
+    2300026: wheel_smallSports_19
+    2300028: windshield_default_3
+    3300000: detail_engine_5
+    3300002: detail_fenderSquare_21
+    3300004: detail_fenderSquare_22
+    3300006: detail_fenderSquare_23
+    3300008: detail_fenderSquare_24
+    3300010: detail_mirror_25
+    3300012: detail_mirror_26
+    3300014: detail_spoiler_27
+    3300016: hood_square_4
+    3300018: trunk_default_12
+    3300020: wheel_smallSports_14
+    3300022: wheel_smallSports_15
+    3300024: wheel_smallSports_18
+    3300026: wheel_smallSports_19
+    3300028: windshield_default_3
+    4300000: windshield_default_3
+    4300002: hood_square_4
+    4300004: detail_engine_5
+    4300006: trunk_default_12
+    4300008: wheel_smallSports_14
+    4300010: wheel_smallSports_15
+    4300012: wheel_smallSports_18
+    4300014: wheel_smallSports_19
+    4300016: detail_fenderSquare_21
+    4300018: detail_fenderSquare_22
+    4300020: detail_fenderSquare_23
+    4300022: detail_fenderSquare_24
+    4300024: detail_mirror_25
+    4300026: detail_mirror_26
+    4300028: detail_spoiler_27
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
