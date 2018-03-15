@@ -9,7 +9,6 @@ public class Player : NetworkBehaviour {
     /**
      * - Fix solo
      * - Checkpoints
-     * - Refactoring
      * 
      * - Add elements to pause screen 30min
      * - Make death screen 30min

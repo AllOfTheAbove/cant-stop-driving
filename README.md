@@ -1,28 +1,11 @@
 ## Can't Stop Driving
 
-##### Procedure to set up your workspace :
+##### I encourage you to work on an empty Unity project but if you need to work on the project follow these steps:
 1. Install Unity and Git on your computer (obviously).
 2. Go inside an empty directory and open a terminal there.
-3. Type these commands (replace branchName by the name of your own branch) :
-
+3. Type this command:
 ~~~~
-git config --global user.name "Firstname LASTNAME"
-git config --global user.email "firstname.lastname@epita.fr"
-
-git init
-
-git remote add origin https://github.com/AllOfTheAbove/CantStopDriving.git
-
-git pull origin branchName
-git checkout branchName
+git clone https://github.com/AllOfTheAbove/CantStopDriving.git
 ~~~~
-
-##### How to work on the project :
-1. Open a terminal in the project directory.
-2. Use these commands (replace branchName by the name of your own branch) :
-
-~~~~
-git add *
-git commit -m "Describe what you've done..."
-git push origin branchName
-~~~~
+4. Open Unity and select your workspace.
+5. When you have finished implementing your feature send me your zipped project.
