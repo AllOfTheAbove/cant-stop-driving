@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class ChangeTextColorOnHover : MonoBehaviour {
+public class ChangeTextColorOnHoverTransition : MonoBehaviour {
 
     private bool hover = false;
     private float startTime = 0f;
