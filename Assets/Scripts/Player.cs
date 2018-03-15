@@ -6,6 +6,21 @@ using UnityEngine.UI;
 
 public class Player : NetworkBehaviour {
 
+    /**
+     * - Fix solo
+     * - Checkpoints
+     * - Refactoring
+     * 
+     * - Add elements to pause screen 30min
+     * - Make death screen 30min
+     * - Place everywhere
+     * - Death detection
+     * 
+     * - Countdown / More info / Animations / Details
+     **/
+
+    public bool gamePaused = false;
+
     [SyncVar]
     public int gameState = 0;
 
@@ -15,6 +30,33 @@ public class Player : NetworkBehaviour {
     void Awake()
     {
         DontDestroyOnLoad(gameObject);
+    }
+
+    public void Pause()
+    {
+        CanvasGroup cg = GameObject.Find("Pause").GetComponent<CanvasGroup>();
+        if (gamePaused)
+        {
+            gamePaused = false;
+            cg.interactable = false;
+            cg.alpha = 0;
+            Time.timeScale = 1f;
+
+        } else
+        {
+            gamePaused = true;
+            cg.interactable = true;
+            cg.alpha = 1;
+            Time.timeScale = 0f;
+        }
+    }
+
+    public void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            Pause();
+        }
     }
 
     [Command]

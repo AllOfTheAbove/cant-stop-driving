@@ -22,6 +22,8 @@ public class Driver : Player
 
     void Update()
     {
+        base.Update();
+
         if (!isLocalPlayer)
         {
             GetComponent<CarController>().enabled = false;

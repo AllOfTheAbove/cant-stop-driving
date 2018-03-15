@@ -8,6 +8,8 @@ public class Architect : Player
 {
 
     public List<GameObject> blocks = new List<GameObject>();
+    public Material tilePreviewMaterial;
+
     private Camera camera;
     private AudioSource placeSound;
 
@@ -44,9 +46,6 @@ public class Architect : Player
     [Command] private void CmdPlaceFinalBlock()
     {
         // Make it a final platform (solid)
-        //Material[] materials = currentBlock.GetComponent<MeshRenderer>().materials;
-        //materials[0] = placedMaterial;
-        //currentBlock.GetComponent<MeshRenderer>().materials = materials;
         RpcPlaceFinalBlock(currentBlock);
 
         // Update UI/Sounds...
@@ -73,7 +72,25 @@ public class Architect : Player
     [ClientRpc] private void RpcPlaceFinalBlock(GameObject obj)
     {
         // Make the preview platform solid
-        obj.GetComponent<BoxCollider>().isTrigger = false;
+        MeshCollider[] bc = obj.GetComponentsInChildren<MeshCollider>();
+        for (int i = 0; i < bc.Length; i++)
+        {
+            bc[i].enabled = true;
+        }
+
+        // Remove the green tint
+        MeshRenderer[] mr = obj.GetComponentsInChildren<MeshRenderer>();
+        for (int i = 0; i < mr.Length; i++)
+        {
+            Material[] oldMaterials = mr[i].materials;
+            Material[] newMaterials = new Material[oldMaterials.Length - 1];
+            for (int j = 0; j < newMaterials.Length; j++)
+            {
+                newMaterials[j] = oldMaterials[j];
+            }
+            mr[i].materials = newMaterials;
+        }
+
         destination = new Vector3(obj.transform.position.x, 0, obj.transform.position.z);
     }
 
@@ -81,27 +98,48 @@ public class Architect : Player
     {
         // Spawn platform
         int randomBlockID = random.Next(0, blocks.Count);
-        currentBlock = Instantiate(blocks[randomBlockID], new Vector3(currentX, blocks[randomBlockID].transform.position.y, currentZ), Quaternion.identity);
+        currentBlock = Instantiate(
+            blocks[randomBlockID],
+            new Vector3(currentX, blocks[randomBlockID].transform.position.y, currentZ),
+            Quaternion.identity);
         NetworkServer.SpawnWithClientAuthority(currentBlock, this.gameObject);
 
-        // Make it a preview platform (transparent and not solid)
-        // Material[] materials = currentBlock.GetComponent<MeshRenderer>().materials;
-        // materials[0] = prepareMaterial;
-        // currentBlock.GetComponent<MeshRenderer>().materials = materials;
+        // Make it a preview platform (not solid)
         RpcPlacePreviewBlock(currentBlock);
     }
     [ClientRpc] public void RpcPlacePreviewBlock(GameObject obj)
     {
         // Make the preview platform not solid
-        obj.GetComponent<BoxCollider>().isTrigger = true;
+        MeshCollider[] bc = obj.GetComponentsInChildren<MeshCollider>();
+        for (int i = 0; i < bc.Length; i++)
+        {
+            bc[i].enabled = false;
+        }
+
+        // Make the preview platform have a green tint
+        MeshRenderer[] mr = obj.GetComponentsInChildren<MeshRenderer>();
+        for(int i = 0; i < mr.Length; i++)
+        {
+            Material[] oldMaterials = mr[i].materials;
+            Material[] newMaterials = new Material[oldMaterials.Length + 1];
+            for (int j = 0; j < oldMaterials.Length; j++)
+            {
+                newMaterials[j] = oldMaterials[j];
+            }
+            newMaterials[oldMaterials.Length] = tilePreviewMaterial;
+            mr[i].materials = newMaterials;
+        }
+        
     }
 
     void Update()
     {
+        base.Update();
+
         // Update Architect position (to make driverCamera move)
         transform.position = Vector3.Lerp(transform.position, destination, 0.1f);
 
-        if (!isLocalPlayer || !GameObject.Find("Driver(Clone)"))
+        if (!isLocalPlayer || !GameObject.Find("Driver(Clone)") || gamePaused)
             return;
 
         if (currentBlock != null)

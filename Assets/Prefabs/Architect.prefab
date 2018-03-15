@@ -135,6 +135,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5ce646764905fa45b393deaf641da08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gamePaused: 0
   gameState: 0
   score: 0
   blocks:
@@ -143,6 +144,7 @@ MonoBehaviour:
   - {fileID: 1799896281664516, guid: 72e052e7a165a0549a8a2f4027664a95, type: 2}
   - {fileID: 1089385692918004, guid: b2195eddea78af548be314e28136273e, type: 2}
   - {fileID: 1732009778915584, guid: af2255b65e4811f4e957196534fb1799, type: 2}
+  tilePreviewMaterial: {fileID: 2100000, guid: c6140fa728a789f41903e3d1d3aed0e1, type: 2}
   destination: {x: 0, y: 0, z: 0}
 --- !u!114 &114574459349193996
 MonoBehaviour:

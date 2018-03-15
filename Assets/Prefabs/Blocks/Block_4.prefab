@@ -109,7 +109,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4183641410595750}
-  - component: {fileID: 65976686678707622}
   - component: {fileID: 114668453191391876}
   - component: {fileID: 114157588022647648}
   - component: {fileID: 114197006978147268}
@@ -2622,18 +2621,6 @@ MeshCollider:
   m_InflateMesh: 0
   m_SkinWidth: 0.01
   m_Mesh: {fileID: 4300054, guid: 64b96c90e2596ec46837d215e8e836e2, type: 3}
---- !u!65 &65976686678707622
-BoxCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1089385692918004}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &114157588022647648
 MonoBehaviour:
   m_ObjectHideFlags: 1

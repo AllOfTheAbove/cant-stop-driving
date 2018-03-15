@@ -378,7 +378,6 @@ GameObject:
   - component: {fileID: 4885253495847376}
   - component: {fileID: 114042359060036324}
   - component: {fileID: 114675692892255442}
-  - component: {fileID: 65610857510374052}
   m_Layer: 0
   m_Name: Block_5
   m_TagString: Untagged
@@ -2621,18 +2620,6 @@ MeshCollider:
   m_InflateMesh: 0
   m_SkinWidth: 0.01
   m_Mesh: {fileID: 4300046, guid: acad82c0803aa5c4e9a3810cd4492e40, type: 3}
---- !u!65 &65610857510374052
-BoxCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1732009778915584}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &114042359060036324
 MonoBehaviour:
   m_ObjectHideFlags: 1
