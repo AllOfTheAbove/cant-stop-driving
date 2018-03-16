@@ -379,7 +379,7 @@ GameObject:
   - component: {fileID: 114042359060036324}
   - component: {fileID: 114675692892255442}
   m_Layer: 0
-  m_Name: Block_5
+  m_Name: RoughTile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

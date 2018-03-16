@@ -4,216 +4,193 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
+public class Tile
+{
+    public GameObject gameObject;
+    public int x;
+    public int y;
+    public int z;
+    public int rotation;
+    public int direction;
+
+    public Tile(int x, int y, int z)
+    {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+    }
+}
+
 public class Architect : Player
 {
 
-    public List<GameObject> blocks = new List<GameObject>();
-    public Material tilePreviewMaterial;
+    public Camera architectCamera;
+    public List<GameObject> tiles = new List<GameObject>();
+    public int distanceToPlaceTile;
 
-    private Camera camera;
-    private AudioSource placeSound;
-
-    public Vector3 destination = new Vector3(0, 0, 0);
-
-    private int currentX;
-    private int currentZ;
-    private string direction;
-    private string lastDirection;
-    private int rotation;
+    private Tile currentTile;
+    private Tile lastTile;
+    private ArchitectAI AI;
+    private Vector3 architectDestination;
 
     private System.Random random = new System.Random();
-    private float lastActionTime;
-    private GameObject currentBlock = null;
 
-    private int blockSize = 16;
-    private int placeDelay = 1;
+
 
     void Start()
     {
-        if (!isLocalPlayer)
-            return;
+        currentTile = new Tile(0, 0, 0);
+        AI = this.gameObject.GetComponent<ArchitectAI>();
+        architectDestination = new Vector3(0, 0, 0);
 
-        camera = GameObject.Find("architectCamera").GetComponent<Camera>();
-        placeSound = GameObject.Find("placeSound").GetComponent<AudioSource>();
-
-        currentX = 0;
-        currentZ = 0;
-        direction = "forward";
-        rotation = 0;
-        lastActionTime = 0;
+        if (isSingleplayer)
+        {
+            AI.enabled = true;
+        }
     }
 
-    [Command] private void CmdPlaceFinalBlock()
-    {
-        // Make it a final platform (solid)
-        RpcPlaceFinalBlock(currentBlock);
 
-        // Update UI/Sounds...
-        placeSound.Play();
+
+    [Command] public void CmdSpawnTile()
+    {
+        currentTile = new Tile(lastTile.x, 0, lastTile.z);
+        if (currentTile.direction == 0)
+        {
+            currentTile.z = lastTile.z + Tiles.tileSize;
+        }
+        else if (currentTile.direction == 1)
+        {
+            currentTile.x = lastTile.x - Tiles.tileSize;
+        }
+        else if (currentTile.direction == 2)
+        {
+            currentTile.x = lastTile.x + Tiles.tileSize;
+        }
+
+        int randomTileId = random.Next(0, tiles.Count);
+        currentTile.gameObject = Instantiate(
+            tiles[randomTileId],
+            new Vector3(currentTile.x, tiles[randomTileId].transform.position.y, currentTile.z),
+            Quaternion.identity
+        );
+        currentTile.gameObject.name = tiles[randomTileId].name;
+        NetworkServer.SpawnWithClientAuthority(currentTile.gameObject, this.gameObject);
+
+        RpcSetCurrentTileType(currentTile.gameObject, currentTile.x, currentTile.z, 0);
+    }
+
+    [Command] private void CmdCreateTile()
+    {
+        // Increase score and make tile solid
+        RpcSetCurrentTileType(currentTile.gameObject, currentTile.x, currentTile.z, 1);
         CmdAddScore();
 
-        // Update variables
-        lastDirection = direction;
-        lastActionTime = Time.time;
-        if (direction == "forward")
-        {
-            currentZ = currentZ + blockSize;
-        }
-        else if (direction == "left")
-        {
-            currentX = currentX - blockSize;
-        }
-        else if (direction == "right")
-        {
-            currentX = currentX + blockSize;
-        }
-        currentBlock = null;
+        // Prepare next tile
+        lastTile = currentTile;
+        currentTile = null;
     }
-    [ClientRpc] private void RpcPlaceFinalBlock(GameObject obj)
+
+    [ClientRpc] public void RpcSetCurrentTileType(GameObject tile, int x, int z, int type)
     {
-        // Make the preview platform solid
-        MeshCollider[] bc = obj.GetComponentsInChildren<MeshCollider>();
-        for (int i = 0; i < bc.Length; i++)
+        if (type == 0)
         {
-            bc[i].enabled = true;
+            Tiles.Solid(tile, false);
+            Tiles.AddMaterial(tile, Tiles.tilePreviewMaterial);
         }
-
-        // Remove the green tint
-        MeshRenderer[] mr = obj.GetComponentsInChildren<MeshRenderer>();
-        for (int i = 0; i < mr.Length; i++)
+        else if(type == 1)
         {
-            Material[] oldMaterials = mr[i].materials;
-            Material[] newMaterials = new Material[oldMaterials.Length - 1];
-            for (int j = 0; j < newMaterials.Length; j++)
-            {
-                newMaterials[j] = oldMaterials[j];
-            }
-            mr[i].materials = newMaterials;
+            Tiles.Solid(tile, true);
+            Tiles.RemoveMaterial(tile, Tiles.tilePreviewMaterial);
+            Tiles.tileSpawnSound.Play();
+            architectDestination = new Vector3(x, 0, z);
         }
-
-        destination = new Vector3(obj.transform.position.x, 0, obj.transform.position.z);
     }
 
-    [Command] public void CmdPlacePreviewBlock()
-    {
-        // Spawn platform
-        int randomBlockID = random.Next(0, blocks.Count);
-        currentBlock = Instantiate(
-            blocks[randomBlockID],
-            new Vector3(currentX, blocks[randomBlockID].transform.position.y, currentZ),
-            Quaternion.identity);
-        NetworkServer.SpawnWithClientAuthority(currentBlock, this.gameObject);
 
-        // Make it a preview platform (not solid)
-        RpcPlacePreviewBlock(currentBlock);
-    }
-    [ClientRpc] public void RpcPlacePreviewBlock(GameObject obj)
-    {
-        // Make the preview platform not solid
-        MeshCollider[] bc = obj.GetComponentsInChildren<MeshCollider>();
-        for (int i = 0; i < bc.Length; i++)
-        {
-            bc[i].enabled = false;
-        }
-
-        // Make the preview platform have a green tint
-        MeshRenderer[] mr = obj.GetComponentsInChildren<MeshRenderer>();
-        for(int i = 0; i < mr.Length; i++)
-        {
-            Material[] oldMaterials = mr[i].materials;
-            Material[] newMaterials = new Material[oldMaterials.Length + 1];
-            for (int j = 0; j < oldMaterials.Length; j++)
-            {
-                newMaterials[j] = oldMaterials[j];
-            }
-            newMaterials[oldMaterials.Length] = tilePreviewMaterial;
-            mr[i].materials = newMaterials;
-        }
-        
-    }
 
     void Update()
     {
         base.Update();
 
-        // Update Architect position (to make driverCamera move)
-        transform.position = Vector3.Lerp(transform.position, destination, 0.1f);
+        transform.position = Vector3.Lerp(transform.position, architectDestination, 0.1f);
 
-        if (!isLocalPlayer || !GameObject.Find("Driver(Clone)") || gamePaused)
-            return;
-
-        if (currentBlock != null)
+        if (!isLocalPlayer || !GameObject.Find("Driver") || gamePaused)
         {
-            // Update position and rotation of the preview platform
+            return;
+        }
+
+        if (currentTile != null)
+        {
             updatePreview();
 
-            // Make it a final platform when clicking
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButtonDown(0) || (AI.enabled && AI.Place()))
             {
-                CmdPlaceFinalBlock();
+                CmdCreateTile();
             }
         }
-        
-       
-        if(currentBlock == null)
+        else
         {
-            Vector3 carPosition = GameObject.Find("Driver(Clone)").transform.position;
-            float distance = Vector3.Distance(new Vector3(currentX, 0, currentZ), new Vector3(carPosition.x, 0, carPosition.z));
+            Vector3 carPosition = GameObject.Find("Driver").transform.position;
+            float distance = Vector3.Distance(
+                new Vector3(lastTile.x, 0, lastTile.z),
+                new Vector3(carPosition.x, 0, carPosition.z)
+            );
 
-            if (distance < 28)
+            if (distance < distanceToPlaceTile)
             {
-                CmdPlacePreviewBlock();
+                CmdSpawnTile();
             }
         }
         
     }
 
+
+
     void updatePreview()
     {
+        Vector3 pos = currentTile.gameObject.transform.position;
+
+        /**if (AI.enabled)
+        {
+            direction = AI.Position(ref pos.x, ref pos.z, currentTile.x, currentTile.z, lastDirection);
+            currentTile.gameObject.transform.position = pos;
+            currentTile.gameObject.transform.Rotate(0, AI.Rotation(ref currentTile.rotation), 0);
+
+            return;
+        }**/
+
         // Update position
-        camera = GameObject.Find("architectCamera").GetComponent<Camera>();
-        Vector3 pos = currentBlock.transform.position;
-        Vector3 point = camera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, camera.transform.position.y));
-        if (point.x < currentX && lastDirection != "right")
+        Vector3 point = architectCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, architectCamera.transform.position.y));
+        if (point.x < currentTile.x && lastTile.direction != 2)
         {
-            pos.x = currentX - blockSize;
-            pos.z = currentZ;
-            currentBlock.transform.position = pos;
-            direction = "left";
+            pos.x = currentTile.x - Tiles.tileSize;
+            pos.z = currentTile.z;
+            currentTile.direction = 1;
         }
-        if (point.x > currentX && lastDirection != "left")
+        if (point.x > currentTile.x && lastTile.direction != 1)
         {
-            pos.x = currentX + blockSize;
-            pos.z = currentZ;
-            currentBlock.transform.position = pos;
-            direction = "right";
+            pos.x = currentTile.x + Tiles.tileSize;
+            pos.z = currentTile.z;
+            currentTile.direction = 2;
         }
-        if (Math.Abs(point.z - currentZ) > Math.Abs(point.x - currentX))
+        if (Math.Abs(point.z - currentTile.z) > Math.Abs(point.x - currentTile.x))
         {
-            pos.x = currentX;
-            pos.z = currentZ + blockSize;
-            currentBlock.transform.position = pos;
-            direction = "forward";
+            pos.x = currentTile.x;
+            pos.z = currentTile.z + Tiles.tileSize;
+            currentTile.direction = 0;
         }
+        currentTile.gameObject.transform.position = pos;
 
         // Update rotation
         if (Input.GetAxis("Mouse ScrollWheel") > 0)
         {
-            rotation++;
-            if (rotation > 3)
-            {
-                rotation = 0;
-            }
-            currentBlock.transform.Rotate(0, 90, 0);
+            currentTile.rotation = (currentTile.rotation + 1) % 4;
+            currentTile.gameObject.transform.Rotate(0, 90, 0);
         }
         if (Input.GetAxis("Mouse ScrollWheel") < 0)
         {
-            rotation--;
-            if (rotation < 0)
-            {
-                rotation = 3;
-            }
-            currentBlock.transform.Rotate(0, -90, 0);
+            currentTile.rotation = (currentTile.rotation - 1) % 4;
+            currentTile.gameObject.transform.Rotate(0, -90, 0);
         }
     }
 

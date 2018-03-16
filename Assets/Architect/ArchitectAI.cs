@@ -4,17 +4,16 @@ using UnityEngine;
 
 public class ArchitectAI : MonoBehaviour {
 
-    public bool on;
+    public bool enabled;
     public int placeDelay;
     public int difficulty; //random interval for placing (the higher the easier)
     public int lastPlaced = 0;
-    System.Random Rnd = new System.Random();
 
+    private System.Random Random;
 
-    public ArchitectAI(bool on, int delay, int difficulty)
+    void Start()
     {
-        this.on = on;
-        placeDelay = delay;
+        Random = new System.Random();
     }
 
     public string Position(ref float x, ref float z, int currentX, int currentZ, string lastDirection)
@@ -44,7 +43,7 @@ public class ArchitectAI : MonoBehaviour {
     public bool Place()
     {
         lastPlaced += 1;
-        bool output = lastPlaced + Rnd.Next(0, difficulty) > placeDelay;
+        bool output = lastPlaced + Random.Next(0, difficulty) > placeDelay;
 
         if (output)
             lastPlaced = 0;

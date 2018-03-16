@@ -148,7 +148,7 @@ GameObject:
   - component: {fileID: 114179639250837206}
   - component: {fileID: 114322167864353800}
   m_Layer: 0
-  m_Name: Block_1
+  m_Name: BasicTile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

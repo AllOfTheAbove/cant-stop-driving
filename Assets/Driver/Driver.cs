@@ -7,13 +7,9 @@ public class Driver : Player
 {
     private Rigidbody rb;
     private float currentSpeedModifier = 0;
+
     public int defaultSpeed = 10;
     public float maxSpeedModifier = 1.2f;
-
-    public override void OnStartLocalPlayer()
-    {
-        CmdDriverJoined();
-    }
 
     void Start()
     {
@@ -24,7 +20,7 @@ public class Driver : Player
     {
         base.Update();
 
-        if (!isLocalPlayer)
+        if (!isSingleplayer && !isLocalPlayer)
         {
             GetComponent<CarController>().enabled = false;
             return;
@@ -36,18 +32,19 @@ public class Driver : Player
 
         if (Input.GetKey(KeyCode.R) || transform.position.y < -8) // || (rb.velocity.z / defaultSpeed) < 0.85
         {
-            CmdDeath();
+            Death();
         }
     }
 
-    [Command]
-    public void CmdDeath()
+    private void Death()
     {
-        RpcDeath();
         NetworkManager.singleton.ServerChangeScene("game");
+        if (!isSingleplayer)
+        {
+            CmdDeath();
+        }
     }
-    [ClientRpc]
-    public void RpcDeath()
+    private void Death2()
     {
         this.rb.velocity = Vector3.zero;
         this.rb.angularVelocity = Vector3.zero;
@@ -55,7 +52,14 @@ public class Driver : Player
         this.transform.position = new Vector3(0, 4, -20);
         this.transform.rotation = Quaternion.identity;
         this.rb.isKinematic = false;
-        
+    }
+    [Command] public void CmdDeath()
+    {
+        RpcDeath();
+    }
+    [ClientRpc] public void RpcDeath()
+    {
+        Death2();
     }
 
 }

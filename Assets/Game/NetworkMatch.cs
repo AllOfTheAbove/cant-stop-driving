@@ -13,7 +13,7 @@ public class NetworkMatch : NetworkBehaviour
     
     void Awake()
     {
-        nm = GameObject.Find("Server").GetComponent<Server>();
+        nm = GameObject.Find("Game").GetComponent<Server>();
         nm.StartMatchMaker();
 
         InvokeRepeating("GetMatchList", 0, 5.0f);

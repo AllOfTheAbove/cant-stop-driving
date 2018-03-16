@@ -84,3 +84,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9355877223609514d887aeb21aa169c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gamePaused: 0
+  gameState: 0
+  score: 0

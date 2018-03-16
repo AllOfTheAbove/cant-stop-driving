@@ -113,7 +113,7 @@ GameObject:
   - component: {fileID: 114157588022647648}
   - component: {fileID: 114197006978147268}
   m_Layer: 0
-  m_Name: Block_4
+  m_Name: PropellerTile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

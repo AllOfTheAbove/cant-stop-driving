@@ -469,7 +469,7 @@ GameObject:
   - component: {fileID: 114980584779256442}
   - component: {fileID: 114712007359221456}
   m_Layer: 0
-  m_Name: Block_3
+  m_Name: JumpTile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

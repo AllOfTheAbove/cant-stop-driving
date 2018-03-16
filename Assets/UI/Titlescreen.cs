@@ -27,9 +27,9 @@ public class Titlescreen : MonoBehaviour {
 
     public void Singleplayer()
     {
-        Server nm = GameObject.Find("Server").GetComponent<Server>();
-        nm.StartHost();
-        nm.StartClient();
+        Server s = GameObject.Find("Game").GetComponent<Server>();
+        s.singleplayer = true;
+        s.StartHost();
     }
 
     public void Quit()

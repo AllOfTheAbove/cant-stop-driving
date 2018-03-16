@@ -25,7 +25,7 @@ GameObject:
   - component: {fileID: 114185715116820116}
   - component: {fileID: 114902127976884926}
   m_Layer: 0
-  m_Name: Block_2
+  m_Name: NarrowTile
   m_TagString: Block
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

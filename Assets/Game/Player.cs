@@ -7,18 +7,21 @@ using UnityEngine.UI;
 public class Player : NetworkBehaviour {
 
     /**
-     * - Fix solo
-     * - Checkpoints
+     * - IMPROVE CODE
+     * - Checkpoints 2h
      * 
      * - Add elements to pause screen 30min
-     * - Make death screen 30min
-     * - Place everywhere
-     * - Death detection
+     * - Make death screen : background transparent, show score, buttons restart, menu, quit
      * 
-     * - Countdown / More info / Animations / Details
+     - Place everywhere 
+     * - Death detection if speed is lower than x for y seconds
+     * 
+     * - Animations and details... : Countdown, more information on screen
      **/
 
     public bool gamePaused = false;
+
+    public bool isSingleplayer = false;
 
     [SyncVar]
     public int gameState = 0;
@@ -52,23 +55,16 @@ public class Player : NetworkBehaviour {
 
     public void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
             Pause();
         }
     }
 
-    [Command]
-    public void CmdDriverJoined()
-    {
-        gameState = 1;
-        RpcDriverJoined(gameState);
-    }
-    [ClientRpc]
-    public void RpcDriverJoined(int newGameState)
+    public void Ready()
     {
         Debug.Log("Game can start!");
-        if(GameObject.Find("Waiting"))
+        if (GameObject.Find("Waiting"))
         {
             GameObject.Find("Waiting").SetActive(false);
         }
