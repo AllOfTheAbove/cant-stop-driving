@@ -84,6 +84,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9355877223609514d887aeb21aa169c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pauseUI: {fileID: 1772752284409408, guid: 08c493da811ae494c84e5aad583a0a7c, type: 2}
   gamePaused: 0
+  isSingleplayer: 0
   gameState: 0
   score: 0

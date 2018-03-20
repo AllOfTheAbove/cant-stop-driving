@@ -2,110 +2,155 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.Networking.Match;
 
 public class Server : NetworkManager
 {
     public bool singleplayer = false;
     public int playerId = 0;
     public int gameId = 0;
-    public GameObject[] prefabs;
+    public bool firstGame = true;
+    public GameObject[] playerPrefabs;
 
     protected NetworkConnection architectConnection;
     protected GameObject architect;
     protected short architectControllerId;
-
     protected NetworkConnection driverConnection;
     protected GameObject driver;
     protected short driverControllerId;
 
+
+
+    public void Disconnect()
+    {
+        if(matchMaker)
+        {
+            matchMaker.DropConnection(matchInfo.networkId, matchInfo.nodeId, 0, OnDropConnection);
+        }
+        StopHost();
+        Destroy(gameObject);
+        GameObject.Find("Game").GetComponent<Game>().StartServer();
+    }
+
     public override void OnClientConnect(NetworkConnection conn)
     {
+        if((singleplayer && playerId != 0) || (playerId > 1))
+        {
+            // kick player
+        }
+
+        ClientScene.Ready(conn);
         ClientScene.AddPlayer(conn, 0);
     }
 
     public override void OnServerDisconnect(NetworkConnection conn)
     {
-        this.StopHost();
-    }
-
-    public override void OnServerSceneChanged(string sceneName)
-    {
-        if (gameId != 0)
-        {
-            NetworkServer.Destroy(architect);
-            architect = Instantiate(prefabs[0]);
-            architect.name = prefabs[0].name;
-            NetworkServer.ReplacePlayerForConnection(architectConnection, architect, architectControllerId);
-            if (singleplayer)
-            {
-                NetworkServer.Destroy(driver);
-                driver = Instantiate(prefabs[1]);
-                driver.name = prefabs[1].name;
-
-                driver.GetComponent<Player>().isSingleplayer = true;
-                architect.GetComponent<Player>().isSingleplayer = true;
-            }
-            else
-            {
-                NetworkServer.Destroy(driver);
-                driver = Instantiate(prefabs[1]);
-                driver.name = prefabs[1].name;
-                NetworkServer.ReplacePlayerForConnection(driverConnection, driver, driverControllerId);
-            }
-        }
-
-        gameId++;
+        Disconnect();
     }
 
     public override void OnServerAddPlayer(NetworkConnection conn, short playerControllerId)
     {
-        if(singleplayer)
+        if (singleplayer)
         {
-            SpawnArchitect(conn, playerControllerId);
-            driver = Instantiate(prefabs[1]);
-
-            driver.GetComponent<Player>().isSingleplayer = true;
-            architect.GetComponent<Player>().isSingleplayer = true;
-            driver.GetComponent<Player>().Ready();
-            architect.GetComponent<Player>().Ready();
-            return;
+            if (playerId == 0)
+            {
+                SpawnArchitect(conn, playerControllerId);
+                SpawnDriver();
+            }
         }
-
-        if(playerId == 0)
+        else
         {
-            SpawnArchitect(conn, playerControllerId);
-        } else if(playerId == 1)
-        {
-            SpawnDriver(conn, playerControllerId);
-            driver.GetComponent<Player>().Ready();
-            architect.GetComponent<Player>().Ready();
-        } else
-        {
-            return;
+            if (playerId == 0)
+            {
+                SpawnArchitect(conn, playerControllerId);
+            }
+            else if (playerId == 1)
+            {
+                SpawnDriver(conn, playerControllerId);
+            }
         }
 
         playerId++;
     }
 
-    private GameObject SpawnArchitect(NetworkConnection conn, short playerControllerId)
+    public override void OnServerSceneChanged(string sceneName)
     {
-        Debug.Log("Architect joined!");
-        architectConnection = conn;
-        architectControllerId = playerControllerId;
-        architect = Instantiate(prefabs[0]);
-        architect.name = prefabs[0].name;
-        NetworkServer.AddPlayerForConnection(architectConnection, architect, architectControllerId);
+        if(gameId != 0)
+        {
+            firstGame = false;
+        }
+
+        if (!firstGame)
+        {
+            SpawnArchitect();
+            SpawnDriver();
+        }
+
+        gameId++;
+    }
+
+    private GameObject SpawnArchitect(NetworkConnection conn = null, short playerControllerId = 0)
+    {
+        NetworkServer.Destroy(architect);
+
+        if(firstGame)
+        {
+            architectConnection = conn;
+            architectControllerId = playerControllerId;
+        }
+
+        architect = Instantiate(playerPrefabs[0]);
+        architect.name = playerPrefabs[0].name;
+
+        if (firstGame)
+        {
+            NetworkServer.AddPlayerForConnection(architectConnection, architect, architectControllerId);
+        }
+        else
+        {
+            NetworkServer.ReplacePlayerForConnection(architectConnection, architect, architectControllerId);
+        }
+
+        if(singleplayer)
+        {
+            architect.GetComponent<Player>().isSingleplayer = true;
+        }
+
+        NetworkServer.SetClientReady(architectConnection);
+
         return architect;
     }
 
-    private GameObject SpawnDriver(NetworkConnection conn, short playerControllerId)
+    private GameObject SpawnDriver(NetworkConnection conn = null, short playerControllerId = 0)
     {
-        Debug.Log("Driver joined!");
-        driverConnection = conn;
-        driverControllerId = playerControllerId;
-        driver = Instantiate(prefabs[1]);
-        driver.name = prefabs[1].name;
-        NetworkServer.AddPlayerForConnection(driverConnection, driver, driverControllerId);
+        NetworkServer.Destroy(driver);
+
+        if (firstGame && !singleplayer)
+        {
+            driverConnection = conn;
+            driverControllerId = playerControllerId;
+        }
+
+        driver = Instantiate(playerPrefabs[1]);
+        driver.name = playerPrefabs[1].name;
+
+        if (!singleplayer)
+        {
+            if (firstGame)
+            {
+                NetworkServer.AddPlayerForConnection(driverConnection, driver, driverControllerId);
+            }
+            else
+            {
+                NetworkServer.ReplacePlayerForConnection(driverConnection, driver, driverControllerId);
+            }
+        }
+
+        if (singleplayer)
+        {
+            driver.GetComponent<Player>().isSingleplayer = true;
+        }
+
         return driver;
     }
 

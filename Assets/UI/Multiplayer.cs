@@ -5,7 +5,7 @@ using UnityEngine.Networking.Match;
 using TMPro;
 using UnityEngine.UI;
 
-public class NetworkMatch : NetworkBehaviour
+public class Multiplayer : NetworkBehaviour
 {
     NetworkManager nm;
 
@@ -13,10 +13,10 @@ public class NetworkMatch : NetworkBehaviour
     
     void Awake()
     {
-        nm = GameObject.Find("Game").GetComponent<Server>();
+        nm = GameObject.Find("Server").GetComponent<Server>();
         nm.StartMatchMaker();
 
-        InvokeRepeating("GetMatchList", 0, 5.0f);
+        InvokeRepeating("GetMatchList", 0, 2.5f);
     }
 
     /**

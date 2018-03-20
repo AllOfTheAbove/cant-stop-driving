@@ -13,6 +13,7 @@ public class Settings : MonoBehaviour {
 
     void Start()
     {
+        
         resolutions = Screen.resolutions;
         resolutionDropdown.ClearOptions();
 
@@ -24,7 +25,7 @@ public class Settings : MonoBehaviour {
             string option = resolutions[i].width + " x " + resolutions[i].height;
             options.Add(option);
 
-            if(resolutions[i].width == Screen.currentResolution.width && resolutions[i].height == Screen.currentResolution.height)
+            if(resolutions[i].width == Screen.width && resolutions[i].height == Screen.height)
             {
                 currentResolutionIndex = i;
             }
@@ -33,16 +34,22 @@ public class Settings : MonoBehaviour {
         resolutionDropdown.AddOptions(options);
         resolutionDropdown.value = currentResolutionIndex;
         resolutionDropdown.RefreshShownValue();
+
+        GameObject.Find("Fullscreen").GetComponent<Toggle>().isOn = Screen.fullScreen;
+        GameObject.Find("MusicVolume").GetComponent<Slider>().value = PlayerPrefs.GetFloat("musicVolume");
+        GameObject.Find("SoundVolume").GetComponent<Slider>().value = PlayerPrefs.GetFloat("soundVolume");
     }
 
 	public void SetMusicVolume(float volume)
     {
         audioMixer.SetFloat("musicVolume", volume);
+        PlayerPrefs.SetFloat("musicVolume", volume);
     }
 
     public void SetSoundVolume(float volume)
     {
         audioMixer.SetFloat("soundVolume", volume);
+        PlayerPrefs.SetFloat("soundVolume", volume);
     }
 
     public void SetQuality(int quality)
@@ -60,4 +67,5 @@ public class Settings : MonoBehaviour {
         Resolution resolution = resolutions[resolutionIndex];
         Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen);
     }
+
 }

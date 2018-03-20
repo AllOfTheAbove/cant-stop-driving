@@ -16,14 +16,14 @@ public class ArchitectAI : MonoBehaviour {
         Random = new System.Random();
     }
 
-    public string Position(ref float x, ref float z, int currentX, int currentZ, string lastDirection)
+    public int Position(ref float x, ref float z, int currentX, int currentZ, int lastDirection)
     {
-        string direction = "forward";
+        int direction = 0;
         int blockSize = 16;
 
         switch (direction)
         {
-            case "forward":
+            case 0:
                 x = currentX;
                 z = currentZ + blockSize;
                 break;

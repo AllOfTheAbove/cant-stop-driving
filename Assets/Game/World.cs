@@ -2,13 +2,24 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Tiles : MonoBehaviour {
+public class World : MonoBehaviour {
 
-    public static Material tilePreviewMaterial;
-    public static AudioSource tileSpawnSound;
-    public static int tileSize;
+    private static World instance;
+    public static World Instance
+    {
+        get { return instance; }
+    }
 
-    public static void Solid(GameObject gameObject, bool solid)
+    public List<GameObject> tiles = new List<GameObject>();
+    public Material tilePreviewMaterial;
+    public int tileSize;
+
+    private void Awake()
+    {
+        instance = this;
+    }
+
+    public void Solid(GameObject gameObject, bool solid)
     {
         MeshCollider[] bc = gameObject.GetComponentsInChildren<MeshCollider>();
         for (int i = 0; i < bc.Length; i++)
@@ -17,7 +28,7 @@ public class Tiles : MonoBehaviour {
         }
     }
 
-    public static void AddMaterial(GameObject gameObject, Material material)
+    public void AddMaterial(GameObject gameObject, Material material)
     {
         MeshRenderer[] mr = gameObject.GetComponentsInChildren<MeshRenderer>();
         for (int i = 0; i < mr.Length; i++)
@@ -33,7 +44,7 @@ public class Tiles : MonoBehaviour {
         }
     }
 
-    public static void RemoveMaterial(GameObject gameObject, Material material)
+    public void RemoveMaterial(GameObject gameObject, Material material)
     {
         MeshRenderer[] mr = gameObject.GetComponentsInChildren<MeshRenderer>();
         for (int i = 0; i < mr.Length; i++)
@@ -42,7 +53,7 @@ public class Tiles : MonoBehaviour {
             Material[] newMaterials = new Material[oldMaterials.Length - 1];
 
             int j = 0;
-            while (j < oldMaterials.Length)
+            while (j < newMaterials.Length)
             {
                 if (oldMaterials[j] != material)
                 {

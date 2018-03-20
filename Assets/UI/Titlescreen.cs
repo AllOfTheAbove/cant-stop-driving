@@ -6,28 +6,28 @@ using UnityEngine.SceneManagement;
 
 public class Titlescreen : MonoBehaviour {
 
-    /**public void playSameComputer()
+    void OnGUI()
     {
-        Server nm = GameObject.Find("Server").GetComponent<Server>();
-        nm.StartHost();
-        nm.StartClient();
+        /**Server s = GameObject.Find("Server").GetComponent<Server>();
+        if (GUILayout.Button("Host local game"))
+        {
+            s.StartHost();
+        }
+        if (GUILayout.Button("Join local game"))
+        {
+            s.StartClient();
+        }**/
     }
 
-    public void createLocalGame()
+    void Start()
     {
-        Server nm = GameObject.Find("Server").GetComponent<Server>();
-        nm.StartHost();
+        GameObject.Find("Game").GetComponent<Game>().gamePaused = false;
+        Time.timeScale = 1f;
     }
-
-    public void joinLocalGame()
-    {
-        Server nm = GameObject.Find("Server").GetComponent<Server>();
-        nm.StartClient();
-    }**/
 
     public void Singleplayer()
     {
-        Server s = GameObject.Find("Game").GetComponent<Server>();
+        Server s = GameObject.Find("Server").GetComponent<Server>();
         s.singleplayer = true;
         s.StartHost();
     }
