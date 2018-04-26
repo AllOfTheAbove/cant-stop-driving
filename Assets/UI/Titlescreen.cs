@@ -21,6 +21,7 @@ public class Titlescreen : MonoBehaviour {
 
     void Start()
     {
+        // play music 1
         GameObject.Find("Game").GetComponent<Game>().gamePaused = false;
         Time.timeScale = 1f;
     }

@@ -6,7 +6,7 @@ using UnityEngine.Networking;
 
 public class Tile
 {
-    private World world;
+    private GameScene world;
 
     public GameObject gameObject;
 
@@ -20,7 +20,7 @@ public class Tile
 
     public Tile(int x = 0, int y = 0, int z = 0)
     {
-        this.world = World.Instance;
+        this.world = GameScene.Instance;
 
         this.ready = false;
         this.x = x;
@@ -101,14 +101,12 @@ public class Architect : Player
     private ArchitectAI AI;
     private Vector3 architectDestination;
 
-    private World world;
     private System.Random random = new System.Random();
 
 
 
     void Start()
     {
-        world = game.world;
         AI = this.gameObject.GetComponent<ArchitectAI>();
         architectDestination = new Vector3(0, 0, 0);
 
@@ -125,13 +123,13 @@ public class Architect : Player
 
     [Command] public void CmdSpawnTile()
     {
-        int randomTileId = random.Next(0, world.tiles.Count);
+        int randomTileId = random.Next(0, GameScene.Instance.tiles.Count);
         currentTile.gameObject = Instantiate(
-            world.tiles[randomTileId],
-            new Vector3(currentTile.x, world.tiles[randomTileId].transform.position.y, currentTile.z),
+            GameScene.Instance.tiles[randomTileId],
+            new Vector3(currentTile.x, GameScene.Instance.tiles[randomTileId].transform.position.y, currentTile.z),
             Quaternion.identity
         );
-        currentTile.gameObject.name = world.tiles[randomTileId].name;
+        currentTile.gameObject.name = GameScene.Instance.tiles[randomTileId].name;
         NetworkServer.SpawnWithClientAuthority(currentTile.gameObject, this.gameObject);
 
         RpcSetCurrentTileType(currentTile.gameObject, currentTile.x, currentTile.z, false);
@@ -145,27 +143,27 @@ public class Architect : Player
 
         // Prepare next tile
         lastTile = currentTile;
-        currentTile = new Tile(lastTile.x, 0, lastTile.z + world.tileSize);
+        currentTile = new Tile(lastTile.x, 0, lastTile.z + GameScene.Instance.tileSize);
     }
 
     [ClientRpc] public void RpcSetCurrentTileType(GameObject tile, int x, int z, bool placed)
     {
         if (placed)
         {
-            world.Solid(tile, true);
-            world.RemoveMaterial(tile, world.tilePreviewMaterial);
+            GameScene.Instance.Solid(tile, true);
+            GameScene.Instance.RemoveMaterial(tile, GameScene.Instance.tilePreviewMaterial);
             tileSpawnSound.Play();
+            StartCoroutine(architectCamera.GetComponent<CameraShake>().Shake());
+            StartCoroutine(GameObject.Find("driverCamera").GetComponent<CameraShake>().Shake());
 
             architectDestination = new Vector3(x, 0, z);
         }
         else
         {
-            world.Solid(tile, false);
-            world.AddMaterial(tile, world.tilePreviewMaterial);
+            GameScene.Instance.Solid(tile, false);
+            GameScene.Instance.AddMaterial(tile, GameScene.Instance.tilePreviewMaterial);
         }
     }
-
-
 
     void Update()
     {
@@ -178,10 +176,10 @@ public class Architect : Player
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            game.Pause();
+            Game.Instance.Pause();
         }
 
-        if(game.gamePaused)
+        if(Game.Instance.gamePaused)
         {
             return;
         }
@@ -190,14 +188,14 @@ public class Architect : Player
         {
             updatePreviewTile();
 
-            if (Input.GetMouseButtonDown(0) || (AI.enabled && AI.Place()))
+            if ((!AI.enabled && Input.GetMouseButtonDown(0)) || (AI.enabled && AI.Place()))
             {
                 CmdCreateTile();
             }
         }
         else
         {
-            Vector3 carPosition = GameObject.Find("Driver").transform.position;
+            Vector3 carPosition = GameObject.Find("driverCamera").transform.position;
             float distance = Vector3.Distance(
                 new Vector3(lastTile.x, 0, lastTile.z),
                 new Vector3(carPosition.x, 0, carPosition.z)

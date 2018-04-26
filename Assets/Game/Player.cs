@@ -1,25 +1,44 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 
 public class Player : NetworkBehaviour {
 
-    protected Game game;
     public bool isSingleplayer = false;
 
     [SyncVar] public int gameState = 0;
     [SyncVar] public int score = 0;
 
-    public void Awake()
+    IEnumerator Countdown()
     {
-        game = Game.Instance;
+        int time = 3;
+
+        while(true)
+        {
+            yield return new WaitForSeconds(1);
+            if (time == 0)
+            {
+                GameScene.Instance.countdownEndSound.Play();
+                GameScene.Instance.countdownLabel.GetComponent<TextMeshProUGUI>().SetText("GO");
+            } else if (time < 0) {
+                GameScene.Instance.countdownLabel.SetActive(false);
+                StopCoroutine(Countdown());
+            } else
+            {
+                GameScene.Instance.countdownBeepSound.Play();
+                GameScene.Instance.countdownLabel.GetComponent<TextMeshProUGUI>().SetText("" + time);
+            }
+            time--;
+        }
     }
 
     public void Ready()
     {
-        game.GetScene().waitingUI.SetActive(false);
+        GameScene.Instance.waitingUI.SetActive(false);
+        StartCoroutine(Countdown());
     }
     [Command] public void CmdReady()
     {
@@ -37,7 +56,7 @@ public class Player : NetworkBehaviour {
     }
     [ClientRpc] void RpcUpdateScore(int newScore)
     {
-        game.GetScene().scoreLabel.GetComponent<Text>().text = newScore.ToString();
+        GameScene.Instance.scoreLabel.GetComponent<Text>().text = newScore.ToString();
     }
 
 }

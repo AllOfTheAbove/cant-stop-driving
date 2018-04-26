@@ -12,7 +12,6 @@ public class Game : MonoBehaviour {
     }
 
     public GameObject server;
-    public World world;
     public AudioMixer audioMixer;
 
     public bool gamePaused = false;
@@ -29,8 +28,6 @@ public class Game : MonoBehaviour {
         {
             DestroyObject(gameObject);
         }
-
-        world = World.Instance;
 
         audioMixer.SetFloat("musicVolume", PlayerPrefs.GetFloat("musicVolume"));
         audioMixer.SetFloat("soundVolume", PlayerPrefs.GetFloat("soundVolume"));
@@ -54,12 +51,7 @@ public class Game : MonoBehaviour {
             gamePaused = true;
             Time.timeScale = 0f;
         }
-        GetScene().pauseUI.SetActive(gamePaused);
-    }
-
-    public GameScene GetScene()
-    {
-        return GameObject.Find("GameScene").GetComponent<GameScene>();
+        GameScene.Instance.pauseUI.SetActive(gamePaused);
     }
 
 }

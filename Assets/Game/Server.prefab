@@ -66,7 +66,7 @@ MonoBehaviour:
   m_OfflineScene: title
   m_OnlineScene: game
   m_SpawnPrefabs:
-  - {fileID: 1230032693005060, guid: 7cf310cdfa7628545a147e797c795064, type: 2}
+  - {fileID: 1076787189189672, guid: 2c2018e6689c8a040802966cba735b17, type: 2}
   - {fileID: 1180472769544254, guid: a6505afddd30d5e4781efd40aa2ef65a, type: 2}
   - {fileID: 1279729012706720, guid: 4e8f2d18022d0c044ac9dff6163bc6f8, type: 2}
   - {fileID: 1023673143187408, guid: 52057636d859a9343acdb6856a39451c, type: 2}
@@ -132,7 +132,6 @@ MonoBehaviour:
   playerId: 0
   gameId: 0
   firstGame: 1
-  reset: 0
   playerPrefabs:
-  - {fileID: 1230032693005060, guid: 7cf310cdfa7628545a147e797c795064, type: 2}
+  - {fileID: 1076787189189672, guid: 2c2018e6689c8a040802966cba735b17, type: 2}
   - {fileID: 1180472769544254, guid: a6505afddd30d5e4781efd40aa2ef65a, type: 2}

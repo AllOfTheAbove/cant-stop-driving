@@ -5,11 +5,15 @@ using UnityEngine.Networking;
 
 public class Driver : Player
 {
-    private Rigidbody rb;
+    public GameObject car;
+    public GameObject cameraContainer;
     private float currentSpeedModifier = 0;
 
     public int defaultSpeed = 10;
     public float maxSpeedModifier = 1.2f;
+
+    public float rotationDamping = 3f;
+    public float distance = 10f;
 
     public override void OnStartLocalPlayer()
     {
@@ -19,21 +23,34 @@ public class Driver : Player
     void Start()
     {
         Ready();
-        rb = GetComponent<Rigidbody>();
+        cameraContainer.transform.parent = null;
+    }
+
+    private void LateUpdate()
+    {
+        float wantedRotationAngle = car.transform.eulerAngles.y;
+        float currentRotationAngle = cameraContainer.transform.localEulerAngles.y;
+        currentRotationAngle = Mathf.LerpAngle(currentRotationAngle, wantedRotationAngle, rotationDamping * Time.deltaTime);
+        var currentRotation = Quaternion.Euler(0, currentRotationAngle, 0);
+
+        cameraContainer.transform.position = car.transform.position;
+        cameraContainer.transform.position -= currentRotation * Vector3.forward * distance;
+        cameraContainer.transform.position = new Vector3(cameraContainer.transform.position.x, 10f, cameraContainer.transform.position.z);
+        cameraContainer.transform.LookAt(car.transform);
     }
 
     void Update()
     {
         if (!isSingleplayer && !isLocalPlayer)
         {
-            GetComponent<CarController>().enabled = false;
+            car.GetComponent<CarController>().enabled = false;
             return;
         }
-        GetComponent<CarController>().enabled = true;
+        car.GetComponent<CarController>().enabled = true;
 
         if (Input.GetKeyDown(KeyCode.Escape) && !isSingleplayer)
         {
-            game.Pause();
+            Game.Instance.Pause();
         }
 
         //currentSpeedModifier = Input.GetAxis("Vertical") * maxSpeedModifier;
