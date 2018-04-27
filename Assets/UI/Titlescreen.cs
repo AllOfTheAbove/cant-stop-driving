@@ -8,29 +8,29 @@ public class Titlescreen : MonoBehaviour {
 
     void OnGUI()
     {
-        /**Server s = GameObject.Find("Server").GetComponent<Server>();
-        if (GUILayout.Button("Host local game"))
+        if (Game.Instance.debug)
         {
-            s.StartHost();
+            if (GUILayout.Button("Host local game"))
+            {
+                Game.Instance.GetServer().StartHost();
+            }
+            if (GUILayout.Button("Join local game"))
+            {
+                Game.Instance.GetServer().StartClient();
+            }
         }
-        if (GUILayout.Button("Join local game"))
-        {
-            s.StartClient();
-        }**/
     }
 
     void Start()
     {
-        // play music 1
-        GameObject.Find("Game").GetComponent<Game>().gamePaused = false;
-        Time.timeScale = 1f;
+        Game.Instance.SwitchAudio("title");
+        Game.Instance.Reset();
     }
 
     public void Singleplayer()
     {
-        Server s = GameObject.Find("Server").GetComponent<Server>();
-        s.singleplayer = true;
-        s.StartHost();
+        Game.Instance.GetServer().singleplayer = true;
+        Game.Instance.GetServer().StartHost();
     }
 
     public void Quit()

@@ -29,7 +29,7 @@ public class Server : NetworkManager
         }
         StopHost();
         Destroy(gameObject);
-        GameObject.Find("Game").GetComponent<Game>().StartServer();
+        Game.Instance.RestartServer();
     }
 
     public override void OnClientConnect(NetworkConnection conn)

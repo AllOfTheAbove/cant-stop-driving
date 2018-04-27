@@ -20,6 +20,8 @@ public class GameScene : MonoBehaviour {
     public GameObject pauseUI;
     public GameObject scoreLabel;
     public GameObject countdownLabel;
+    public GameObject gameoverUI;
+    public GameObject gameoverScoreLabel;
 
     [Header("SFXs")]
     public AudioSource countdownBeepSound;

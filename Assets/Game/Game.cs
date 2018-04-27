@@ -1,5 +1,5 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Audio;
 
@@ -11,8 +11,20 @@ public class Game : MonoBehaviour {
         get { return instance; }
     }
 
-    public GameObject server;
+    public bool debug = false;
+
+    /*
+     * State -1 : Architect is waiting for a driver to join (can't play, can pause)
+     * State 0  : Both players are connected but they are waiting for the countdown (can't play, can't pause)
+     * State 1  : Normal (can play, can pause)
+     */
+    public int state = -1;
+    public int score = 0;
+
+    public GameObject serverAsset;
     public AudioMixer audioMixer;
+    public AudioSource titleMusic;
+    public AudioSource gameMusic;
 
     public bool gamePaused = false;
 
@@ -28,15 +40,31 @@ public class Game : MonoBehaviour {
         {
             DestroyObject(gameObject);
         }
+    }
 
+    public void Start()
+    {
         audioMixer.SetFloat("musicVolume", PlayerPrefs.GetFloat("musicVolume"));
         audioMixer.SetFloat("soundVolume", PlayerPrefs.GetFloat("soundVolume"));
     }
 
-    public void StartServer()
+    public void RestartServer()
     {
-        GameObject o = Instantiate(server);
-        o.name = server.name;
+        GameObject o = Instantiate(serverAsset);
+        o.name = serverAsset.name;
+    }
+
+    public Server GetServer()
+    {
+        return GameObject.Find(serverAsset.name).GetComponent<Server>();
+    }
+
+    public void Reset()
+    {
+        gamePaused = false;
+        Time.timeScale = 1f;
+        state = -1;
+        score = 0;
     }
 
     public void Pause()
@@ -52,6 +80,78 @@ public class Game : MonoBehaviour {
             Time.timeScale = 0f;
         }
         GameScene.Instance.pauseUI.SetActive(gamePaused);
+    }
+
+    public void ChangeState(int state)
+    {
+        if (state == 0)
+        {
+            this.state = state;
+            GameScene.Instance.waitingUI.SetActive(false);
+            SwitchAudio("game");
+            StartCoroutine(StartCountdown());
+        } else if(state == 2)
+        {
+            this.state = state;
+            Time.timeScale = 0f;
+            GameScene.Instance.gameoverScoreLabel.GetComponent<TextMeshProUGUI>().SetText(score + "");
+            GameScene.Instance.gameoverUI.SetActive(true);
+            FadeOutAudio(gameMusic);
+        }
+    }
+
+    public IEnumerator StartCountdown()
+    {
+        int time = 3;
+
+        while (time >= -1)
+        {
+            yield return new WaitForSeconds(1);
+            if (time == 0)
+            {
+                GameScene.Instance.countdownEndSound.Play();
+                GameScene.Instance.countdownLabel.GetComponent<TextMeshProUGUI>().SetText("GO");
+                state = 1;
+                gameMusic.Play();
+            }
+            else if (time < 0)
+            {
+                GameScene.Instance.countdownLabel.SetActive(false);
+            }
+            else
+            {
+                GameScene.Instance.countdownBeepSound.Play();
+                GameScene.Instance.countdownLabel.GetComponent<TextMeshProUGUI>().SetText("" + time);
+            }
+            time--;
+        }
+    }
+
+    public void SwitchAudio(string scene)
+    {
+        if (scene == "title")
+        {
+            StartCoroutine(FadeOutAudio(gameMusic));
+            titleMusic.Play();
+        }
+        else if (scene == "game")
+        {
+            StartCoroutine(FadeOutAudio(titleMusic));
+        }
+    }
+
+    public IEnumerator FadeOutAudio(AudioSource audioSource)
+    {
+        float startVolume = audioSource.volume;
+
+        while (audioSource.volume > 0)
+        {
+            audioSource.volume -= startVolume * Time.deltaTime / 1f;
+            yield return null;
+        }
+
+        audioSource.Stop();
+        audioSource.volume = startVolume;
     }
 
 }

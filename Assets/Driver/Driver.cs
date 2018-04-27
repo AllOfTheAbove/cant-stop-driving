@@ -1,76 +1,144 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.UI;
 
 public class Driver : Player
 {
-    public GameObject car;
-    public GameObject cameraContainer;
-    private float currentSpeedModifier = 0;
+    public GameObject vehicle;
+    public Camera driverCamera;
+    public float minSpeedToBeInDanger = 8f;
+    public float secondsAtMinSpeedBeforeDeath = 3f;
 
-    public int defaultSpeed = 10;
-    public float maxSpeedModifier = 1.2f;
+    private float secondsLeftBeforeDeath = 0;
+    private Coroutine checkForDeathCoroutine;
+    private int[] maximumPositionsReached = new int[3];
 
-    public float rotationDamping = 3f;
-    public float distance = 10f;
+
 
     public override void OnStartLocalPlayer()
     {
-        CmdReady();
+        GetComponentInChildren<AudioListener>().enabled = true;
+        CmdChangeGameState(0);
     }
 
     void Start()
     {
-        Ready();
-        cameraContainer.transform.parent = null;
-    }
-
-    private void LateUpdate()
-    {
-        float wantedRotationAngle = car.transform.eulerAngles.y;
-        float currentRotationAngle = cameraContainer.transform.localEulerAngles.y;
-        currentRotationAngle = Mathf.LerpAngle(currentRotationAngle, wantedRotationAngle, rotationDamping * Time.deltaTime);
-        var currentRotation = Quaternion.Euler(0, currentRotationAngle, 0);
-
-        cameraContainer.transform.position = car.transform.position;
-        cameraContainer.transform.position -= currentRotation * Vector3.forward * distance;
-        cameraContainer.transform.position = new Vector3(cameraContainer.transform.position.x, 10f, cameraContainer.transform.position.z);
-        cameraContainer.transform.LookAt(car.transform);
+        Game.Instance.ChangeState(0);
+        checkForDeathCoroutine = StartCoroutine(CheckForDeath());
     }
 
     void Update()
     {
-        if (!isSingleplayer && !isLocalPlayer)
+        // Quit if not localPlayer or if countdown
+        if ((!isSingleplayer && !isLocalPlayer) || Game.Instance.state == 0)
         {
-            car.GetComponent<CarController>().enabled = false;
+            vehicle.GetComponent<CarController>().enabled = false;
             return;
         }
-        car.GetComponent<CarController>().enabled = true;
+        vehicle.GetComponent<CarController>().enabled = true;
 
+        // Pause
         if (Input.GetKeyDown(KeyCode.Escape) && !isSingleplayer)
         {
             Game.Instance.Pause();
         }
 
-        //currentSpeedModifier = Input.GetAxis("Vertical") * maxSpeedModifier;
-        //rb.velocity = new Vector3(rb.velocity.x, rb.velocity.y, defaultSpeed + currentSpeedModifier);
-
-        if (Input.GetKey(KeyCode.R) || transform.position.y < -8) // || (rb.velocity.z / defaultSpeed) < 0.85
+        // Score
+        bool scoreIncreased = false;
+        if(Math.Floor(transform.position.z) > maximumPositionsReached[1])
         {
-            if (!isSingleplayer)
-            {
-                CmdDeath();
-            } else
-            {
-                NetworkManager.singleton.ServerChangeScene("game");
-            }
+            maximumPositionsReached[1] += 1;
+            scoreIncreased = true;
+        }
+        if(Math.Floor(transform.position.x) > maximumPositionsReached[2])
+        {
+            maximumPositionsReached[2] += 1;
+            scoreIncreased = true;
+        }
+        if (Math.Ceiling(transform.position.x) < maximumPositionsReached[0])
+        {
+            maximumPositionsReached[0] -= 1;
+            scoreIncreased = true;
+        }
+        if(scoreIncreased)
+        {
+            IncreaseScore();
+        }
+
+        // Death
+        if (Input.GetKey(KeyCode.R) || transform.position.y < -8)
+        {
+            GameOver();
         }
     }
 
-    [Command] public void CmdDeath()
+
+
+    public void IncreaseScore()
     {
-        NetworkManager.singleton.ServerChangeScene("game");
+        if (!isSingleplayer)
+        {
+            CmdIncreaseScore();
+        }
+        else
+        {
+            Game.Instance.score += 1;
+            GameScene.Instance.scoreLabel.GetComponent<Text>().text = Game.Instance.score + "";
+        }
+    }
+    [Command] public void CmdIncreaseScore()
+    {
+        Game.Instance.score += 1;
+        RpcIncreaseScore(Game.Instance.score);
+    }
+    [ClientRpc] public void RpcIncreaseScore(int score)
+    {
+        Game.Instance.score = score;
+        GameScene.Instance.scoreLabel.GetComponent<Text>().text = score + "";
+    }
+
+
+    public IEnumerator CheckForDeath()
+    {
+        secondsLeftBeforeDeath = secondsAtMinSpeedBeforeDeath;
+
+        while (secondsLeftBeforeDeath > 0)
+        {
+            if (Game.Instance.state == 1)
+            {
+                if (GetComponent<Rigidbody>().velocity.sqrMagnitude < minSpeedToBeInDanger)
+                {
+                    // alert beeeeeep
+                    secondsLeftBeforeDeath--;
+                }
+                else
+                {
+                    secondsLeftBeforeDeath = secondsAtMinSpeedBeforeDeath;
+                }
+            }
+            yield return new WaitForSeconds(1);
+        }
+
+        if(secondsLeftBeforeDeath <= 0)
+        {
+            GameOver();
+        }
+    }
+
+    public void GameOver()
+    {
+        StopCoroutine(checkForDeathCoroutine);
+        if (!isSingleplayer)
+        {
+            CmdChangeGameState(2);
+        } else
+        {
+            Game.Instance.ChangeState(2);
+        }
     }
 
 }

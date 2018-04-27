@@ -105,13 +105,18 @@ public class Architect : Player
 
 
 
+    public override void OnStartLocalPlayer()
+    {
+        GetComponentInChildren<AudioListener>().enabled = true;
+    }
+
     void Start()
     {
         AI = this.gameObject.GetComponent<ArchitectAI>();
         architectDestination = new Vector3(0, 0, 0);
 
-        currentTile = new Tile();
-        lastTile = new Tile(0, 0, -16);
+        currentTile = new Tile(0, 0, GameScene.Instance.tileSize);
+        lastTile = new Tile(0, 0, 0);
 
         if (isSingleplayer)
         {
@@ -137,9 +142,8 @@ public class Architect : Player
 
     [Command] private void CmdCreateTile()
     {
-        // Increase score and make tile solid
+        // Make tile solid
         RpcSetCurrentTileType(currentTile.gameObject, currentTile.x, currentTile.z, true);
-        CmdAddScore();
 
         // Prepare next tile
         lastTile = currentTile;
@@ -154,7 +158,7 @@ public class Architect : Player
             GameScene.Instance.RemoveMaterial(tile, GameScene.Instance.tilePreviewMaterial);
             tileSpawnSound.Play();
             StartCoroutine(architectCamera.GetComponent<CameraShake>().Shake());
-            StartCoroutine(GameObject.Find("driverCamera").GetComponent<CameraShake>().Shake());
+            StartCoroutine(GameObject.Find("Driver").GetComponent<Driver>().driverCamera.GetComponent<CameraShake>().Shake());
 
             architectDestination = new Vector3(x, 0, z);
         }
@@ -169,17 +173,12 @@ public class Architect : Player
     {
         transform.position = Vector3.Lerp(transform.position, architectDestination, 0.1f);
 
-        if (!isLocalPlayer || !GameObject.Find("Driver"))
-        {
-            return;
-        }
-
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape) && isLocalPlayer && Game.Instance.state != 0)
         {
             Game.Instance.Pause();
         }
 
-        if(Game.Instance.gamePaused)
+        if (!isLocalPlayer || Game.Instance.state != 1 || Game.Instance.gamePaused)
         {
             return;
         }
@@ -195,7 +194,7 @@ public class Architect : Player
         }
         else
         {
-            Vector3 carPosition = GameObject.Find("driverCamera").transform.position;
+            Vector3 carPosition = GameObject.Find("Driver").transform.position;
             float distance = Vector3.Distance(
                 new Vector3(lastTile.x, 0, lastTile.z),
                 new Vector3(carPosition.x, 0, carPosition.z)

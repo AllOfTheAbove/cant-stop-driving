@@ -57,9 +57,9 @@ GameObject:
   - component: {fileID: 92563893316199298}
   - component: {fileID: 81371998445239282}
   - component: {fileID: 114184359883562928}
-  - component: {fileID: 114041814088333514}
+  - component: {fileID: 114691649049572310}
   m_Layer: 0
-  m_Name: driverCamera
+  m_Name: Camera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -438,8 +438,10 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4584280574004004}
+  - component: {fileID: 95769593687151624}
+  - component: {fileID: 114655109525781162}
   m_Layer: 0
-  m_Name: Camera
+  m_Name: DriverCamera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -512,7 +514,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1763794348465352
 GameObject:
   m_ObjectHideFlags: 1
@@ -1016,14 +1018,14 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1568455078497522}
-  m_LocalRotation: {x: 0.22984897, y: -0, z: -0, w: 0.97322637}
-  m_LocalPosition: {x: 0, y: 4, z: -5.89}
+  m_LocalRotation: {x: 0.18301274, y: -0.6830127, z: 0.18301274, w: 0.6830127}
+  m_LocalPosition: {x: 15, y: 7, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4235777447023668}
   m_Father: {fileID: 4832564093516470}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 26.576002, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 30, y: -90, z: 0}
 --- !u!4 &4588278291232556
 Transform:
   m_ObjectHideFlags: 1
@@ -1191,7 +1193,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1180472769544254}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 4, z: -34}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4584280574004004}
@@ -1219,7 +1221,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1399064164092878}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children:
   - {fileID: 4226367117171026}
@@ -2386,7 +2388,7 @@ AudioListener:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1140791902149924}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!92 &92563893316199298
 Behaviour:
   m_ObjectHideFlags: 1
@@ -2394,6 +2396,23 @@ Behaviour:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1140791902149924}
   m_Enabled: 1
+--- !u!95 &95769593687151624
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1568455078497522}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 832d4d8d43b6c62439fde4eeb5e59257, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
 --- !u!108 &108088724063068640
 Light:
   m_ObjectHideFlags: 1
@@ -2404,7 +2423,7 @@ Light:
   serializedVersion: 8
   m_Type: 0
   m_Color: {r: 0.9632353, g: 0.8692564, b: 0.70117867, a: 1}
-  m_Intensity: 4
+  m_Intensity: 2
   m_Range: 10
   m_SpotAngle: 89.5682
   m_CookieSize: 10
@@ -2440,7 +2459,7 @@ Light:
   serializedVersion: 8
   m_Type: 0
   m_Color: {r: 0.89705884, g: 0, b: 0, a: 1}
-  m_Intensity: 2
+  m_Intensity: 0.8
   m_Range: 3
   m_SpotAngle: 90
   m_CookieSize: 10
@@ -2476,7 +2495,7 @@ Light:
   serializedVersion: 8
   m_Type: 0
   m_Color: {r: 0.89705884, g: 0, b: 0, a: 1}
-  m_Intensity: 2
+  m_Intensity: 0.8
   m_Range: 3
   m_SpotAngle: 90
   m_CookieSize: 10
@@ -2512,7 +2531,7 @@ Light:
   serializedVersion: 8
   m_Type: 0
   m_Color: {r: 0.9632353, g: 0.8692564, b: 0.70117867, a: 1}
-  m_Intensity: 4
+  m_Intensity: 1
   m_Range: 10
   m_SpotAngle: 89.5682
   m_CookieSize: 10
@@ -2538,19 +2557,6 @@ Light:
   m_UseColorTemperature: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
---- !u!114 &114041814088333514
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1140791902149924}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 56f9e239c312a4246bdff0138330988f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  duration: 0.1
-  magnitude: 0.1
 --- !u!114 &114053061693631028
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2645,6 +2651,35 @@ MonoBehaviour:
     i15: 90
   m_ServerOnly: 0
   m_LocalPlayerAuthority: 1
+--- !u!114 &114655109525781162
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1568455078497522}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e6d73e88f2f3d44885cc5580c8270f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  vehicle: {fileID: 1180472769544254}
+  rotationDamping: 3
+  distance: 10
+  heightDamping: 2
+  height: 10
+--- !u!114 &114691649049572310
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1140791902149924}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56f9e239c312a4246bdff0138330988f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  duration: 0.1
+  magnitude: 0.1
 --- !u!114 &114928522166448976
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2657,14 +2692,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isSingleplayer: 0
-  gameState: 0
-  score: 0
-  car: {fileID: 1399064164092878}
-  cameraContainer: {fileID: 1568455078497522}
-  defaultSpeed: 6
-  maxSpeedModifier: 3
-  rotationDamping: 1
-  distance: 10
+  vehicle: {fileID: 1399064164092878}
+  driverCamera: {fileID: 20914177476795264}
+  minSpeedToBeInDanger: 10
+  secondsAtMinSpeedBeforeDeath: 3
 --- !u!124 &124856936784292684
 Behaviour:
   m_ObjectHideFlags: 1

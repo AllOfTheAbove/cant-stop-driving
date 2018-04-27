@@ -9,54 +9,31 @@ public class Player : NetworkBehaviour {
 
     public bool isSingleplayer = false;
 
-    [SyncVar] public int gameState = 0;
-    [SyncVar] public int score = 0;
-
-    IEnumerator Countdown()
+    public void RestartGame()
     {
-        int time = 3;
-
-        while(true)
+        if (!isSingleplayer)
         {
-            yield return new WaitForSeconds(1);
-            if (time == 0)
-            {
-                GameScene.Instance.countdownEndSound.Play();
-                GameScene.Instance.countdownLabel.GetComponent<TextMeshProUGUI>().SetText("GO");
-            } else if (time < 0) {
-                GameScene.Instance.countdownLabel.SetActive(false);
-                StopCoroutine(Countdown());
-            } else
-            {
-                GameScene.Instance.countdownBeepSound.Play();
-                GameScene.Instance.countdownLabel.GetComponent<TextMeshProUGUI>().SetText("" + time);
-            }
-            time--;
+            CmdRestartGame();
+        }
+        else
+        {
+            NetworkManager.singleton.ServerChangeScene("game");
+            Game.Instance.Reset();
         }
     }
-
-    public void Ready()
+    [Command] public void CmdRestartGame()
     {
-        GameScene.Instance.waitingUI.SetActive(false);
-        StartCoroutine(Countdown());
-    }
-    [Command] public void CmdReady()
-    {
-        RpcReady();
-    }
-    [ClientRpc] public void RpcReady()
-    {
-        Ready();
+        NetworkManager.singleton.ServerChangeScene("game");
+        Game.Instance.Reset();
     }
 
-    [Command] public void CmdAddScore()
+    [Command] public void CmdChangeGameState(int state)
     {
-        score += 5;
-        RpcUpdateScore(score);
+        RpcChangeGameState(state);
     }
-    [ClientRpc] void RpcUpdateScore(int newScore)
+    [ClientRpc] public void RpcChangeGameState(int state)
     {
-        GameScene.Instance.scoreLabel.GetComponent<Text>().text = newScore.ToString();
+        Game.Instance.ChangeState(state);
     }
 
 }
