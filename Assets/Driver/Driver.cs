@@ -12,7 +12,11 @@ public class Driver : Player
     public Camera driverCamera;
     public float minSpeedToBeInDanger = 8f;
     public float secondsAtMinSpeedBeforeDeath = 3f;
+    public float durationRewind = 5f;
 
+    private int currentRewindPosition = 0;
+    private List<Vector3> lastPositions;
+    private List<Quaternion> lastRotations;
     private float secondsLeftBeforeDeath = 0;
     private Coroutine checkForDeathCoroutine;
     private int[] maximumPositionsReached = new int[3];
@@ -23,23 +27,62 @@ public class Driver : Player
     {
         GetComponentInChildren<AudioListener>().enabled = true;
         CmdChangeGameState(0);
+        checkForDeathCoroutine = StartCoroutine(CheckForDeath());
+        lastPositions = new List<Vector3>();
+        lastRotations = new List<Quaternion>();
     }
 
-    void Start()
+    private void Start()
     {
-        Game.Instance.ChangeState(0);
-        checkForDeathCoroutine = StartCoroutine(CheckForDeath());
+        if(!isLocalPlayer)
+        {
+            Game.Instance.ChangeState(0);
+            checkForDeathCoroutine = StartCoroutine(CheckForDeath());
+            lastPositions = new List<Vector3>();
+            lastRotations = new List<Quaternion>();
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        if(isLocalPlayer)
+        {
+            if(Game.Instance.state == 1)
+            {
+                if (lastPositions.Count > durationRewind / Time.fixedDeltaTime)
+                {
+                    lastPositions.RemoveAt(0);
+                    lastRotations.RemoveAt(0);
+                }
+                lastPositions.Add(transform.position);
+                lastRotations.Add(transform.rotation);
+            } else if(Game.Instance.state == 2)
+            {
+                transform.position = lastPositions[currentRewindPosition];
+                transform.rotation = lastRotations[currentRewindPosition];
+                currentRewindPosition++;
+                if (currentRewindPosition >= lastPositions.Count)
+                {
+                    currentRewindPosition = 0;
+                }
+            }
+        }
     }
 
     void Update()
     {
+        if(!Game.Instance.gamePaused && Game.Instance.state == 1)
+        {
+            GameScene.Instance.speedLabel.GetComponent<TextMeshProUGUI>().SetText(Mathf.Floor(GetComponent<Rigidbody>().velocity.sqrMagnitude) + "");
+        }
+        
         // Quit if not localPlayer or if countdown
         if ((!isSingleplayer && !isLocalPlayer) || Game.Instance.state == 0)
         {
-            vehicle.GetComponent<CarController>().enabled = false;
+            vehicle.GetComponent<Vehicle>().enabled = false;
             return;
         }
-        vehicle.GetComponent<CarController>().enabled = true;
+        vehicle.GetComponent<Vehicle>().enabled = true;
 
         // Pause
         if (Input.GetKeyDown(KeyCode.Escape) && !isSingleplayer)
@@ -112,12 +155,13 @@ public class Driver : Player
             {
                 if (GetComponent<Rigidbody>().velocity.sqrMagnitude < minSpeedToBeInDanger)
                 {
-                    // alert beeeeeep
                     secondsLeftBeforeDeath--;
+                    CmdExplodeSoon(true, secondsLeftBeforeDeath);
                 }
                 else
                 {
                     secondsLeftBeforeDeath = secondsAtMinSpeedBeforeDeath;
+                    CmdExplodeSoon(false, 0f);
                 }
             }
             yield return new WaitForSeconds(1);
@@ -126,6 +170,21 @@ public class Driver : Player
         if(secondsLeftBeforeDeath <= 0)
         {
             GameOver();
+        }
+    }
+    [Command] public void CmdExplodeSoon(bool state, float seconds)
+    {
+        RpcExplodeSoon(state, seconds);
+    }
+    [ClientRpc] public void RpcExplodeSoon(bool state, float seconds)
+    {
+        if(state)
+        {
+            GameScene.Instance.warningLabel.SetActive(true);
+            GameScene.Instance.warningLabel.GetComponent<TextMeshProUGUI>().SetText("Explode in " + seconds);
+        } else
+        {
+            GameScene.Instance.warningLabel.SetActive(false);
         }
     }
 

@@ -10,7 +10,6 @@ public class Server : NetworkManager
     public int playerId = 0;
     public int gameId = 0;
     public bool firstGame = true;
-    public GameObject[] playerPrefabs;
 
     protected NetworkConnection architectConnection;
     protected GameObject architect;
@@ -99,8 +98,8 @@ public class Server : NetworkManager
             architectControllerId = playerControllerId;
         }
 
-        architect = Instantiate(playerPrefabs[0]);
-        architect.name = playerPrefabs[0].name;
+        architect = Instantiate(Game.Instance.architect);
+        architect.name = Game.Instance.architect.name;
 
         if (firstGame)
         {
@@ -131,8 +130,12 @@ public class Server : NetworkManager
             driverControllerId = playerControllerId;
         }
 
-        driver = Instantiate(playerPrefabs[1]);
-        driver.name = playerPrefabs[1].name;
+        driver = Instantiate(Game.Instance.driver);
+        driver.name = Game.Instance.driver.name;
+        GameObject vehicle = Instantiate(Game.Instance.vehicles[Game.Instance.currentVehicleId]);
+        vehicle.transform.parent = driver.transform;
+        driver.GetComponent<Driver>().vehicle = vehicle;
+        vehicle.GetComponent<Vehicle>().obj = driver;
 
         if (!singleplayer)
         {

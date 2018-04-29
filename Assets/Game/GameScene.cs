@@ -16,12 +16,18 @@ public class GameScene : MonoBehaviour {
     public int tileSize;
 
     [Header("UIs")]
+    public GameObject driverTutorial;
+    public GameObject architectTutorial;
+    public GameObject speedLabel;
+    public GameObject nextTileLabel;
+    public GameObject warningLabel;
     public GameObject waitingUI;
     public GameObject pauseUI;
     public GameObject scoreLabel;
     public GameObject countdownLabel;
     public GameObject gameoverUI;
     public GameObject gameoverScoreLabel;
+    public GameObject gameoverTimeLabel;
 
     [Header("SFXs")]
     public AudioSource countdownBeepSound;

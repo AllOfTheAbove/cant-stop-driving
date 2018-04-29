@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -101,6 +102,7 @@ public class Architect : Player
     private ArchitectAI AI;
     private Vector3 architectDestination;
 
+    private int nextTileTypeId = 0;
     private System.Random random = new System.Random();
 
 
@@ -128,29 +130,29 @@ public class Architect : Player
 
     [Command] public void CmdSpawnTile()
     {
-        int randomTileId = random.Next(0, GameScene.Instance.tiles.Count);
         currentTile.gameObject = Instantiate(
-            GameScene.Instance.tiles[randomTileId],
-            new Vector3(currentTile.x, GameScene.Instance.tiles[randomTileId].transform.position.y, currentTile.z),
+            GameScene.Instance.tiles[nextTileTypeId],
+            new Vector3(currentTile.x, GameScene.Instance.tiles[nextTileTypeId].transform.position.y, currentTile.z),
             Quaternion.identity
         );
-        currentTile.gameObject.name = GameScene.Instance.tiles[randomTileId].name;
+        currentTile.gameObject.name = GameScene.Instance.tiles[nextTileTypeId].name;
         NetworkServer.SpawnWithClientAuthority(currentTile.gameObject, this.gameObject);
+        nextTileTypeId = random.Next(0, GameScene.Instance.tiles.Count);
 
-        RpcSetCurrentTileType(currentTile.gameObject, currentTile.x, currentTile.z, false);
+        RpcSetCurrentTileType(currentTile.gameObject, currentTile.x, currentTile.z, false, nextTileTypeId);
     }
 
     [Command] private void CmdCreateTile()
     {
         // Make tile solid
-        RpcSetCurrentTileType(currentTile.gameObject, currentTile.x, currentTile.z, true);
+        RpcSetCurrentTileType(currentTile.gameObject, currentTile.x, currentTile.z, true, 0);
 
         // Prepare next tile
         lastTile = currentTile;
         currentTile = new Tile(lastTile.x, 0, lastTile.z + GameScene.Instance.tileSize);
     }
 
-    [ClientRpc] public void RpcSetCurrentTileType(GameObject tile, int x, int z, bool placed)
+    [ClientRpc] public void RpcSetCurrentTileType(GameObject tile, int x, int z, bool placed, int tileTypeId)
     {
         if (placed)
         {
@@ -166,6 +168,7 @@ public class Architect : Player
         {
             GameScene.Instance.Solid(tile, false);
             GameScene.Instance.AddMaterial(tile, GameScene.Instance.tilePreviewMaterial);
+            GameScene.Instance.nextTileLabel.GetComponent<TextMeshProUGUI>().SetText(GameScene.Instance.tiles[tileTypeId].name);
         }
     }
 
