@@ -19,6 +19,8 @@ public class Tile
     public int rotation;
     public int direction;
 
+    public bool init;
+
     public Tile(int x = 0, int y = 0, int z = 0)
     {
         this.world = GameScene.Instance;
@@ -28,6 +30,7 @@ public class Tile
         this.y = y;
         this.z = z;
         this.direction = 0;
+        this.init = false;
     }
 
     public void SetDirection(int direction)
@@ -119,6 +122,7 @@ public class Architect : Player
         architectDestination = new Vector3(0, 0, 0);
         currentTile = new Tile(0, 0, GameScene.Instance.tileSize);
         lastTile = new Tile(0, 0, 0);
+        lastTile.init = true;
         if (isSingleplayer)
         {
             AI.enabled = true;
@@ -139,6 +143,14 @@ public class Architect : Player
         nextTileTypeId = random.Next(0, GameScene.Instance.tiles.Count);
 
         RpcSetCurrentTileType(currentTile.gameObject, currentTile.x, currentTile.z, false, nextTileTypeId);
+
+        Vector3 pos = currentTile.gameObject.transform.position;
+        if (AI.enabled)
+        {
+            currentTile.direction = AI.Position(currentTile, lastTile);
+            currentTile.gameObject.transform.position = pos;
+            currentTile.gameObject.transform.Rotate(0, AI.Rotation(currentTile, lastTile), 0);
+        }
     }
 
     [Command] private void CmdCreateTile()
@@ -217,21 +229,12 @@ public class Architect : Player
 
     void updatePreviewTile()
     {
-        if(currentTile.gameObject == null)
+        if(currentTile.gameObject == null || AI.enabled)
         {
             return;
         }
 
         Vector3 pos = currentTile.gameObject.transform.position;
-
-        if (AI.enabled)
-        {
-            currentTile.direction = AI.Position(ref pos.x, ref pos.z, lastTile.x, lastTile.z, lastTile.direction);
-            currentTile.gameObject.transform.position = pos;
-            currentTile.gameObject.transform.Rotate(0, AI.Rotation(ref currentTile.rotation), 0);
-
-            return;
-        }
 
         // Update direction
         Vector3 point = architectCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, architectCamera.transform.position.y));
