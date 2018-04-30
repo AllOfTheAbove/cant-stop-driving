@@ -2,6 +2,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.SceneManagement;
 
 public class Game : MonoBehaviour {
 
@@ -21,11 +22,14 @@ public class Game : MonoBehaviour {
      */
     public int state = -1;
     public int score = 0;
+    public bool paused = false;
 
     private float startTime = 0;
     private Coroutine countdownCoroutine;
     private Coroutine fadeUI;
     private Coroutine fadeOutCoroutine;
+    public int currentMusicId = 0;
+    private System.Random random = new System.Random();
 
     public GameObject driver;
     public GameObject architect;
@@ -34,9 +38,9 @@ public class Game : MonoBehaviour {
     public GameObject serverAsset;
     public AudioMixer audioMixer;
     public AudioSource titleMusic;
-    public AudioSource gameMusic;
+    public AudioSource[] gameMusics;
 
-    public bool paused = false;
+
 
     private void Awake()
     {
@@ -56,6 +60,20 @@ public class Game : MonoBehaviour {
     {
         audioMixer.SetFloat("musicVolume", PlayerPrefs.GetFloat("musicVolume"));
         audioMixer.SetFloat("soundVolume", PlayerPrefs.GetFloat("soundVolume"));
+    }
+
+    private void Update()
+    {
+        if(!gameMusics[currentMusicId].isPlaying && SceneManager.GetActiveScene().name == "game" && state == 1)
+        {
+            int id = random.Next(0, gameMusics.Length);
+            while (id  == currentMusicId)
+            {
+                id = random.Next(0, gameMusics.Length);
+            }
+            currentMusicId = id;
+            gameMusics[currentMusicId].Play();
+        }
     }
 
     public void RestartServer()
@@ -121,7 +139,7 @@ public class Game : MonoBehaviour {
             GameScene.Instance.gameoverScoreLabel.GetComponent<TextMeshProUGUI>().SetText("Score: " + score);
             GameScene.Instance.gameoverTimeLabel.GetComponent<TextMeshProUGUI>().SetText("Time: " + Mathf.Floor(Time.time - startTime));
             GameScene.Instance.gameoverUI.SetActive(true);
-            fadeOutCoroutine = StartCoroutine(FadeOutAudio(gameMusic));
+            fadeOutCoroutine = StartCoroutine(FadeOutAudio(gameMusics[currentMusicId]));
         }
     }
 
@@ -145,7 +163,6 @@ public class Game : MonoBehaviour {
                 GameScene.Instance.countdownEndSound.Play();
                 GameScene.Instance.countdownLabel.GetComponent<TextMeshProUGUI>().SetText("GO");
                 state = 1;
-                gameMusic.Play();
             }
             else if (time < 0)
             {
@@ -165,7 +182,7 @@ public class Game : MonoBehaviour {
     {
         if (scene == "title")
         {
-            fadeOutCoroutine = StartCoroutine(FadeOutAudio(gameMusic));
+            fadeOutCoroutine = StartCoroutine(FadeOutAudio(gameMusics[currentMusicId]));
             titleMusic.Play();
         }
         else if (scene == "game")
