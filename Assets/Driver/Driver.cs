@@ -34,7 +34,8 @@ public class Driver : Player
 
     private void Start()
     {
-        if(!isLocalPlayer)
+        Game.Instance.ChangeState(-1);
+        if (isSingleplayer)
         {
             Game.Instance.ChangeState(0);
             checkForDeathCoroutine = StartCoroutine(CheckForDeath());
@@ -71,11 +72,17 @@ public class Driver : Player
 
     void Update()
     {
-        if(!Game.Instance.gamePaused && Game.Instance.state == 1)
+        if(!Game.Instance.paused && Game.Instance.state == 1)
         {
             GameScene.Instance.speedLabel.GetComponent<TextMeshProUGUI>().SetText(Mathf.Floor(GetComponent<Rigidbody>().velocity.sqrMagnitude) + "");
         }
-        
+
+        // Pause
+        if (Input.GetKeyDown(KeyCode.Escape) && !isSingleplayer)
+        {
+            Game.Instance.Pause();
+        }
+
         // Quit if not localPlayer or if countdown
         if ((!isSingleplayer && !isLocalPlayer) || Game.Instance.state == 0)
         {
@@ -83,12 +90,6 @@ public class Driver : Player
             return;
         }
         vehicle.GetComponent<Vehicle>().enabled = true;
-
-        // Pause
-        if (Input.GetKeyDown(KeyCode.Escape) && !isSingleplayer)
-        {
-            Game.Instance.Pause();
-        }
 
         // Score
         bool scoreIncreased = false;
@@ -164,7 +165,7 @@ public class Driver : Player
                     CmdExplodeSoon(false, 0f);
                 }
             }
-            yield return new WaitForSeconds(1);
+            yield return new WaitForSecondsRealtime(1);
         }
 
         if(secondsLeftBeforeDeath <= 0)
@@ -190,13 +191,18 @@ public class Driver : Player
 
     public void GameOver()
     {
-        StopCoroutine(checkForDeathCoroutine);
-        if (!isSingleplayer)
+        if(Game.Instance.state == 1)
         {
-            CmdChangeGameState(2);
-        } else
-        {
-            Game.Instance.ChangeState(2);
+            StopCoroutine(checkForDeathCoroutine);
+            GetComponent<Rigidbody>().isKinematic = true;
+            if (!isSingleplayer)
+            {
+                CmdChangeGameState(2);
+            }
+            else
+            {
+                Game.Instance.ChangeState(2);
+            }
         }
     }
 

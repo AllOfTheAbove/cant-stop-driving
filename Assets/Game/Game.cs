@@ -35,7 +35,7 @@ public class Game : MonoBehaviour {
     public AudioSource titleMusic;
     public AudioSource gameMusic;
 
-    public bool gamePaused = false;
+    public bool paused = false;
 
     private void Awake()
     {
@@ -70,7 +70,7 @@ public class Game : MonoBehaviour {
 
     public void Reset()
     {
-        gamePaused = false;
+        paused = false;
         Time.timeScale = 1f;
         state = -1;
         score = 0;
@@ -78,22 +78,30 @@ public class Game : MonoBehaviour {
 
     public void Pause()
     {
-        if (gamePaused)
+        if (paused)
         {
-            gamePaused = false;
+            paused = false;
             Time.timeScale = 1f;
         }
         else
         {
-            gamePaused = true;
+            paused = true;
             Time.timeScale = 0f;
         }
-        GameScene.Instance.pauseUI.SetActive(gamePaused);
+        GameScene.Instance.pauseUI.SetActive(paused);
     }
 
     public void ChangeState(int state)
     {
-        if (state == 0)
+        if(state == -1)
+        {
+            this.state = state;
+            if (GetServer().firstGame)
+            {
+                GameScene.Instance.driverTutorial.SetActive(true);
+                GameScene.Instance.architectTutorial.SetActive(true);
+            }  
+        } else if (state == 0)
         {
             this.state = state;
             startTime = Time.time;
@@ -103,7 +111,10 @@ public class Game : MonoBehaviour {
         } else if(state == 2)
         {
             this.state = state;
-            Time.timeScale = 0f;
+            if(paused)
+            {
+                Pause();
+            }
             GameScene.Instance.gameoverScoreLabel.GetComponent<TextMeshProUGUI>().SetText("Score: " + score);
             GameScene.Instance.gameoverTimeLabel.GetComponent<TextMeshProUGUI>().SetText("Time: " + Mathf.Floor(Time.time - startTime));
             GameScene.Instance.gameoverUI.SetActive(true);
@@ -115,16 +126,22 @@ public class Game : MonoBehaviour {
     {
         int time = 3;
 
+        if(GetServer().firstGame)
+        {
+            yield return new WaitForSecondsRealtime(4);
+            GameScene.Instance.driverTutorial.SetActive(false);
+            GameScene.Instance.architectTutorial.SetActive(false);
+        }
+        
+
         while (time >= -1)
         {
-            yield return new WaitForSeconds(1);
+            yield return new WaitForSecondsRealtime(1);
             if (time == 0)
             {
                 GameScene.Instance.countdownEndSound.Play();
                 GameScene.Instance.countdownLabel.GetComponent<TextMeshProUGUI>().SetText("GO");
                 state = 1;
-                GameScene.Instance.driverTutorial.SetActive(false);
-                GameScene.Instance.architectTutorial.SetActive(false);
                 gameMusic.Play();
             }
             else if (time < 0)

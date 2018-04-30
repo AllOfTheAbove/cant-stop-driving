@@ -273,9 +273,10 @@ GameObject:
   - component: {fileID: 4504471439879970}
   - component: {fileID: 114527988730722570}
   - component: {fileID: 64291219517436568}
+  - component: {fileID: 114958469249651094}
   m_Layer: 0
   m_Name: Truck
-  m_TagString: Untagged
+  m_TagString: Vehicle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2145,6 +2146,38 @@ MonoBehaviour:
   maxMotorTorque: 1200
   maxSteeringAngle: 40
   obj: {fileID: 1180472769544254, guid: a6505afddd30d5e4781efd40aa2ef65a, type: 2}
+--- !u!114 &114958469249651094
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1482235519743288}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SceneId:
+    m_Value: 0
+  m_AssetId:
+    i0: 25
+    i1: 25
+    i2: 162
+    i3: 66
+    i4: 35
+    i5: 193
+    i6: 245
+    i7: 84
+    i8: 139
+    i9: 134
+    i10: 171
+    i11: 82
+    i12: 143
+    i13: 240
+    i14: 165
+    i15: 184
+  m_ServerOnly: 0
+  m_LocalPlayerAuthority: 1
 --- !u!146 &146041472388597796
 WheelCollider:
   m_ObjectHideFlags: 1

@@ -8,8 +8,6 @@ using UnityEngine.UI;
 public class Multiplayer : NetworkBehaviour
 {
     NetworkManager nm;
-
-    public GameObject matchListElement;
     
     void Awake()
     {
@@ -25,7 +23,7 @@ public class Multiplayer : NetworkBehaviour
 
     private void GetMatchList()
     {
-        nm.matchMaker.ListMatches(0, 20, "", true, 0, 0, OnMatchList);
+        nm.matchMaker.ListMatches(0, 10, "", true, 0, 0, OnMatchList);
     }
 
     private void OnMatchList(bool success, string extendedInfo, List<MatchInfoSnapshot> matchList)
@@ -37,6 +35,7 @@ public class Multiplayer : NetworkBehaviour
             {
                 var e = GameObject.Find("match_" + id);
                 e.GetComponentInChildren<TextMeshProUGUI>().SetText(match.name);
+                e.GetComponent<Button>().onClick.RemoveAllListeners();
                 e.GetComponent<Button>().onClick.AddListener(delegate {
                     nm.matchMaker.JoinMatch(match.networkId, "", "", "", 0, 0, OnMatchJoined);
                 });
@@ -48,6 +47,7 @@ public class Multiplayer : NetworkBehaviour
             {
                 var e = GameObject.Find("match_" + id);
                 e.GetComponentInChildren<TextMeshProUGUI>().SetText("");
+                e.GetComponent<Button>().onClick.RemoveAllListeners();
                 id++;
             }
         }

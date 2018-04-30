@@ -46,7 +46,7 @@ GameObject:
   - component: {fileID: 114053061693631028}
   m_Layer: 0
   m_Name: Driver
-  m_TagString: Untagged
+  m_TagString: Driver
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -299,7 +299,7 @@ MonoBehaviour:
   isSingleplayer: 0
   vehicle: {fileID: 0}
   driverCamera: {fileID: 20914177476795264}
-  minSpeedToBeInDanger: 10
+  minSpeedToBeInDanger: 20
   secondsAtMinSpeedBeforeDeath: 3
   durationRewind: 5
 --- !u!124 &124856936784292684

@@ -11,12 +11,21 @@ public class Server : NetworkManager
     public int gameId = 0;
     public bool firstGame = true;
 
+    private int vehicleId = 0;
+
     protected NetworkConnection architectConnection;
     protected GameObject architect;
     protected short architectControllerId;
     protected NetworkConnection driverConnection;
     protected GameObject driver;
     protected short driverControllerId;
+
+
+
+    public class NetworkMessage : MessageBase
+    {
+        public int vehicleId;
+    }
 
 
 
@@ -38,8 +47,11 @@ public class Server : NetworkManager
             // kick player
         }
 
+        NetworkMessage message = new NetworkMessage();
+        message.vehicleId = Game.Instance.currentVehicleId;
+
         ClientScene.Ready(conn);
-        ClientScene.AddPlayer(conn, 0);
+        ClientScene.AddPlayer(conn, 0, message);
     }
 
     public override void OnServerDisconnect(NetworkConnection conn)
@@ -47,8 +59,11 @@ public class Server : NetworkManager
         Disconnect();
     }
 
-    public override void OnServerAddPlayer(NetworkConnection conn, short playerControllerId)
+    public override void OnServerAddPlayer(NetworkConnection conn, short playerControllerId, NetworkReader extraMessageReader)
     {
+        NetworkMessage message = extraMessageReader.ReadMessage<NetworkMessage>();
+        vehicleId = message.vehicleId;
+
         if (singleplayer)
         {
             if (playerId == 0)
@@ -132,10 +147,9 @@ public class Server : NetworkManager
 
         driver = Instantiate(Game.Instance.driver);
         driver.name = Game.Instance.driver.name;
-        GameObject vehicle = Instantiate(Game.Instance.vehicles[Game.Instance.currentVehicleId]);
-        vehicle.transform.parent = driver.transform;
-        driver.GetComponent<Driver>().vehicle = vehicle;
-        vehicle.GetComponent<Vehicle>().obj = driver;
+        GameObject vehicle = Instantiate(Game.Instance.vehicles[vehicleId]);
+        ClientScene.RegisterPrefab(vehicle, NetworkHash128.Parse(vehicle.name));
+
 
         if (!singleplayer)
         {
@@ -147,6 +161,7 @@ public class Server : NetworkManager
             {
                 NetworkServer.ReplacePlayerForConnection(driverConnection, driver, driverControllerId);
             }
+            NetworkServer.SpawnWithClientAuthority(vehicle, driver);
         }
 
         if (singleplayer)

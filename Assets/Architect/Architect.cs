@@ -114,12 +114,11 @@ public class Architect : Player
 
     void Start()
     {
+        Game.Instance.ChangeState(-1);
         AI = this.gameObject.GetComponent<ArchitectAI>();
         architectDestination = new Vector3(0, 0, 0);
-
         currentTile = new Tile(0, 0, GameScene.Instance.tileSize);
         lastTile = new Tile(0, 0, 0);
-
         if (isSingleplayer)
         {
             AI.enabled = true;
@@ -172,16 +171,18 @@ public class Architect : Player
         }
     }
 
+
+
     void Update()
     {
         transform.position = Vector3.Lerp(transform.position, architectDestination, 0.1f);
 
-        if (Input.GetKeyDown(KeyCode.Escape) && isLocalPlayer && Game.Instance.state != 0)
+        if (Input.GetKeyDown(KeyCode.Escape) && isLocalPlayer)
         {
             Game.Instance.Pause();
         }
 
-        if (!isLocalPlayer || Game.Instance.state != 1 || Game.Instance.gamePaused)
+        if (!isLocalPlayer || Game.Instance.state != 1 || Game.Instance.paused)
         {
             return;
         }
