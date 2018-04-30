@@ -24,6 +24,7 @@ public class Game : MonoBehaviour {
 
     private float startTime = 0;
     private Coroutine countdownCoroutine;
+    private Coroutine fadeUI;
     private Coroutine fadeOutCoroutine;
 
     public GameObject driver;
@@ -71,7 +72,6 @@ public class Game : MonoBehaviour {
     public void Reset()
     {
         paused = false;
-        Time.timeScale = 1f;
         state = -1;
         score = 0;
     }
@@ -81,12 +81,10 @@ public class Game : MonoBehaviour {
         if (paused)
         {
             paused = false;
-            Time.timeScale = 1f;
         }
         else
         {
             paused = true;
-            Time.timeScale = 0f;
         }
         GameScene.Instance.pauseUI.SetActive(paused);
     }
@@ -98,8 +96,8 @@ public class Game : MonoBehaviour {
             this.state = state;
             if (GetServer().firstGame)
             {
-                GameScene.Instance.driverTutorial.SetActive(true);
-                GameScene.Instance.architectTutorial.SetActive(true);
+                fadeUI = StartCoroutine(FadeCanvas(GameScene.Instance.architectTutorial.GetComponent<CanvasGroup>(), 0f, 1f, 0.5f));
+                fadeUI = StartCoroutine(FadeCanvas(GameScene.Instance.driverTutorial.GetComponent<CanvasGroup>(), 0f, 1f, 0.5f));
             }  
         } else if (state == 0)
         {
@@ -115,6 +113,11 @@ public class Game : MonoBehaviour {
             {
                 Pause();
             }
+            GameScene.Instance.score.SetActive(false);
+            GameScene.Instance.speed.SetActive(false);
+            GameScene.Instance.nextTile.SetActive(false);
+            GameScene.Instance.camera.SetActive(true);
+            GameScene.Instance.camera.transform.parent = GameObject.FindGameObjectsWithTag("Driver")[0].transform;
             GameScene.Instance.gameoverScoreLabel.GetComponent<TextMeshProUGUI>().SetText("Score: " + score);
             GameScene.Instance.gameoverTimeLabel.GetComponent<TextMeshProUGUI>().SetText("Time: " + Mathf.Floor(Time.time - startTime));
             GameScene.Instance.gameoverUI.SetActive(true);
@@ -129,8 +132,8 @@ public class Game : MonoBehaviour {
         if(GetServer().firstGame)
         {
             yield return new WaitForSecondsRealtime(4);
-            GameScene.Instance.driverTutorial.SetActive(false);
-            GameScene.Instance.architectTutorial.SetActive(false);
+            fadeUI = StartCoroutine(FadeCanvas(GameScene.Instance.architectTutorial.GetComponent<CanvasGroup>(), 1f, 0f, 1f));
+            fadeUI = StartCoroutine(FadeCanvas(GameScene.Instance.driverTutorial.GetComponent<CanvasGroup>(), 1f, 0f, 1f));
         }
         
 
@@ -184,6 +187,32 @@ public class Game : MonoBehaviour {
         audioSource.Stop();
         audioSource.volume = startVolume;
         StopCoroutine(fadeOutCoroutine);
+    }
+
+    public IEnumerator FadeCanvas(CanvasGroup canvas, float startAlpha, float endAlpha, float duration)
+    {
+        var startTime = Time.time;
+        var endTime = Time.time + duration;
+        var elapsedTime = 0f;
+
+        canvas.alpha = startAlpha;
+        while (Time.time <= endTime)
+        {
+            elapsedTime = Time.time - startTime;
+            var percentage = 1 / (duration / elapsedTime);
+            if (startAlpha > endAlpha)
+            {
+                canvas.alpha = startAlpha - percentage;
+            }
+            else
+            {
+                canvas.alpha = startAlpha + percentage;
+            }
+
+            yield return new WaitForEndOfFrame();
+        }
+        canvas.alpha = endAlpha;
+        StopCoroutine(fadeUI);
     }
 
 }

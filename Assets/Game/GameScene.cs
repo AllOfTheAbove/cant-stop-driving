@@ -10,6 +10,8 @@ public class GameScene : MonoBehaviour {
         get { return instance; }
     }
 
+    public GameObject camera;
+
     [Header("Tiles")]
     public List<GameObject> tiles = new List<GameObject>();
     public Material tilePreviewMaterial;
@@ -18,12 +20,15 @@ public class GameScene : MonoBehaviour {
     [Header("UIs")]
     public GameObject driverTutorial;
     public GameObject architectTutorial;
+    public GameObject speed;
     public GameObject speedLabel;
+    public GameObject nextTile;
     public GameObject nextTileLabel;
     public GameObject warningLabel;
     public GameObject waitingUI;
     public GameObject pauseUI;
     public GameObject scoreLabel;
+    public GameObject score;
     public GameObject countdownLabel;
     public GameObject gameoverUI;
     public GameObject gameoverScoreLabel;

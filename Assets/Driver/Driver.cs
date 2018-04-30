@@ -46,7 +46,7 @@ public class Driver : Player
 
     private void FixedUpdate()
     {
-        if(isLocalPlayer)
+        if(isLocalPlayer || isSingleplayer)
         {
             if(Game.Instance.state == 1)
             {
@@ -81,6 +81,11 @@ public class Driver : Player
         if (Input.GetKeyDown(KeyCode.Escape) && !isSingleplayer)
         {
             Game.Instance.Pause();
+        }
+
+        if (Game.Instance.paused)
+        {
+            vehicle.GetComponent<Vehicle>().enabled = false;
         }
 
         // Quit if not localPlayer or if countdown

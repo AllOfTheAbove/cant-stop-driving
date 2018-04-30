@@ -11,27 +11,6 @@ Prefab:
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 1180472769544254}
   m_IsPrefabParent: 1
---- !u!1 &1140791902149924
-GameObject:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 4235777447023668}
-  - component: {fileID: 20914177476795264}
-  - component: {fileID: 124856936784292684}
-  - component: {fileID: 92563893316199298}
-  - component: {fileID: 81371998445239282}
-  - component: {fileID: 114184359883562928}
-  - component: {fileID: 114691649049572310}
-  m_Layer: 0
-  m_Name: Camera
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
 --- !u!1 &1180472769544254
 GameObject:
   m_ObjectHideFlags: 0
@@ -47,6 +26,27 @@ GameObject:
   m_Layer: 0
   m_Name: Driver
   m_TagString: Driver
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &1343114711636068
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4788596348543670}
+  - component: {fileID: 20960844343478848}
+  - component: {fileID: 124739858914977144}
+  - component: {fileID: 92570788312801540}
+  - component: {fileID: 81596190288532552}
+  - component: {fileID: 114943236823612988}
+  - component: {fileID: 114691649049572310}
+  m_Layer: 0
+  m_Name: Camera
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -68,19 +68,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4235777447023668
-Transform:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1140791902149924}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 4584280574004004}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4584280574004004
 Transform:
   m_ObjectHideFlags: 1
@@ -91,10 +78,23 @@ Transform:
   m_LocalPosition: {x: 15, y: 7, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 4235777447023668}
+  - {fileID: 4788596348543670}
   m_Father: {fileID: 4832564093516470}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 30, y: -90, z: 0}
+--- !u!4 &4788596348543670
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1343114711636068}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4584280574004004}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4832564093516470
 Transform:
   m_ObjectHideFlags: 1
@@ -109,12 +109,12 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!20 &20914177476795264
+--- !u!20 &20960844343478848
 Camera:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1140791902149924}
+  m_GameObject: {fileID: 1343114711636068}
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
@@ -160,19 +160,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!81 &81371998445239282
+--- !u!81 &81596190288532552
 AudioListener:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1140791902149924}
+  m_GameObject: {fileID: 1343114711636068}
   m_Enabled: 0
---- !u!92 &92563893316199298
+--- !u!92 &92570788312801540
 Behaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1140791902149924}
+  m_GameObject: {fileID: 1343114711636068}
   m_Enabled: 1
 --- !u!95 &95769593687151624
 Animator:
@@ -212,18 +212,6 @@ MonoBehaviour:
   m_SnapThreshold: 5
   m_InterpolateRotation: 1
   m_InterpolateMovement: 1
---- !u!114 &114184359883562928
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1140791902149924}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ff26db721962cdf4a8edcdfa9a767d2a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  profile: {fileID: 11400000, guid: f7d8f39e762a3374c831d6864337a7bd, type: 2}
 --- !u!114 &114632921625690442
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -277,7 +265,7 @@ MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1140791902149924}
+  m_GameObject: {fileID: 1343114711636068}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 56f9e239c312a4246bdff0138330988f, type: 3}
@@ -298,14 +286,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isSingleplayer: 0
   vehicle: {fileID: 0}
-  driverCamera: {fileID: 20914177476795264}
+  driverCamera: {fileID: 20960844343478848}
   minSpeedToBeInDanger: 20
   secondsAtMinSpeedBeforeDeath: 3
   durationRewind: 5
---- !u!124 &124856936784292684
+--- !u!114 &114943236823612988
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1343114711636068}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff26db721962cdf4a8edcdfa9a767d2a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  profile: {fileID: 11400000, guid: f7d8f39e762a3374c831d6864337a7bd, type: 2}
+--- !u!124 &124739858914977144
 Behaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1140791902149924}
+  m_GameObject: {fileID: 1343114711636068}
   m_Enabled: 1
