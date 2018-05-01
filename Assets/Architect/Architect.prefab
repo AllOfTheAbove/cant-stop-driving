@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: 114797169893809830}
   m_Layer: 0
   m_Name: Architect
-  m_TagString: Untagged
+  m_TagString: Architect
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -354,6 +354,12 @@ MonoBehaviour:
   placeDelay: 100
   difficulty: 5
   lastPlaced: 0
+  linearTiles:
+  - BasicTile
+  - NarrowTile
+  - PropellerTile
+  - JumpTile
+  - RoughTile
 --- !u!124 &124531880912912742
 Behaviour:
   m_ObjectHideFlags: 1

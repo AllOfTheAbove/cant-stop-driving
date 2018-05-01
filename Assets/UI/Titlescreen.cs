@@ -8,6 +8,15 @@ public class Titlescreen : MonoBehaviour {
 
     private GameObject vehiclePreview;
 
+    private void SpawnPreviewVehicle()
+    {
+        vehiclePreview = Instantiate(Game.Instance.vehicles[Game.Instance.currentVehicleId], new Vector3(0, -1.7f, -1), Quaternion.identity);
+        vehiclePreview.transform.Rotate(0, -180, 0);
+        vehiclePreview.GetComponent<Vehicle>().enabled = false;
+        vehiclePreview.AddComponent<Rigidbody>();
+        vehiclePreview.GetComponent<Rigidbody>().mass = 2000;
+    }
+
     void OnGUI()
     {
         if (Game.Instance.debug)
@@ -27,12 +36,7 @@ public class Titlescreen : MonoBehaviour {
     {
         Game.Instance.SwitchAudio("title");
         Game.Instance.Reset();
-        vehiclePreview = Instantiate(Game.Instance.vehicles[Game.Instance.currentVehicleId], new Vector3(0, 27, 0), Quaternion.identity);
-        vehiclePreview.transform.Rotate(0, -180, 0);
-        vehiclePreview.GetComponent<Vehicle>().enabled = false;
-        vehiclePreview.AddComponent<VehicleRotate>();
-        vehiclePreview.AddComponent<Rigidbody>();
-        vehiclePreview.GetComponent<Rigidbody>().mass = 1000;
+        SpawnPreviewVehicle();
     }
 
     public void Singleplayer()
@@ -55,12 +59,7 @@ public class Titlescreen : MonoBehaviour {
     {
         Game.Instance.currentVehicleId = (Game.Instance.currentVehicleId + 1) % Game.Instance.vehicles.Length;
         Destroy(vehiclePreview);
-        vehiclePreview = Instantiate(Game.Instance.vehicles[Game.Instance.currentVehicleId], new Vector3(0, 26, 0), Quaternion.identity);
-        vehiclePreview.transform.Rotate(0, -180, 0);
-        vehiclePreview.GetComponent<Vehicle>().enabled = false;
-        vehiclePreview.AddComponent<VehicleRotate>();
-        vehiclePreview.AddComponent<Rigidbody>();
-        vehiclePreview.GetComponent<Rigidbody>().mass = 1000;
+        SpawnPreviewVehicle();
     }
 
 }

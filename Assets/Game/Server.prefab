@@ -68,12 +68,21 @@ MonoBehaviour:
   m_SpawnPrefabs:
   - {fileID: 1076787189189672, guid: 2c2018e6689c8a040802966cba735b17, type: 2}
   - {fileID: 1180472769544254, guid: a6505afddd30d5e4781efd40aa2ef65a, type: 2}
-  - {fileID: 1279729012706720, guid: 4e8f2d18022d0c044ac9dff6163bc6f8, type: 2}
-  - {fileID: 1023673143187408, guid: 52057636d859a9343acdb6856a39451c, type: 2}
-  - {fileID: 1799896281664516, guid: 72e052e7a165a0549a8a2f4027664a95, type: 2}
-  - {fileID: 1089385692918004, guid: b2195eddea78af548be314e28136273e, type: 2}
-  - {fileID: 1732009778915584, guid: af2255b65e4811f4e957196534fb1799, type: 2}
-  - {fileID: 1955566164037164, guid: b11a2056c927c574b89e1ef5d0f6bd85, type: 2}
+  - {fileID: 1690853312763896, guid: 959584418e8d30941bf0a1d411885113, type: 2}
+  - {fileID: 1482235519743288, guid: 1919a24223c1f5548b86ab528ff0a5b8, type: 2}
+  - {fileID: 1982668182461060, guid: 4e8f2d18022d0c044ac9dff6163bc6f8, type: 2}
+  - {fileID: 1292415478360038, guid: e9cbbec9e3644ea4a92188c5a7e7ae52, type: 2}
+  - {fileID: 1337040935100768, guid: 04eb0ce1e3dd815448f2e30000f2bc00, type: 2}
+  - {fileID: 1700776888553088, guid: 2b6254e310e388a4f92f055eadbe87b8, type: 2}
+  - {fileID: 1104447562477276, guid: ab5e99d4d059de44b9d40d5587aeac54, type: 2}
+  - {fileID: 1645557772527612, guid: c583dced1d4155f46894147ba1d26283, type: 2}
+  - {fileID: 1629981021803052, guid: d8c198bf695500449b2a59ee3ec8a5b0, type: 2}
+  - {fileID: 1417598981048076, guid: 5019545b01014e34c805a9882f3a6147, type: 2}
+  - {fileID: 1343533935330646, guid: 4e8972415a5a32d48bb38da963ce328f, type: 2}
+  - {fileID: 1421065351666612, guid: 23776c0a24e597742bee1867d5a93e5a, type: 2}
+  - {fileID: 1187787226833112, guid: 6d742238125c7c34da8127dc0da74579, type: 2}
+  - {fileID: 1060338983195188, guid: e633fb6370868c9498850dbf8fd42a78, type: 2}
+  - {fileID: 1257959711692346, guid: ff3ab7ca9f29e6c469fae22d1d4dcf08, type: 2}
   m_CustomConfig: 0
   m_MaxConnections: 4
   m_ConnectionConfig:
@@ -116,7 +125,7 @@ MonoBehaviour:
     m_MaxTimerTimeout: 12000
     m_MinNetSimulatorTimeout: 1
     m_MaxNetSimulatorTimeout: 12000
-  m_Channels: 
+  m_Channels: 0500000000000000
   m_UseWebSockets: 0
   m_UseSimulator: 0
   m_SimulatedLatency: 1
@@ -133,7 +142,3 @@ MonoBehaviour:
   playerId: 0
   gameId: 0
   firstGame: 1
-  playerPrefabs:
-  - {fileID: 1076787189189672, guid: 2c2018e6689c8a040802966cba735b17, type: 2}
-  - {fileID: 1180472769544254, guid: a6505afddd30d5e4781efd40aa2ef65a, type: 2}
-  test: {fileID: 1635862322054164, guid: a1dbcf38cd61cd74c9d427432cabb8ab, type: 2}

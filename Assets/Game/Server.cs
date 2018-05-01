@@ -19,6 +19,7 @@ public class Server : NetworkManager
     protected NetworkConnection driverConnection;
     protected GameObject driver;
     protected short driverControllerId;
+    protected GameObject vehicle;
 
 
 
@@ -138,6 +139,7 @@ public class Server : NetworkManager
     private GameObject SpawnDriver(NetworkConnection conn = null, short playerControllerId = 0)
     {
         NetworkServer.Destroy(driver);
+        NetworkServer.Destroy(vehicle);
 
         if (firstGame && !singleplayer)
         {
@@ -147,9 +149,6 @@ public class Server : NetworkManager
 
         driver = Instantiate(Game.Instance.driver);
         driver.name = Game.Instance.driver.name;
-        GameObject vehicle = Instantiate(Game.Instance.vehicles[vehicleId]);
-        ClientScene.RegisterPrefab(vehicle, NetworkHash128.Parse(vehicle.name));
-
 
         if (!singleplayer)
         {
@@ -161,7 +160,6 @@ public class Server : NetworkManager
             {
                 NetworkServer.ReplacePlayerForConnection(driverConnection, driver, driverControllerId);
             }
-            NetworkServer.SpawnWithClientAuthority(vehicle, driver);
         }
 
         if (singleplayer)

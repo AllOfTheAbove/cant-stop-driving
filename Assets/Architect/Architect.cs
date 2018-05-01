@@ -112,12 +112,12 @@ public class Architect : Player
 
     public override void OnStartLocalPlayer()
     {
+        Game.Instance.ChangeState(-1);
         GetComponentInChildren<AudioListener>().enabled = true;
     }
 
     void Start()
     {
-        Game.Instance.ChangeState(-1);
         AI = this.gameObject.GetComponent<ArchitectAI>();
         architectDestination = new Vector3(0, 0, 0);
         currentTile = new Tile(0, 0, GameScene.Instance.tileSize);
@@ -171,7 +171,7 @@ public class Architect : Player
             GameScene.Instance.RemoveMaterial(tile, GameScene.Instance.tilePreviewMaterial);
             tileSpawnSound.Play();
             StartCoroutine(architectCamera.GetComponent<CameraShake>().Shake());
-            StartCoroutine(GameObject.Find("Driver").GetComponent<Driver>().driverCamera.GetComponent<CameraShake>().Shake());
+            StartCoroutine(GameObject.FindGameObjectsWithTag("Driver")[0].GetComponent<Driver>().driverCamera.GetComponent<CameraShake>().Shake());
 
             architectDestination = new Vector3(x, 0, z);
         }

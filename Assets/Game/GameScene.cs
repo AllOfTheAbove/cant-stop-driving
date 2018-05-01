@@ -16,6 +16,7 @@ public class GameScene : MonoBehaviour {
     public List<GameObject> tiles = new List<GameObject>();
     public Material tilePreviewMaterial;
     public int tileSize;
+    public Material tileWoodMaterial;
 
     [Header("UIs")]
     public GameObject driverTutorial;
@@ -37,6 +38,10 @@ public class GameScene : MonoBehaviour {
     [Header("SFXs")]
     public AudioSource countdownBeepSound;
     public AudioSource countdownEndSound;
+    public AudioSource dangerSound;
+    public AudioSource explosionSound;
+    public AudioSource fallInWaterSound;
+    public AudioSource collisionTileSound;
 
     private void Awake()
     {
@@ -57,6 +62,11 @@ public class GameScene : MonoBehaviour {
         MeshRenderer[] mr = gameObject.GetComponentsInChildren<MeshRenderer>();
         for (int i = 0; i < mr.Length; i++)
         {
+            mr[i].materials = new Material[] { mr[i].materials[0], tilePreviewMaterial };
+        }
+
+        /**for (int i = 0; i < mr.Length; i++)
+        {
             Material[] oldMaterials = mr[i].materials;
             Material[] newMaterials = new Material[oldMaterials.Length + 1];
             for (int j = 0; j < oldMaterials.Length; j++)
@@ -65,7 +75,7 @@ public class GameScene : MonoBehaviour {
             }
             newMaterials[oldMaterials.Length] = material;
             mr[i].materials = newMaterials;
-        }
+        }**/
     }
 
     public void RemoveMaterial(GameObject gameObject, Material material)
@@ -74,7 +84,15 @@ public class GameScene : MonoBehaviour {
 
         for (int i = 0; i < mr.Length; i++)
         {
-            Material[] oldMaterials = mr[i].materials;
+            if(mr[i].materials[0].name.Contains("No Name"))
+            {
+                mr[i].materials = new Material[] { tileWoodMaterial };
+            } else
+            {
+                mr[i].materials = new Material[] { mr[i].materials[0] };
+            }
+            
+            /**Material[] oldMaterials = mr[i].materials;
             Material[] newMaterials = new Material[oldMaterials.Length - 1];
 
             int newMaterialId = 0;
@@ -96,7 +114,7 @@ public class GameScene : MonoBehaviour {
             else
             {
                 mr[i].materials = newMaterials;
-            }
+            }**/
         }
     }
 }

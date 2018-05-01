@@ -23,6 +23,11 @@ public class DriverCamera : MonoBehaviour {
     {
         if (endOfStartAnimation)
         {
+            if(vehicle == null)
+            {
+                return;
+            }
+
             float wantedRotationAngle = vehicle.transform.eulerAngles.y;
             float wantedHeight = vehicle.transform.position.y + height;
 

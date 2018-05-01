@@ -12,7 +12,7 @@ public class ArchitectAI : MonoBehaviour
     public int lastPlaced = 0;
 
     private System.Random Random;
-    public string[] linearTiles = { "BasicTile", "NarrowTile", "PropellerTile", "JumpTile", "RoughTile" };
+    public string[] linearTiles = { "BasicTile", "BoostTile", "CornerTile", "CrossTile", "JumpTile", "NarrowTile", "PropellerTile", "RoofTile", "RoughTile", "SlowTile" };
 
     public Dictionary<string, int> tileCompensation = new Dictionary<string, int>();
     //some tiles meshes are not oriented in the same way by default, this dictionary offers a compensation (relative to BasicTile)
@@ -22,10 +22,15 @@ public class ArchitectAI : MonoBehaviour
         Random = new System.Random();
 
         tileCompensation.Add("BasicTile", 0);
+        tileCompensation.Add("BoostTile", 90);
+        tileCompensation.Add("CornerTile", 90);
+        tileCompensation.Add("CrossTile", 90);
         tileCompensation.Add("JumpTile", 90);
         tileCompensation.Add("NarrowTile", 90);
         tileCompensation.Add("PropellerTile", 0);
+        tileCompensation.Add("RoofTile", 0);
         tileCompensation.Add("RoughTile", 0);
+        tileCompensation.Add("SlowTile", 90);
     }
 
     public int Position(Tile currentTile, Tile lastTile)
