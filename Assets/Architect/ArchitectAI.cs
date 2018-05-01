@@ -12,7 +12,8 @@ public class ArchitectAI : MonoBehaviour
     public int lastPlaced = 0;
 
     private System.Random Random;
-    public string[] linearTiles = { "BasicTile", "BoostTile", "CornerTile", "CrossTile", "JumpTile", "NarrowTile", "PropellerTile", "RoofTile", "RoughTile", "SlowTile" };
+    public string[] linearTiles = { "BasicTile", "BoostTile", "CornerTile", "CrossTile", "JumpTile", "NarrowTile", "PropellerTile",
+                                    "RoofTile", "RoughTile", "SlowTile", "ProjectilesTile", "SplashTile" };
 
     public Dictionary<string, int> tileCompensation = new Dictionary<string, int>();
     //some tiles meshes are not oriented in the same way by default, this dictionary offers a compensation (relative to BasicTile)
@@ -22,15 +23,17 @@ public class ArchitectAI : MonoBehaviour
         Random = new System.Random();
 
         tileCompensation.Add("BasicTile", 0);
-        tileCompensation.Add("BoostTile", 90);
-        tileCompensation.Add("CornerTile", 90);
+        tileCompensation.Add("BoostTile", 0);
+        tileCompensation.Add("CornerTile", 180);
         tileCompensation.Add("CrossTile", 90);
         tileCompensation.Add("JumpTile", 90);
         tileCompensation.Add("NarrowTile", 90);
         tileCompensation.Add("PropellerTile", 0);
         tileCompensation.Add("RoofTile", 0);
         tileCompensation.Add("RoughTile", 0);
-        tileCompensation.Add("SlowTile", 90);
+        tileCompensation.Add("SlowTile", 0);
+        tileCompensation.Add("ProjectilesTile", 0);
+        tileCompensation.Add("SplashTile", 0);
     }
 
     public int Position(Tile currentTile, Tile lastTile)
@@ -63,7 +66,7 @@ public class ArchitectAI : MonoBehaviour
         }
 
         //deal with non linear previous tile here
-        return 0;
+        return 90 + compensate;
     }
 
     public bool Place()
@@ -74,6 +77,7 @@ public class ArchitectAI : MonoBehaviour
         if (output)
             lastPlaced = 0;
 
+        output = true;
         return output;
     }
 }

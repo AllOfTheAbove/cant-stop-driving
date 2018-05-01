@@ -6,9 +6,9 @@ public class BoostTile : MonoBehaviour {
 
     private bool alreadyUsed = false;
 
-	void OnTriggerEnter(Collider collider)
+	public void Boost()
     {
-        if (!alreadyUsed)
+        if (!alreadyUsed && GameObject.FindGameObjectsWithTag("Driver")[0].GetComponentInChildren<Vehicle>() != null)
         {
             GameObject.FindGameObjectsWithTag("Driver")[0].GetComponentInChildren<Vehicle>().Boost();
             alreadyUsed = true;

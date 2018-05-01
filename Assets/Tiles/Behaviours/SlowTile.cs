@@ -6,19 +6,19 @@ public class SlowTile : MonoBehaviour {
 
     private bool alreadyUsed = false;
 
-    void OnTriggerEnter(Collider collider)
+    public void Enter()
     {
         if (!alreadyUsed)
         {
-            GameObject.FindGameObjectsWithTag("Driver")[0].GetComponentInChildren<Driver>().checkForDeath = false;
+            GameObject.FindGameObjectsWithTag("Driver")[0].GetComponentInChildren<Driver>().EnableCheckForDeath(false);
         }
     }
 
-    void OnTriggerExit(Collider collider)
+    public void Exit()
     {
         if (!alreadyUsed)
         {
-            GameObject.FindGameObjectsWithTag("Driver")[0].GetComponentInChildren<Driver>().checkForDeath = true;
+            GameObject.FindGameObjectsWithTag("Driver")[0].GetComponentInChildren<Driver>().EnableCheckForDeath(true);
             alreadyUsed = true;
         }
     }

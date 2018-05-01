@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class ProjectilesTile : MonoBehaviour {
+public class ProjectilesTile : NetworkBehaviour {
 
     public GameObject projectile;
     public int delay = 4;
@@ -13,7 +13,7 @@ public class ProjectilesTile : MonoBehaviour {
 
     private void Update()
     {
-        if(!started && GetComponentsInChildren<MeshCollider>()[0].enabled)
+        if(isServer && !started && GetComponentsInChildren<MeshCollider>()[0].enabled)
         {
             started = true;
             StartCoroutine(SpawnProjectile());

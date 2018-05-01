@@ -147,6 +147,7 @@ GameObject:
   - component: {fileID: 4628039809923770}
   - component: {fileID: 114295278053933580}
   - component: {fileID: 114011786373390304}
+  - component: {fileID: 114091045954982632}
   m_Layer: 0
   m_Name: BoostTile
   m_TagString: Untagged
@@ -237,7 +238,7 @@ GameObject:
   - component: {fileID: 33670603628010386}
   - component: {fileID: 23179179996644922}
   - component: {fileID: 64608944756931044}
-  - component: {fileID: 114109482508744326}
+  - component: {fileID: 114896831720931616}
   m_Layer: 0
   m_Name: Cube.001
   m_TagString: Untagged
@@ -2673,12 +2674,12 @@ MonoBehaviour:
   m_SnapThreshold: 5
   m_InterpolateRotation: 1
   m_InterpolateMovement: 1
---- !u!114 &114109482508744326
+--- !u!114 &114091045954982632
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1557590889917948}
+  m_GameObject: {fileID: 1292415478360038}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 183481fbeac0f1e4aafaf571447e84d4, type: 3}
@@ -2716,3 +2717,30 @@ MonoBehaviour:
     i15: 82
   m_ServerOnly: 0
   m_LocalPlayerAuthority: 1
+--- !u!114 &114896831720931616
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1557590889917948}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1262d673d01a86948a7512a273197045, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onTriggerEnter:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 114091045954982632}
+        m_MethodName: Boost
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null

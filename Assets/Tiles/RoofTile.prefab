@@ -39,7 +39,7 @@ GameObject:
   - component: {fileID: 4335170957544098}
   - component: {fileID: 33403624391537296}
   - component: {fileID: 65008015083345452}
-  - component: {fileID: 114249231378592986}
+  - component: {fileID: 114104654770694638}
   m_Layer: 0
   m_Name: Effect
   m_TagString: Untagged
@@ -201,6 +201,7 @@ GameObject:
   - component: {fileID: 4313599783549562}
   - component: {fileID: 114057960253574928}
   - component: {fileID: 114469165288037142}
+  - component: {fileID: 114507189856676794}
   m_Layer: 0
   m_Name: RoofTile
   m_TagString: Untagged
@@ -2560,7 +2561,7 @@ MonoBehaviour:
     i15: 143
   m_ServerOnly: 0
   m_LocalPlayerAuthority: 1
---- !u!114 &114249231378592986
+--- !u!114 &114104654770694638
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -2568,9 +2569,25 @@ MonoBehaviour:
   m_GameObject: {fileID: 1032433627145460}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 08e76d58bdcbe1e4b87937eead71eb13, type: 3}
+  m_Script: {fileID: 11500000, guid: 1262d673d01a86948a7512a273197045, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onTriggerEnter:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 114507189856676794}
+        m_MethodName: IncreaseScore
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
 --- !u!114 &114469165288037142
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2592,3 +2609,15 @@ MonoBehaviour:
   m_SnapThreshold: 5
   m_InterpolateRotation: 1
   m_InterpolateMovement: 1
+--- !u!114 &114507189856676794
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1343533935330646}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08e76d58bdcbe1e4b87937eead71eb13, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scorePoints: 50

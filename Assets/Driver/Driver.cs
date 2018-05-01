@@ -63,7 +63,7 @@ public class Driver : Player
 
     void OnCollisionEnter(Collision col)
     {
-        if(col.gameObject.name.Contains("ramp") || col.gameObject.name.Contains("pillars"))
+        if(Game.Instance.state == 1 && (col.gameObject.name.Contains("ramp") || col.gameObject.name.Contains("pillars")))
         {
             GameScene.Instance.collisionTileSound.Play();
         }
@@ -186,7 +186,24 @@ public class Driver : Player
         GameScene.Instance.scoreLabel.GetComponent<Text>().text = score + "";
     }
 
-
+    public void EnableCheckForDeath(bool state)
+    {
+        if(isSingleplayer)
+        {
+            checkForDeath = state;
+        } else
+        {
+            CmdEnableCheckForDeath(state);
+        }
+    }
+    [Command] public void CmdEnableCheckForDeath(bool state)
+    {
+        RpcEnableCheckForDeath(state);
+    }
+    [ClientRpc] public void RpcEnableCheckForDeath(bool state)
+    {
+        checkForDeath = state;
+    }
     public IEnumerator CheckForDeath()
     {
         yield return new WaitForSecondsRealtime(10);

@@ -2173,7 +2173,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   camera: {fileID: 838844892}
   tiles:
+  - {fileID: 1982668182461060, guid: 4e8f2d18022d0c044ac9dff6163bc6f8, type: 2}
+  - {fileID: 1292415478360038, guid: e9cbbec9e3644ea4a92188c5a7e7ae52, type: 2}
+  - {fileID: 1337040935100768, guid: 04eb0ce1e3dd815448f2e30000f2bc00, type: 2}
+  - {fileID: 1700776888553088, guid: 2b6254e310e388a4f92f055eadbe87b8, type: 2}
+  - {fileID: 1104447562477276, guid: ab5e99d4d059de44b9d40d5587aeac54, type: 2}
+  - {fileID: 1645557772527612, guid: c583dced1d4155f46894147ba1d26283, type: 2}
+  - {fileID: 1629981021803052, guid: d8c198bf695500449b2a59ee3ec8a5b0, type: 2}
+  - {fileID: 1417598981048076, guid: 5019545b01014e34c805a9882f3a6147, type: 2}
+  - {fileID: 1343533935330646, guid: 4e8972415a5a32d48bb38da963ce328f, type: 2}
+  - {fileID: 1421065351666612, guid: 23776c0a24e597742bee1867d5a93e5a, type: 2}
   - {fileID: 1187787226833112, guid: 6d742238125c7c34da8127dc0da74579, type: 2}
+  - {fileID: 1060338983195188, guid: e633fb6370868c9498850dbf8fd42a78, type: 2}
   tilePreviewMaterial: {fileID: 2100000, guid: c6140fa728a789f41903e3d1d3aed0e1, type: 2}
   tileSize: 16
   tileWoodMaterial: {fileID: 2100000, guid: d51e5c727a5bbb0468646aa54f874fab, type: 2}

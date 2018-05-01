@@ -2577,7 +2577,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   projectile: {fileID: 1257959711692346, guid: ff3ab7ca9f29e6c469fae22d1d4dcf08, type: 2}
-  delay: 2
+  delay: 3
 --- !u!114 &114722042914780212
 MonoBehaviour:
   m_ObjectHideFlags: 1

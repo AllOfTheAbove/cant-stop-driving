@@ -142,6 +142,12 @@ public class Architect : Player
         NetworkServer.SpawnWithClientAuthority(currentTile.gameObject, this.gameObject);
         nextTileTypeId = random.Next(0, GameScene.Instance.tiles.Count);
 
+        // Fix AI is not prepared for corners
+        if (AI.enabled && GameScene.Instance.tiles[nextTileTypeId].name == "CornerTile")
+        {
+            nextTileTypeId = 0;
+        }
+
         RpcSetCurrentTileType(currentTile.gameObject, currentTile.x, currentTile.z, false, nextTileTypeId);
 
         Vector3 pos = currentTile.gameObject.transform.position;
