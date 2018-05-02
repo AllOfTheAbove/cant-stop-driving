@@ -717,7 +717,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e8f9ad29cf33184abb8ef2b5af1f305, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debug: 1
+  debug: 0
   state: -1
   score: 0
   paused: 0
