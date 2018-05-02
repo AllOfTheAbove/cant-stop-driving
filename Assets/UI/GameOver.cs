@@ -5,7 +5,7 @@ public class GameOver : MonoBehaviour
 
     public void Continue()
     {
-        GameObject.FindGameObjectsWithTag("Driver")[0].GetComponent<Driver>().RestartGame();
+        GameObject.FindGameObjectsWithTag("Architect")[0].GetComponent<Architect>().RestartGame();
     }
 
     public void Menu()

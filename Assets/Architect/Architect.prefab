@@ -327,6 +327,8 @@ MonoBehaviour:
   architectCamera: {fileID: 20334501963393256}
   distanceToPlaceTile: 28
   tileSpawnSound: {fileID: 82289907345124418}
+  tileSpawnAnimation: {fileID: 198685558625935434, guid: 5a97962f7d5ba4df0823334b52c7c02c,
+    type: 2}
 --- !u!114 &114762140255612614
 MonoBehaviour:
   m_ObjectHideFlags: 1

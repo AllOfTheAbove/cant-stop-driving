@@ -99,6 +99,7 @@ public class Architect : Player
     public Camera architectCamera;
     public int distanceToPlaceTile;
     public AudioSource tileSpawnSound;
+    public ParticleSystem tileSpawnAnimation;
 
     public Tile currentTile;
     public Tile lastTile;
@@ -178,6 +179,8 @@ public class Architect : Player
             tileSpawnSound.Play();
             StartCoroutine(architectCamera.GetComponent<CameraShake>().Shake());
             StartCoroutine(GameObject.FindGameObjectsWithTag("Driver")[0].GetComponent<Driver>().driverCamera.GetComponent<CameraShake>().Shake());
+            ParticleSystem animation = Instantiate(tileSpawnAnimation);
+            animation.transform.position = new Vector3(x, tileSpawnAnimation.transform.position.y, z);
 
             architectDestination = new Vector3(x, 0, z);
         }

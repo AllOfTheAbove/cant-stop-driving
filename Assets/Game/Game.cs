@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Audio;
@@ -111,7 +112,7 @@ public class Game : MonoBehaviour {
 
     public void ChangeState(int state)
     {
-        if(state == -1)
+        if (state == -1)
         {
             this.state = state;
             if (GetServer().firstGame)
@@ -126,7 +127,7 @@ public class Game : MonoBehaviour {
             startTime = Time.time;
             GameScene.Instance.waitingUI.GetComponent<TextMeshProUGUI>().SetText("(client)");
             countdownCoroutine = StartCoroutine(StartCountdown());
-        } else if(state == 1)
+        } else if (state == 1)
         {
             this.state = state;
             GameScene.Instance.countdownEndSound.Play();
@@ -139,35 +140,42 @@ public class Game : MonoBehaviour {
                 fadeUI = StartCoroutine(FadeCanvas(GameScene.Instance.architectTutorial.GetComponent<CanvasGroup>(), 1f, 0f, 1f));
                 fadeUI = StartCoroutine(FadeCanvas(GameScene.Instance.driverTutorial.GetComponent<CanvasGroup>(), 1f, 0f, 1f));
             }
-        } else if(state == 2)
+        } else if (state == 2)
         {
             this.state = state;
-            if(paused)
+            StartCoroutine(Game.Instance.FadeOutAudio(Game.Instance.gameMusics[Game.Instance.currentMusicId]));
+            if (paused)
             {
                 Pause();
             }
-            if(GameObject.FindGameObjectsWithTag("Driver")[0].GetComponentInChildren<AudioListener>())
+            if (GameObject.FindGameObjectsWithTag("Driver")[0].GetComponentInChildren<AudioListener>())
             {
                 GameObject.FindGameObjectsWithTag("Driver")[0].GetComponentInChildren<AudioListener>().enabled = false;
             }
-            if(GameObject.FindGameObjectsWithTag("Architect")[0].GetComponentInChildren<AudioListener>())
+            if (GameObject.FindGameObjectsWithTag("Architect")[0].GetComponentInChildren<AudioListener>())
             {
                 GameObject.FindGameObjectsWithTag("Architect")[0].GetComponentInChildren<AudioListener>().enabled = false;
             }
-            GameObject.FindGameObjectsWithTag("Driver")[0].GetComponent<Driver>().engineSound.Stop();
-            GameObject.FindGameObjectsWithTag("Driver")[0].GetComponent<Driver>().idleSound.Stop();
+
+            int vid = GameObject.FindGameObjectsWithTag("Driver")[0].GetComponent<Driver>().vehicleId;
+            List<Vector3> lp = GameObject.FindGameObjectsWithTag("Driver")[0].GetComponent<Driver>().lastPositions;
+            List<Quaternion> lr = GameObject.FindGameObjectsWithTag("Driver")[0].GetComponent<Driver>().lastRotations;
+            Destroy(GameObject.FindGameObjectsWithTag("Driver")[0]);
+            GameObject v = Instantiate(vehicles[vid], lp[0], lr[0]);
+            v.GetComponent<Vehicle>().enabled = false;
+            v.AddComponent<ReproduceMovements>();
+            v.GetComponent<ReproduceMovements>().positions = lp;
+            v.GetComponent<ReproduceMovements>().rotations = lr;
+
             GameScene.Instance.score.SetActive(false);
             GameScene.Instance.speed.SetActive(false);
             GameScene.Instance.nextTile.SetActive(false);
             GameScene.Instance.warningLabel.SetActive(false);
             GameScene.Instance.camera.SetActive(true);
-            GameScene.Instance.camera.transform.parent = GameObject.FindGameObjectsWithTag("Driver")[0].transform;
-            GameScene.Instance.camera.transform.position = new Vector3(GameScene.Instance.camera.transform.position.x + GameObject.FindGameObjectsWithTag("Driver")[0].transform.position.x, GameScene.Instance.camera.transform.position.y + GameObject.FindGameObjectsWithTag("Driver")[0].transform.position.y, GameScene.Instance.camera.transform.position.z + GameObject.FindGameObjectsWithTag("Driver")[0].transform.position.z);
+            GameScene.Instance.camera.GetComponent<DeathCamera>().target = v;
             GameScene.Instance.gameoverScoreLabel.GetComponent<TextMeshProUGUI>().SetText("Score: " + score);
             GameScene.Instance.gameoverTimeLabel.GetComponent<TextMeshProUGUI>().SetText("Time: " + Mathf.Floor(Time.time - startTime));
             GameScene.Instance.gameoverUI.SetActive(true);
-            GameScene.Instance.explosionSound.Play();
-            fadeOutCoroutine = StartCoroutine(FadeOutAudio(gameMusics[currentMusicId]));
         }
     }
 

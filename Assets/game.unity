@@ -3065,8 +3065,9 @@ GameObject:
   - component: {fileID: 838844896}
   - component: {fileID: 838844895}
   - component: {fileID: 838844894}
+  - component: {fileID: 838844899}
   m_Layer: 0
-  m_Name: Camera
+  m_Name: DeathCamera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3154,6 +3155,18 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
+--- !u!114 &838844899
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 838844892}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dde17028e02f89249bc44b778c269359, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 1180472769544254, guid: a6505afddd30d5e4781efd40aa2ef65a, type: 2}
 --- !u!1 &848047023
 GameObject:
   m_ObjectHideFlags: 0
