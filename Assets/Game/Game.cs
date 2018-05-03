@@ -56,6 +56,9 @@ public class Game : MonoBehaviour {
         {
             DestroyObject(gameObject);
         }
+
+        audioMixer.SetFloat("musicVolume", PlayerPrefs.GetFloat("musicVolume"));
+        audioMixer.SetFloat("soundVolume", PlayerPrefs.GetFloat("soundVolume"));
     }
 
     public void Start()
@@ -63,6 +66,7 @@ public class Game : MonoBehaviour {
         StartCoroutine(BackgroundSounds());
         audioMixer.SetFloat("musicVolume", PlayerPrefs.GetFloat("musicVolume"));
         audioMixer.SetFloat("soundVolume", PlayerPrefs.GetFloat("soundVolume"));
+        titleMusic.Play();
     }
 
     private void Update()
@@ -102,12 +106,23 @@ public class Game : MonoBehaviour {
         if (paused)
         {
             paused = false;
+            if (GetServer().singleplayer)
+            {
+                Time.timeScale = 1f;
+                GameObject.FindGameObjectsWithTag("Driver")[0].GetComponent<Driver>().checkForDeath = true;
+            }
         }
         else
         {
             paused = true;
+            if (GetServer().singleplayer)
+            {
+                Time.timeScale = 0f;
+                GameObject.FindGameObjectsWithTag("Driver")[0].GetComponent<Driver>().checkForDeath = false;
+            }
         }
         GameScene.Instance.pauseUI.SetActive(paused);
+        
     }
 
     public void ChangeState(int state)
@@ -143,7 +158,7 @@ public class Game : MonoBehaviour {
         } else if (state == 2)
         {
             this.state = state;
-            StartCoroutine(Game.Instance.FadeOutAudio(Game.Instance.gameMusics[Game.Instance.currentMusicId]));
+            StartCoroutine(FadeOutAudio(gameMusics[currentMusicId]));
             if (paused)
             {
                 Pause();
@@ -157,22 +172,22 @@ public class Game : MonoBehaviour {
                 GameObject.FindGameObjectsWithTag("Architect")[0].GetComponentInChildren<AudioListener>().enabled = false;
             }
 
-            int vid = GameObject.FindGameObjectsWithTag("Driver")[0].GetComponent<Driver>().vehicleId;
-            List<Vector3> lp = GameObject.FindGameObjectsWithTag("Driver")[0].GetComponent<Driver>().lastPositions;
-            List<Quaternion> lr = GameObject.FindGameObjectsWithTag("Driver")[0].GetComponent<Driver>().lastRotations;
-            Destroy(GameObject.FindGameObjectsWithTag("Driver")[0]);
-            GameObject v = Instantiate(vehicles[vid], lp[0], lr[0]);
-            v.GetComponent<Vehicle>().enabled = false;
-            v.AddComponent<ReproduceMovements>();
-            v.GetComponent<ReproduceMovements>().positions = lp;
-            v.GetComponent<ReproduceMovements>().rotations = lr;
+            GameObject driver = GameObject.FindGameObjectsWithTag("Driver")[0];
+            List<Vector3> lastPositions = driver.GetComponent<Driver>().lastPositions;
+            List<Quaternion> lastRotations = driver.GetComponent<Driver>().lastRotations;
+            Destroy(driver.GetComponent<Driver>().vehicle);
+            GameObject vehicle = Instantiate(vehicles[driver.GetComponent<Driver>().vehicleId], lastPositions[0], lastRotations[0]);
+            vehicle.GetComponent<Vehicle>().enabled = false;
+            vehicle.AddComponent<ReproduceMovements>();
+            vehicle.GetComponent<ReproduceMovements>().positions = lastPositions;
+            vehicle.GetComponent<ReproduceMovements>().rotations = lastRotations;
 
             GameScene.Instance.score.SetActive(false);
             GameScene.Instance.speed.SetActive(false);
             GameScene.Instance.nextTile.SetActive(false);
             GameScene.Instance.warningLabel.SetActive(false);
             GameScene.Instance.camera.SetActive(true);
-            GameScene.Instance.camera.GetComponent<DeathCamera>().target = v;
+            GameScene.Instance.camera.GetComponent<DeathCamera>().target = vehicle;
             GameScene.Instance.gameoverScoreLabel.GetComponent<TextMeshProUGUI>().SetText("Score: " + score);
             GameScene.Instance.gameoverTimeLabel.GetComponent<TextMeshProUGUI>().SetText("Time: " + Mathf.Floor(Time.time - startTime));
             GameScene.Instance.gameoverUI.SetActive(true);

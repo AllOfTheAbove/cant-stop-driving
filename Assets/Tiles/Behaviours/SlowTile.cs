@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
-public class SlowTile : MonoBehaviour {
+public class SlowTile : NetworkBehaviour {
 
     private bool alreadyUsed = false;
 

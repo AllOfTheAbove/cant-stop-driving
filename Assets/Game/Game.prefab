@@ -312,7 +312,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 243243688295789560, guid: 9121e8325f5b93b498ae0071aaa6f96a,
     type: 2}
   m_audioClip: {fileID: 8300000, guid: 43c23fb2f7e84e449bf9ad753d63b143, type: 3}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 1
@@ -717,7 +717,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e8f9ad29cf33184abb8ef2b5af1f305, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debug: 0
+  debug: 1
   state: -1
   score: 0
   paused: 0
