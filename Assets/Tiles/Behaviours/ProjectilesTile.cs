@@ -22,7 +22,7 @@ public class ProjectilesTile : NetworkBehaviour {
 
     IEnumerator SpawnProjectile()
     {
-        while (true)
+        while (Game.Instance.state == 1)
         {
             GameObject _projectile = Instantiate(projectile, new Vector3(transform.position.x + random.Next(-6, 6), 10, transform.position.z + random.Next(-6, 6)), Quaternion.identity);
             NetworkServer.SpawnWithClientAuthority(_projectile, GameObject.FindGameObjectsWithTag("Architect")[0]);

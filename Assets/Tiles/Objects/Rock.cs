@@ -6,7 +6,7 @@ public class Rock : MonoBehaviour {
 
     void OnCollisionEnter(Collision col)
     {
-        if(GameObject.FindGameObjectsWithTag("Driver") != null && Vector3.Distance(transform.position, GameObject.FindGameObjectsWithTag("Driver")[0].transform.position) < 30)
+        if(Vector3.Distance(transform.position, GameObject.FindGameObjectsWithTag("Driver")[0].transform.position) < 30)
         {
             GameScene.Instance.collisionTileSound.Play();
         }

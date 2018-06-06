@@ -655,6 +655,10 @@ MonoBehaviour:
   minSpeedToBeInDanger: 25
   secondsAtMinSpeedBeforeDeath: 3
   durationRewind: 5
+  checkForDeath: 1
+  vehicleId: 0
+  lastPositions: []
+  lastRotations: []
 --- !u!114 &114943236823612988
 MonoBehaviour:
   m_ObjectHideFlags: 1

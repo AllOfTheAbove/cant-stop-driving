@@ -246,7 +246,8 @@ public class Driver : Player
             {
                 CmdExplodeSoon(true, -1);
             }
-            if(vehicleId == 0)
+            GameScene.Instance.warningLabel.GetComponent<TextMeshProUGUI>().SetText("");
+            if (vehicleId == 0)
             {
                 yield return new WaitForSecondsRealtime(2);
             }

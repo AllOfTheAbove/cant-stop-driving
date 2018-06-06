@@ -22,6 +22,8 @@ GameObject:
   - component: {fileID: 114503408292223788}
   - component: {fileID: 114700136732142420}
   - component: {fileID: 114797169893809830}
+  - component: {fileID: 114252976805627584}
+  - component: {fileID: 114165342357364646}
   m_Layer: 0
   m_Name: Architect
   m_TagString: Architect
@@ -280,6 +282,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   duration: 0.3
   magnitude: 0.4
+--- !u!114 &114165342357364646
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1076787189189672}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1fae194dbe0b2394dbb5d47a593d216f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &114252976805627584
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1076787189189672}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdb00da1aceb4ca47a134d31249ae424, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114503408292223788
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -356,12 +380,6 @@ MonoBehaviour:
   placeDelay: 100
   difficulty: 5
   lastPlaced: 0
-  linearTiles:
-  - BasicTile
-  - NarrowTile
-  - PropellerTile
-  - JumpTile
-  - RoughTile
 --- !u!124 &124531880912912742
 Behaviour:
   m_ObjectHideFlags: 1

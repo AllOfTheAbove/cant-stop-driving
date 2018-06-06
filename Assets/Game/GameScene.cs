@@ -18,6 +18,10 @@ public class GameScene : MonoBehaviour {
     public int tileSize;
     public Material tileWoodMaterial;
 
+    [Header("Pathfinding")]
+    public GameObject Goal;
+    public GameObject Path;
+
     [Header("UIs")]
     public GameObject driverTutorial;
     public GameObject architectTutorial;

@@ -128,6 +128,11 @@ public class Architect : Player
         {
             AI.enabled = true;
         }
+        if(isLocalPlayer || isSingleplayer)
+        {
+            GetComponent<Goals>().SetGoal(lastTile);
+            GetComponent<Pathfinding>().SetPath(lastTile);
+        }
     }
 
 
@@ -166,7 +171,16 @@ public class Architect : Player
         RpcSetCurrentTileType(currentTile.gameObject, currentTile.x, currentTile.z, true, 0);
 
         // Prepare next tile
-        lastTile = currentTile;
+        if (GetComponent<Goals>().CheckGoal(currentTile))
+        {
+            lastTile = new Tile(Goals.goal.x, Goals.goal.y, Goals.goal.z);
+            GetComponent<Goals>().SetGoal(lastTile);
+            GetComponent<Pathfinding>().SetPath(lastTile);
+        }
+        else
+        {
+            lastTile = currentTile;
+        }
         currentTile = new Tile(lastTile.x, 0, lastTile.z + GameScene.Instance.tileSize);
     }
 

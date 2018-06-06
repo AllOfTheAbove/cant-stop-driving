@@ -2181,13 +2181,15 @@ MonoBehaviour:
   - {fileID: 1645557772527612, guid: c583dced1d4155f46894147ba1d26283, type: 2}
   - {fileID: 1629981021803052, guid: d8c198bf695500449b2a59ee3ec8a5b0, type: 2}
   - {fileID: 1417598981048076, guid: 5019545b01014e34c805a9882f3a6147, type: 2}
+  - {fileID: 1343533935330646, guid: 4e8972415a5a32d48bb38da963ce328f, type: 2}
   - {fileID: 1421065351666612, guid: 23776c0a24e597742bee1867d5a93e5a, type: 2}
   - {fileID: 1187787226833112, guid: 6d742238125c7c34da8127dc0da74579, type: 2}
   - {fileID: 1060338983195188, guid: e633fb6370868c9498850dbf8fd42a78, type: 2}
-  - {fileID: 1343533935330646, guid: 4e8972415a5a32d48bb38da963ce328f, type: 2}
   tilePreviewMaterial: {fileID: 2100000, guid: c6140fa728a789f41903e3d1d3aed0e1, type: 2}
   tileSize: 16
   tileWoodMaterial: {fileID: 2100000, guid: d51e5c727a5bbb0468646aa54f874fab, type: 2}
+  Goal: {fileID: 1052813378436658, guid: c9bbf69bed1b47746931d3593d0aaf74, type: 2}
+  Path: {fileID: 1468442769971662, guid: 1f6e4a2fd3da586469e0f7ff0188785a, type: 2}
   driverTutorial: {fileID: 580352411}
   architectTutorial: {fileID: 100480316}
   speed: {fileID: 1277433753}

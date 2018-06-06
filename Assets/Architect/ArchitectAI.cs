@@ -11,11 +11,13 @@ public class ArchitectAI : MonoBehaviour
     public int difficulty; //random interval for placing (the higher the easier)
     public int lastPlaced = 0;
 
+    static public bool goalReached = false;
+
     private System.Random Random;
-    public string[] linearTiles = { "BasicTile", "BoostTile", "CornerTile", "CrossTile", "JumpTile", "NarrowTile", "PropellerTile",
+    public static string[] linearTiles = { "BasicTile", "BoostTile", "CornerTile", "CrossTile", "JumpTile", "NarrowTile", "PropellerTile",
                                     "RoofTile", "RoughTile", "SlowTile", "ProjectilesTile", "SplashTile" };
 
-    public Dictionary<string, int> tileCompensation = new Dictionary<string, int>();
+    public static Dictionary<string, int> tileCompensation = new Dictionary<string, int>();
     //some tiles meshes are not oriented in the same way by default, this dictionary offers a compensation (relative to BasicTile)
 
     void Start()
