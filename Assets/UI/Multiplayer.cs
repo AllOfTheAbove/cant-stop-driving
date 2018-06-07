@@ -17,6 +17,16 @@ public class Multiplayer : NetworkBehaviour
         InvokeRepeating("GetMatchList", 0, 2.5f);
     }
 
+    public void StartHost()
+    {
+        Game.Instance.GetServer().StartHost();
+    }
+
+    public void StartClient()
+    {
+        Game.Instance.GetServer().StartClient();
+    }
+
     /**
     * MATCH LISTING
     **/

@@ -57,7 +57,7 @@ public class Goals : NetworkBehaviour
                 rotation -= 90;
                 next *= i;
             }
-            Debug.Log("Pre modif" + output);
+            //Debug.Log("Pre modif" + output);
 
             output.x += (int)next.x * blockSize;
             output.z += (int)next.y * blockSize;
@@ -68,8 +68,8 @@ public class Goals : NetworkBehaviour
                 output.z -= 2 * (int)next.y * blockSize;
             }
 
-            Debug.Log(next);
-            Debug.Log("Post modif" + output);
+            //Debug.Log(next);
+            //Debug.Log("Post modif" + output);
         }
         catch (Exception){}
         
@@ -105,6 +105,7 @@ public class Goals : NetworkBehaviour
 
     [ClientRpc] public void RpcCreate(GameObject go, bool solid)
     {
+        go.transform.parent = GameScene.Instance.pathfindingContainer.transform;
         GameScene.Instance.Solid(go, solid);
     }
 
@@ -122,6 +123,6 @@ public class Goals : NetworkBehaviour
     public void Reset()
     {
         goalExists = false;
-        Pathfinding.Reset();
+        GetComponent<Pathfinding>().Reset();
     }
 }

@@ -19,17 +19,7 @@ public class Titlescreen : MonoBehaviour {
 
     void OnGUI()
     {
-        if (Game.Instance.debug)
-        {
-            if (GUILayout.Button("Host local game"))
-            {
-                Game.Instance.GetServer().StartHost();
-            }
-            if (GUILayout.Button("Join local game"))
-            {
-                Game.Instance.GetServer().StartClient();
-            }
-        }
+        
     }
 
     void Start()

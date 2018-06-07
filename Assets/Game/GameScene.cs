@@ -12,13 +12,20 @@ public class GameScene : MonoBehaviour {
 
     public GameObject camera;
 
+    [Header("World")]
+    public int maxNumberOfBoats = 3;
+    public int currentNumberOfBoats = 0;
+    public GameObject boat;
+
     [Header("Tiles")]
+    public GameObject tilesContainer;
     public List<GameObject> tiles = new List<GameObject>();
     public Material tilePreviewMaterial;
     public int tileSize;
     public Material tileWoodMaterial;
 
     [Header("Pathfinding")]
+    public GameObject pathfindingContainer;
     public GameObject Goal;
     public GameObject Path;
 
@@ -50,6 +57,12 @@ public class GameScene : MonoBehaviour {
     private void Awake()
     {
         instance = this;
+    }
+
+    public void Update()
+    {
+        // if numberOfBoats < maxNumberOfBoats
+            // spawn boat
     }
 
     public void Solid(GameObject gameObject, bool solid)

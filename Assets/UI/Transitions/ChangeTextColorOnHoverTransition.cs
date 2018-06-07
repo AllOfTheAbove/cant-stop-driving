@@ -26,7 +26,7 @@ public class ChangeTextColorOnHoverTransition : MonoBehaviour {
 
     private void Start()
     {
-        defaultColor = this.GetComponentInChildren<TextMeshProUGUI>().color;
+        defaultColor = GetComponentInChildren<TextMeshProUGUI>().color;
     }
 
     private void Update()
@@ -39,10 +39,10 @@ public class ChangeTextColorOnHoverTransition : MonoBehaviour {
         float t = (Time.time - startTime) * transitionSpeed;
         if(hover)
         {
-            this.GetComponentInChildren<TextMeshProUGUI>().color = Color.Lerp(defaultColor, hoverColor, t);
+            GetComponentInChildren<TextMeshProUGUI>().color = Color.Lerp(defaultColor, hoverColor, t);
         } else
         {
-            this.GetComponentInChildren<TextMeshProUGUI>().color = Color.Lerp(hoverColor, defaultColor, t);
+            GetComponentInChildren<TextMeshProUGUI>().color = Color.Lerp(hoverColor, defaultColor, t);
         }
     }
 }

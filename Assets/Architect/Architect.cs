@@ -98,6 +98,7 @@ public class Architect : Player
 
     public Camera architectCamera;
     public int distanceToPlaceTile;
+    public int maxTilesPlaced;
     public AudioSource tileSpawnSound;
     public ParticleSystem tileSpawnAnimation;
 
@@ -106,6 +107,7 @@ public class Architect : Player
     private ArchitectAI AI;
     private Vector3 architectDestination;
 
+    private Queue<Tile> tilesPlaced = new Queue<Tile>();
     private int nextTileTypeId = 0;
     private System.Random random = new System.Random();
 
@@ -146,7 +148,15 @@ public class Architect : Player
         );
         currentTile.gameObject.name = GameScene.Instance.tiles[nextTileTypeId].name;
         NetworkServer.SpawnWithClientAuthority(currentTile.gameObject, this.gameObject);
+        tilesPlaced.Enqueue(currentTile);
         nextTileTypeId = random.Next(0, GameScene.Instance.tiles.Count);
+
+        // Delete too old tiles
+        if(tilesPlaced.Count > maxTilesPlaced)
+        {
+            Tile t = tilesPlaced.Dequeue();
+            NetworkServer.Destroy(t.gameObject);
+        }
 
         // Fix AI is not prepared for corners
         if (AI.enabled && GameScene.Instance.tiles[nextTileTypeId].name == "CornerTile")
@@ -195,17 +205,28 @@ public class Architect : Player
             StartCoroutine(GameObject.FindGameObjectsWithTag("Driver")[0].GetComponent<Driver>().driverCamera.GetComponent<CameraShake>().Shake());
             ParticleSystem animation = Instantiate(tileSpawnAnimation);
             animation.transform.position = new Vector3(x, tileSpawnAnimation.transform.position.y, z);
+            animation.transform.parent = tile.transform;
 
             architectDestination = new Vector3(x, 0, z);
         }
         else
         {
+            tile.transform.parent = GameScene.Instance.tilesContainer.transform;
             GameScene.Instance.Solid(tile, false);
             GameScene.Instance.AddMaterial(tile, GameScene.Instance.tilePreviewMaterial);
             GameScene.Instance.nextTileLabel.GetComponent<TextMeshProUGUI>().SetText(GameScene.Instance.tiles[tileTypeId].name);
         }
     }
 
+    [Command] public void CmdSpawnBoat()
+    {
+        if(GameScene.Instance.currentNumberOfBoats < GameScene.Instance.maxNumberOfBoats)
+        {
+            GameObject boat = Instantiate(GameScene.Instance.boat);
+            NetworkServer.SpawnWithClientAuthority(boat, this.gameObject);
+            GameScene.Instance.currentNumberOfBoats++;
+        }
+    }
 
 
     void Update()
@@ -215,6 +236,11 @@ public class Architect : Player
         if (Input.GetKeyDown(KeyCode.Escape) && isLocalPlayer)
         {
             Game.Instance.Pause();
+        }
+
+        if (isLocalPlayer)
+        {
+            CmdSpawnBoat();
         }
 
         if (!isLocalPlayer || Game.Instance.state != 1 || Game.Instance.paused)

@@ -6,17 +6,20 @@ using UnityEngine.Networking;
 
 public class Pathfinding : NetworkBehaviour {
 
-    private static Stack<Tile> placedTiles = new Stack<Tile>();
-    private static Stack<GoalTile> currentPath = new Stack<GoalTile>();
+    private Stack<Tile> placedTiles = new Stack<Tile>();
+    private Stack<GoalTile> currentPath = new Stack<GoalTile>();
 
     private static int blockSize = 16;
 
 
-    private static void EmptyPath(ref Stack<GoalTile> path)
+   private void EmptyPath(Stack<GoalTile> path)
     {
         foreach (GoalTile tile in path)
-            Destroy(tile.gameObject);
-        path = new Stack<GoalTile>();
+        {
+            Debug.Log(tile.gameObject);
+            NetworkServer.Destroy(tile.gameObject);
+        }
+        currentPath = new Stack<GoalTile>();
     }
 
     private static int[,,] MapToArray(Stack<Tile> placedTiles, Point start)
@@ -56,7 +59,7 @@ public class Pathfinding : NetworkBehaviour {
         if (currentPath.Count > 0)
         {
             GoalTile pathStart = currentPath.Pop();
-            Destroy(pathStart.gameObject);
+            NetworkServer.Destroy(pathStart.gameObject);
 
             /*if (pathStart.x == lastTile.x && pathStart.y == lastTile.y && pathStart.z == lastTile.z)
             {
@@ -75,9 +78,9 @@ public class Pathfinding : NetworkBehaviour {
         int[,,] array = MapToArray(placedTiles, start);
         int center = array.GetLength(0) / 2;
 
-        EmptyPath(ref currentPath);
+        EmptyPath(currentPath);
         Queue<Point> pointQueue = Dijkstra.Solve(array, center, center, center, center);
-        Debug.Log("Dijkstra success");
+        //Debug.Log("Dijkstra success");
         placedTiles.Push(lastTile);
 
         while (pointQueue.Count > 0)
@@ -96,7 +99,7 @@ public class Pathfinding : NetworkBehaviour {
         }
     }
 
-    public static void Reset()
+    public void Reset()
     {
         currentPath = new Stack<GoalTile>();
         placedTiles = new Stack<Tile>();

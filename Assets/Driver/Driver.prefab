@@ -621,7 +621,7 @@ MonoBehaviour:
   rotationDamping: 3
   distance: 10
   heightDamping: 2
-  height: 10
+  height: 5
 --- !u!114 &114691649049572310
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -652,7 +652,7 @@ MonoBehaviour:
   engineSound: {fileID: 82584536220772336}
   idleSound: {fileID: 82362162030487348}
   brakeSound: {fileID: 82362222151522394}
-  minSpeedToBeInDanger: 25
+  minSpeedToBeInDanger: -10000000
   secondsAtMinSpeedBeforeDeath: 3
   durationRewind: 5
   checkForDeath: 1
