@@ -16,7 +16,8 @@ public class Pathfinding : NetworkBehaviour {
     {
         foreach (GoalTile tile in path)
         {
-            Debug.Log(tile.gameObject);
+            Debug.Log("BBB" + tile.gameObject.transform.position);
+            //Debug.Log(tile.gameObject);
             NetworkServer.Destroy(tile.gameObject);
         }
         currentPath = new Stack<GoalTile>();
@@ -59,6 +60,7 @@ public class Pathfinding : NetworkBehaviour {
         if (currentPath.Count > 0)
         {
             GoalTile pathStart = currentPath.Pop();
+            Debug.Log("AAA" + pathStart.gameObject.transform.position);
             NetworkServer.Destroy(pathStart.gameObject);
 
             /*if (pathStart.x == lastTile.x && pathStart.y == lastTile.y && pathStart.z == lastTile.z)
@@ -70,9 +72,12 @@ public class Pathfinding : NetworkBehaviour {
         }
 
         Tile previousTile = placedTiles.Count > 0 ? placedTiles.Peek() : null;
-        Point start = GetComponent<Goals>().StartPoint(lastTile, previousTile);
 
-        GetComponent<Goals>().CmdCreate(start.x, start.y, start.z, false, GameScene.Instance.Path);
+        Point start = GetComponent<Goals>().StartPoint(lastTile, previousTile);
+        GoalTile startTile = new GoalTile(start.x, start.y, start.z);
+        startTile.gameObject = GetComponent<Goals>().Create(start.x, start.y, start.z, false, GameScene.Instance.Path);
+        currentPath.Push(startTile);
+        
 
 
         int[,,] array = MapToArray(placedTiles, start);
@@ -87,15 +92,15 @@ public class Pathfinding : NetworkBehaviour {
         {
             Point point = pointQueue.Dequeue();
             GoalTile path = new GoalTile(point.x * blockSize + start.x, point.y * blockSize + start.y, point.z * blockSize + start.z);
+            path.gameObject = GetComponent<Goals>().Create(point.x * blockSize + start.x, point.y * blockSize + start.y, point.z * blockSize + start.z, false, GameScene.Instance.Path);
             currentPath.Push(path);
-            GetComponent<Goals>().CmdCreate(point.x * blockSize + start.x, point.y * blockSize + start.y, point.z * blockSize + start.z, false, GameScene.Instance.Path);
         }
 
         if (start.x != lastTile.x || start.y != lastTile.y || start.z != lastTile.z)
         {
             GoalTile path = new GoalTile(start.x * blockSize, start.y * blockSize, start.z * blockSize);
+            path.gameObject = GetComponent<Goals>().Create(start.x * blockSize, start.y * blockSize, start.z * blockSize, false, GameScene.Instance.Path);
             currentPath.Push(path);
-            GetComponent<Goals>().CmdCreate(start.x * blockSize, start.y * blockSize, start.z * blockSize, false, GameScene.Instance.Path);
         }
     }
 

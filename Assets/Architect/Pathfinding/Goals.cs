@@ -90,24 +90,24 @@ public class Goals : NetworkBehaviour
         //calculate time for chronometer
 
         goal = new GoalTile(x, y, z);
-
-        CmdCreate(x, y, z, true, GameScene.Instance.Goal);
+        goal.gameObject = Create(x, y, z, true, GameScene.Instance.Goal);
     }
 
-    [Command] public void CmdCreate(int x, int y, int z, bool solid, GameObject type)
+    public GameObject Create(int x, int y, int z, bool solid, GameObject type)
     {
-        goal.gameObject = Instantiate(type,
+        GameObject o = Instantiate(type,
             new Vector3(x, type.transform.position.y, z),
             Quaternion.identity);
-        NetworkServer.SpawnWithClientAuthority(goal.gameObject, this.gameObject);
-        RpcCreate(goal.gameObject, solid);
+        NetworkServer.SpawnWithClientAuthority(o, this.gameObject);
+        //RpcCreate(goal.gameObject, solid);
+        return o;
     }
 
-    [ClientRpc] public void RpcCreate(GameObject go, bool solid)
+    /**[ClientRpc] public void RpcCreate(GameObject go, bool solid)
     {
         go.transform.parent = GameScene.Instance.pathfindingContainer.transform;
         GameScene.Instance.Solid(go, solid);
-    }
+    }**/
 
     public bool CheckGoal(Tile currentTile)
     {

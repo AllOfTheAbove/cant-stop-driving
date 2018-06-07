@@ -124,17 +124,17 @@ public class Driver : Player
 
         // Score
         bool scoreIncreased = false;
-        if(Math.Floor(transform.position.z) > maximumPositionsReached[1])
+        if(Math.Floor(transform.position.z) > maximumPositionsReached[1] * 16)
         {
             maximumPositionsReached[1] += 1;
             scoreIncreased = true;
         }
-        if(Math.Floor(transform.position.x) > maximumPositionsReached[2])
+        if(Math.Floor(transform.position.x) > maximumPositionsReached[2] * 16)
         {
             maximumPositionsReached[2] += 1;
             scoreIncreased = true;
         }
-        if (Math.Ceiling(transform.position.x) < maximumPositionsReached[0])
+        if (Math.Ceiling(transform.position.x) < maximumPositionsReached[0] * 16)
         {
             maximumPositionsReached[0] -= 1;
             scoreIncreased = true;
