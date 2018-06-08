@@ -177,7 +177,6 @@ public class Game : MonoBehaviour {
 
             if(GameObject.FindGameObjectsWithTag("Architect")[0].GetComponent<Goals>())
             {
-                Debug.Log("lol");
                 GameObject.FindGameObjectsWithTag("Architect")[0].GetComponent<Goals>().Reset();
             }
 
@@ -204,6 +203,7 @@ public class Game : MonoBehaviour {
 
             if (score > PlayerPrefs.GetInt("scoreboard_highscore"))
             {
+                GameScene.Instance.gameoverHighscore.SetActive(true);
                 PlayerPrefs.SetInt("scoreboard_highscore", score);
                 if (PlayerPrefs.HasKey("scoreboard_username"))
                 {
