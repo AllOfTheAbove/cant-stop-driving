@@ -175,6 +175,12 @@ public class Game : MonoBehaviour {
                 GameObject.FindGameObjectsWithTag("Architect")[0].GetComponentInChildren<AudioListener>().enabled = false;
             }
 
+            if(GameObject.FindGameObjectsWithTag("Architect")[0].GetComponent<Goals>())
+            {
+                Debug.Log("lol");
+                GameObject.FindGameObjectsWithTag("Architect")[0].GetComponent<Goals>().Reset();
+            }
+
             GameObject driver = GameObject.FindGameObjectsWithTag("Driver")[0];
             List<Vector3> lastPositions = driver.GetComponent<Driver>().lastPositions;
             List<Quaternion> lastRotations = driver.GetComponent<Driver>().lastRotations;
