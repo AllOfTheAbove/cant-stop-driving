@@ -108,7 +108,8 @@ public class Architect : Player
     private Vector3 architectDestination;
 
     private Queue<Tile> tilesPlaced = new Queue<Tile>();
-    private int nextTileTypeId = 0;
+    private int currentStack = 0;
+    public int[] nextTileId = new int[2];
     private System.Random random = new System.Random();
 
 
@@ -121,6 +122,7 @@ public class Architect : Player
 
     void Start()
     {
+        nextTileId = new int[2];
         AI = this.gameObject.GetComponent<ArchitectAI>();
         architectDestination = new Vector3(0, 0, 0);
         currentTile = new Tile(0, 0, GameScene.Instance.tileSize);
@@ -142,29 +144,28 @@ public class Architect : Player
     [Command] public void CmdSpawnTile()
     {
         currentTile.gameObject = Instantiate(
-            GameScene.Instance.tiles[nextTileTypeId],
-            new Vector3(currentTile.x, GameScene.Instance.tiles[nextTileTypeId].transform.position.y, currentTile.z),
+            GameScene.Instance.tiles[nextTileId[currentStack]].tile,
+            new Vector3(currentTile.x, GameScene.Instance.tiles[nextTileId[currentStack]].tile.transform.position.y, currentTile.z),
             Quaternion.identity
         );
-        currentTile.gameObject.name = GameScene.Instance.tiles[nextTileTypeId].name;
+        currentTile.gameObject.name = GameScene.Instance.tiles[nextTileId[currentStack]].tile.name;
         NetworkServer.SpawnWithClientAuthority(currentTile.gameObject, this.gameObject);
-        tilesPlaced.Enqueue(currentTile);
-        nextTileTypeId = random.Next(0, GameScene.Instance.tiles.Count);
 
         // Delete too old tiles
-        if(tilesPlaced.Count > maxTilesPlaced)
+        tilesPlaced.Enqueue(currentTile);
+        if (tilesPlaced.Count > maxTilesPlaced)
         {
             Tile t = tilesPlaced.Dequeue();
             NetworkServer.Destroy(t.gameObject);
         }
 
         // Fix AI is not prepared for corners
-        if (AI.enabled && GameScene.Instance.tiles[nextTileTypeId].name == "CornerTile")
+        if (AI.enabled && GameScene.Instance.tiles[nextTileId[currentStack]].tile.name == "CornerTile")
         {
-            nextTileTypeId = 0;
+            nextTileId[currentStack] = 0;
         }
 
-        RpcSetCurrentTileType(currentTile.gameObject, currentTile.x, currentTile.z, false, nextTileTypeId);
+        RpcSetCurrentTileType(currentTile.gameObject, currentTile.x, currentTile.z, false, nextTileId[currentStack]);
 
         Vector3 pos = currentTile.gameObject.transform.position;
         if (AI.enabled)
@@ -177,8 +178,10 @@ public class Architect : Player
 
     [Command] private void CmdCreateTile()
     {
+        nextTileId[currentStack] = GameScene.Instance.GetRandomTileId(nextTileId[currentStack]);
+
         // Make tile solid
-        RpcSetCurrentTileType(currentTile.gameObject, currentTile.x, currentTile.z, true, 0);
+        RpcSetCurrentTileType(currentTile.gameObject, currentTile.x, currentTile.z, true, nextTileId[currentStack]);
 
         // Prepare next tile
         if (GetComponent<Goals>().CheckGoal(currentTile))
@@ -214,9 +217,12 @@ public class Architect : Player
             tile.transform.parent = GameScene.Instance.tilesContainer.transform;
             GameScene.Instance.Solid(tile, false);
             GameScene.Instance.AddMaterial(tile, GameScene.Instance.tilePreviewMaterial);
-            GameScene.Instance.nextTileLabel.GetComponent<TextMeshProUGUI>().SetText(GameScene.Instance.tiles[tileTypeId].name);
         }
+        GameScene.Instance.nextTileLabel.GetComponent<TextMeshProUGUI>().SetText(GameScene.Instance.tiles[tileTypeId].tile.name);
     }
+
+
+
 
     [Command] public void CmdSpawnBoat()
     {
@@ -238,14 +244,19 @@ public class Architect : Player
             Game.Instance.Pause();
         }
 
-        if (isLocalPlayer)
-        {
-            CmdSpawnBoat();
-        }
-
         if (!isLocalPlayer || Game.Instance.state != 1 || Game.Instance.paused)
         {
             return;
+        }
+
+        CmdSpawnBoat();
+
+        if(!isSingleplayer)
+        {
+            if (Input.GetKeyDown(KeyCode.A))
+            {
+                CmdSwitchStack();
+            }
         }
 
         if (currentTile.ready)
@@ -274,6 +285,31 @@ public class Architect : Player
         
     }
 
+    [Command] public void CmdSwitchStack()
+    {
+        currentStack = (currentStack + 1) % 2;
+
+        if (currentTile.ready)
+        {
+            NetworkServer.Destroy(currentTile.gameObject);
+            currentTile.gameObject = Instantiate(
+                GameScene.Instance.tiles[nextTileId[currentStack]].tile,
+                new Vector3(currentTile.x, GameScene.Instance.tiles[nextTileId[currentStack]].tile.transform.position.y, currentTile.z),
+                Quaternion.identity
+            );
+            currentTile.gameObject.name = GameScene.Instance.tiles[nextTileId[currentStack]].tile.name;
+            NetworkServer.SpawnWithClientAuthority(currentTile.gameObject, this.gameObject);
+
+            RpcSetCurrentTileType(currentTile.gameObject, currentTile.x, currentTile.z, false, nextTileId[currentStack]);
+        }
+
+        RpcSwitchStack(currentStack, nextTileId[currentStack]);
+    }
+    [ClientRpc] public void RpcSwitchStack(int stackId, int tileId)
+    {
+        GameScene.Instance.currentStackLabel.GetComponent<TextMeshProUGUI>().SetText(stackId + "");
+        //GameScene.Instance.nextTileLabel.GetComponent<TextMeshProUGUI>().SetText(GameScene.Instance.tiles[tileId].tile.name);
+    }
 
 
     void updatePreviewTile()

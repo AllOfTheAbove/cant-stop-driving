@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class ChangeTextColorOnHoverTransition : MonoBehaviour {
 
@@ -11,6 +12,12 @@ public class ChangeTextColorOnHoverTransition : MonoBehaviour {
 
     public Color hoverColor;
     public float transitionSpeed;
+
+    public void MouseClick()
+    {
+        hover = false;
+        GetComponentInChildren<TextMeshProUGUI>().color = defaultColor;
+    }
 
     public void MouseEnter()
     {
@@ -22,6 +29,7 @@ public class ChangeTextColorOnHoverTransition : MonoBehaviour {
     {
         hover = false;
         startTime = Time.time;
+        EventSystem.current.SetSelectedGameObject(null);
     }
 
     private void Start()

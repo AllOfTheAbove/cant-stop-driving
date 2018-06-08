@@ -18,6 +18,7 @@ public class Driver : Player
     public float durationRewind = 5f;
     public bool checkForDeath = true;
     public int vehicleId;
+    private bool fallInWater = false;
 
     public List<Vector3> lastPositions;
     public List<Quaternion> lastRotations;
@@ -145,12 +146,31 @@ public class Driver : Player
         }
 
         // Death
-        if (transform.position.y < -7)
+        if (transform.position.y < -4 && !fallInWater)
+        {
+            fallInWater = true;
+            if(isSingleplayer)
+            {
+                GameScene.Instance.fallInWaterSound.Play();
+            } else
+            {
+                CmdFallInWater();
+            }
+        }
+        if (transform.position.y < -10)
         {
             GameOver();
         }
     }
 
+    [Command] public void CmdFallInWater()
+    {
+        RpcFallInWater();
+    }
+    [ClientRpc] public void RpcFallInWater()
+    {
+        GameScene.Instance.fallInWaterSound.Play();
+    }
 
 
     public void IncreaseScore(int points)

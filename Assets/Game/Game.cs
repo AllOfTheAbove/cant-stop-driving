@@ -97,6 +97,7 @@ public class Game : MonoBehaviour {
     public void Reset()
     {
         paused = false;
+        Time.timeScale = 1f;
         state = -1;
         score = 0;
     }
@@ -149,6 +150,7 @@ public class Game : MonoBehaviour {
             GameScene.Instance.countdownLabel.GetComponent<TextMeshProUGUI>().SetText("GO");
             fadeUI = StartCoroutine(FadeCanvas(GameScene.Instance.score.GetComponent<CanvasGroup>(), 0f, 1f, 0.5f));
             fadeUI = StartCoroutine(FadeCanvas(GameScene.Instance.speed.GetComponent<CanvasGroup>(), 0f, 1f, 0.5f));
+            fadeUI = StartCoroutine(FadeCanvas(GameScene.Instance.currentStack.GetComponent<CanvasGroup>(), 0f, 1f, 0.5f));
             fadeUI = StartCoroutine(FadeCanvas(GameScene.Instance.nextTile.GetComponent<CanvasGroup>(), 0f, 1f, 0.5f));
             if (GetServer().firstGame)
             {
@@ -163,6 +165,7 @@ public class Game : MonoBehaviour {
             {
                 Pause();
             }
+            GameObject.FindGameObjectsWithTag("Driver")[0].GetComponent<Driver>().engineSound.pitch = -0.8f;
             if (GameObject.FindGameObjectsWithTag("Driver")[0].GetComponentInChildren<AudioListener>())
             {
                 GameObject.FindGameObjectsWithTag("Driver")[0].GetComponentInChildren<AudioListener>().enabled = false;
@@ -184,6 +187,7 @@ public class Game : MonoBehaviour {
 
             GameScene.Instance.score.SetActive(false);
             GameScene.Instance.speed.SetActive(false);
+            GameScene.Instance.currentStack.SetActive(false);
             GameScene.Instance.nextTile.SetActive(false);
             GameScene.Instance.warningLabel.SetActive(false);
             GameScene.Instance.camera.SetActive(true);
@@ -191,6 +195,15 @@ public class Game : MonoBehaviour {
             GameScene.Instance.gameoverScoreLabel.GetComponent<TextMeshProUGUI>().SetText("Score: " + score);
             GameScene.Instance.gameoverTimeLabel.GetComponent<TextMeshProUGUI>().SetText("Time: " + Mathf.Floor(Time.time - startTime));
             GameScene.Instance.gameoverUI.SetActive(true);
+
+            if (score > PlayerPrefs.GetInt("scoreboard_highscore"))
+            {
+                PlayerPrefs.SetInt("scoreboard_highscore", score);
+                if (PlayerPrefs.HasKey("scoreboard_username"))
+                {
+                    StartCoroutine(Scoreboard.AddScore(score));
+                }
+            }
         }
     }
 

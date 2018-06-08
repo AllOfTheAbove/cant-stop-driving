@@ -4,20 +4,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class Pathfinding : NetworkBehaviour {
+public class Pathfinding : NetworkBehaviour
+{
 
     private Stack<Tile> placedTiles = new Stack<Tile>();
     private Stack<GoalTile> currentPath = new Stack<GoalTile>();
 
+    private GoalTile pathStart = null;
+
     private static int blockSize = 16;
 
 
-   private void EmptyPath(Stack<GoalTile> path)
+    private void EmptyPath(Stack<GoalTile> path)
     {
         foreach (GoalTile tile in path)
         {
-            Debug.Log("BBB" + tile.gameObject.transform.position);
-            //Debug.Log(tile.gameObject);
             NetworkServer.Destroy(tile.gameObject);
         }
         currentPath = new Stack<GoalTile>();
@@ -30,7 +31,7 @@ public class Pathfinding : NetworkBehaviour {
         int[,,] array = new int[size, size, size];
         int center = array.GetLength(0) / 2;
 
-        array[center, center, center] = -1; //initialize start position
+        array[center, center, center] = -1;
 
         foreach (Tile tile in placedTiles)
         {
@@ -38,7 +39,7 @@ public class Pathfinding : NetworkBehaviour {
             {
                 array[(tile.x - start.x) / blockSize, (tile.y - start.y) / blockSize, (tile.z - start.z) / blockSize] = -10;
             }
-            catch (Exception) {}
+            catch (Exception) { }
         }
 
         array = SetGoal(array, start);
@@ -60,24 +61,25 @@ public class Pathfinding : NetworkBehaviour {
         if (currentPath.Count > 0)
         {
             GoalTile pathStart = currentPath.Pop();
-            Debug.Log("AAA" + pathStart.gameObject.transform.position);
             NetworkServer.Destroy(pathStart.gameObject);
+        }
 
-            /*if (pathStart.x == lastTile.x && pathStart.y == lastTile.y && pathStart.z == lastTile.z)
-            {
-                placedTiles.Push(lastTile);
-                Debug.Log("no dijkstra");
-                return;
-            }*/
+        if (pathStart != null)
+        {
+            NetworkServer.Destroy(pathStart.gameObject);
+            pathStart = null;
         }
 
         Tile previousTile = placedTiles.Count > 0 ? placedTiles.Peek() : null;
 
         Point start = GetComponent<Goals>().StartPoint(lastTile, previousTile);
         GoalTile startTile = new GoalTile(start.x, start.y, start.z);
+        //currentPath.Push(startTile);
+
+        pathStart = startTile;
+
         startTile.gameObject = GetComponent<Goals>().Create(start.x, start.y, start.z, false, GameScene.Instance.Path);
-        currentPath.Push(startTile);
-        
+
 
 
         int[,,] array = MapToArray(placedTiles, start);
@@ -85,7 +87,6 @@ public class Pathfinding : NetworkBehaviour {
 
         EmptyPath(currentPath);
         Queue<Point> pointQueue = Dijkstra.Solve(array, center, center, center, center);
-        //Debug.Log("Dijkstra success");
         placedTiles.Push(lastTile);
 
         while (pointQueue.Count > 0)
@@ -95,13 +96,13 @@ public class Pathfinding : NetworkBehaviour {
             path.gameObject = GetComponent<Goals>().Create(point.x * blockSize + start.x, point.y * blockSize + start.y, point.z * blockSize + start.z, false, GameScene.Instance.Path);
             currentPath.Push(path);
         }
-
+        /*
         if (start.x != lastTile.x || start.y != lastTile.y || start.z != lastTile.z)
         {
             GoalTile path = new GoalTile(start.x * blockSize, start.y * blockSize, start.z * blockSize);
             path.gameObject = GetComponent<Goals>().Create(start.x * blockSize, start.y * blockSize, start.z * blockSize, false, GameScene.Instance.Path);
             currentPath.Push(path);
-        }
+        }*/
     }
 
     public void Reset()

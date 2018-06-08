@@ -2,7 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
+public class TileAndFrequency
+{
+    public GameObject tile;
+    [Range(0, 10)]
+    public int frequency;
+}
+
 public class GameScene : MonoBehaviour {
+
+    private System.Random random = new System.Random();
 
     private static GameScene instance;
     public static GameScene Instance
@@ -19,10 +29,11 @@ public class GameScene : MonoBehaviour {
 
     [Header("Tiles")]
     public GameObject tilesContainer;
-    public List<GameObject> tiles = new List<GameObject>();
+    public List<TileAndFrequency> tiles = new List<TileAndFrequency>();
     public Material tilePreviewMaterial;
     public int tileSize;
     public Material tileWoodMaterial;
+    private List<int> pickTileId = new List<int>();
 
     [Header("Pathfinding")]
     public GameObject pathfindingContainer;
@@ -36,6 +47,8 @@ public class GameScene : MonoBehaviour {
     public GameObject speedLabel;
     public GameObject nextTile;
     public GameObject nextTileLabel;
+    public GameObject currentStack;
+    public GameObject currentStackLabel;
     public GameObject warningLabel;
     public GameObject waitingUI;
     public GameObject pauseUI;
@@ -59,10 +72,25 @@ public class GameScene : MonoBehaviour {
         instance = this;
     }
 
-    public void Update()
+    public void Start()
     {
-        // if numberOfBoats < maxNumberOfBoats
-            // spawn boat
+        for (int i = 0; i < tiles.Count; i++)
+        {
+            for (int j = 0; j < tiles[i].frequency; j++)
+            {
+                pickTileId.Add(i);
+            }
+        }
+    }
+
+    public int GetRandomTileId(int oldId)
+    {
+        int newId = pickTileId[random.Next(0, pickTileId.Count)];
+        while(newId == oldId)
+        {
+            newId = pickTileId[random.Next(0, pickTileId.Count)];
+        }
+        return newId;
     }
 
     public void Solid(GameObject gameObject, bool solid)
