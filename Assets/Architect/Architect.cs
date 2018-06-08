@@ -228,7 +228,7 @@ public class Architect : Player
     {
         if(GameScene.Instance.currentNumberOfBoats < GameScene.Instance.maxNumberOfBoats)
         {
-            GameObject boat = Instantiate(GameScene.Instance.boat);
+            GameObject boat = Instantiate(GameScene.Instance.boats[random.Next(0, 2)]);
             NetworkServer.SpawnWithClientAuthority(boat, this.gameObject);
             GameScene.Instance.currentNumberOfBoats++;
         }

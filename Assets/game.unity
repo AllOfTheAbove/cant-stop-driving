@@ -1644,11 +1644,11 @@ MonoBehaviour:
     lineCount: 1
     pageCount: 1
     materialCount: 1
-  m_havePropertiesChanged: 0
+  m_havePropertiesChanged: 1
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
-  m_isInputParsingRequired: 0
+  m_isInputParsingRequired: 1
   m_inputSource: 0
   m_hasFontAssetChanged: 0
   m_subTextObjects:
@@ -2056,11 +2056,11 @@ MonoBehaviour:
     lineCount: 1
     pageCount: 1
     materialCount: 1
-  m_havePropertiesChanged: 0
+  m_havePropertiesChanged: 1
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
-  m_isInputParsingRequired: 0
+  m_isInputParsingRequired: 1
   m_inputSource: 0
   m_hasFontAssetChanged: 0
   m_subTextObjects:
@@ -2202,7 +2202,9 @@ MonoBehaviour:
   camera: {fileID: 838844892}
   maxNumberOfBoats: 2
   currentNumberOfBoats: 0
-  boat: {fileID: 1089161889849590, guid: c01232abeba51ae44a5761f9a4452ac8, type: 2}
+  boats:
+  - {fileID: 1596110111704528, guid: 4ea1e22fa58fa6c46b6df5dee92f14b4, type: 2}
+  - {fileID: 1126740169859242, guid: ebd477206afd9344daaab441d60cd133, type: 2}
   tilesContainer: {fileID: 108886595}
   tiles:
   - tile: {fileID: 1982668182461060, guid: 4e8f2d18022d0c044ac9dff6163bc6f8, type: 2}
@@ -6317,11 +6319,11 @@ MonoBehaviour:
     lineCount: 1
     pageCount: 1
     materialCount: 1
-  m_havePropertiesChanged: 0
+  m_havePropertiesChanged: 1
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
-  m_isInputParsingRequired: 0
+  m_isInputParsingRequired: 1
   m_inputSource: 0
   m_hasFontAssetChanged: 0
   m_subTextObjects:

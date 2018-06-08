@@ -25,7 +25,7 @@ public class GameScene : MonoBehaviour {
     [Header("World")]
     public int maxNumberOfBoats = 3;
     public int currentNumberOfBoats = 0;
-    public GameObject boat;
+    public GameObject[] boats;
 
     [Header("Tiles")]
     public GameObject tilesContainer;

@@ -28,6 +28,7 @@ public class Boat : NetworkBehaviour {
         {
             direction = new Vector3(0, 0, -velocity);
             shift = random.Next(30) + 16;
+            transform.Rotate(0, 180, 0);
         } else if(d == 2)
         {
             direction = new Vector3(0, 0, velocity);
@@ -36,6 +37,7 @@ public class Boat : NetworkBehaviour {
         {
             direction = new Vector3(0, 0, -velocity);
             shift = -random.Next(30) - 16;
+            transform.Rotate(0, 180, 0);
         }
 
         transform.position = new Vector3(driverPosition.x + shift, transform.position.y, driverPosition.z);;
