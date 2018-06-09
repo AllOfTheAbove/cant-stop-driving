@@ -5,7 +5,7 @@ using UnityEngine.Networking;
 
 public class RoofTile : NetworkBehaviour {
 
-    public int scorePoints = 50;
+    public int scorePoints = 10;
 
     private bool alreadyUsed = false;
 
@@ -15,5 +15,6 @@ public class RoofTile : NetworkBehaviour {
             GameObject.FindGameObjectsWithTag("Driver")[0].GetComponentInChildren<Driver>().IncreaseScore(scorePoints);
             alreadyUsed = true;
         }
+
     }
 }

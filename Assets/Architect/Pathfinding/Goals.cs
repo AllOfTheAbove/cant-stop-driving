@@ -34,21 +34,25 @@ public class Goals : NetworkBehaviour
     static public GoalTile goal;
     static public bool goalExists = false;
     static int blockSize = 16;
-    static string[] linearTiles = { "BasicTile", "NarrowTile", "PropellerTile", "JumpTile", "RoughTile" };
 
 
     public Point StartPoint(Tile lastTile, Tile previousTile)
     {
         Point output = new Point(lastTile.x, lastTile.y, lastTile.z);
 
+        if (!lastTile.init && lastTile.gameObject.name == "CrossTile")
+        {
+            GoalTile pathStart = GetComponent<Pathfinding>().currentPath.Peek();
+            return new Point(pathStart.x, pathStart.y, pathStart.z);
+        }
+
+
         try
         {
-            //throw new NotImplementedException();
-
             Quaternion next = new Quaternion(1, 0, 0, 0);
             Quaternion i = new Quaternion(0, 1, 0, 0);
             if (lastTile.gameObject.name == "CornerTile")
-                next *= i;
+                next *= i * i;
 
             int rotation = (int)lastTile.gameObject.transform.rotation.eulerAngles.y + ArchitectAI.tileCompensation[lastTile.gameObject.name];
 
@@ -57,25 +61,21 @@ public class Goals : NetworkBehaviour
                 rotation -= 90;
                 next *= i;
             }
-            //Debug.Log("Pre modif" + output);
 
             output.x += (int)next.x * blockSize;
             output.z += (int)next.y * blockSize;
 
-            if (Array.Exists(linearTiles, element => element == lastTile.gameObject.name) && previousTile != null && output.x == previousTile.x && output.y == previousTile.y)
+            if (Array.Exists(ArchitectAI.linearTiles, element => element == lastTile.gameObject.name) && previousTile != null && output.x == previousTile.x && output.y == previousTile.y)
             {
                 output.x -= 2 * (int)next.x * blockSize;
                 output.z -= 2 * (int)next.y * blockSize;
             }
-
-            //Debug.Log(next);
-            //Debug.Log("Post modif" + output);
         }
-        catch (Exception){}
-        
+        catch (Exception) { }
+
         return output;
     }
-    
+
     public void SetGoal(Tile lastTile)
     {
         if (goalExists)
@@ -83,7 +83,7 @@ public class Goals : NetworkBehaviour
 
         goalExists = true;
 
-        int x = lastTile.x /*+ blockSize * rng.Next(-5, 6)*/;
+        int x = lastTile.x + blockSize * rng.Next(-5, 6);
         int y = lastTile.y;
         int z = lastTile.z + blockSize * rng.Next(2, 10);
 
@@ -111,18 +111,21 @@ public class Goals : NetworkBehaviour
 
     public bool CheckGoal(Tile currentTile)
     {
-        //Point start = StartPoint(currentTile, previousTile);
         GetComponent<Pathfinding>().SetPath(currentTile);
-        bool output = ((Math.Abs(currentTile.x - goal.x) == blockSize) && (Math.Abs(currentTile.z - goal.z) == 0)) 
+        bool output = ((Math.Abs(currentTile.x - goal.x) == blockSize) && (Math.Abs(currentTile.z - goal.z) == 0))
                         || ((Math.Abs(currentTile.x - goal.x) == 0) && (Math.Abs(currentTile.z - goal.z) == blockSize));
         goalExists = !output;
-        ArchitectAI.goalReached = output;
+        if (output)
+            ArchitectAI.lastGoal = goal;
         return output;
     }
 
     public void Reset()
     {
+        //Debug.Log("Reset");
         goalExists = false;
+        goal = null;
         GetComponent<Pathfinding>().Reset();
     }
+
 }

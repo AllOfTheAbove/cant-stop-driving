@@ -37,7 +37,7 @@ public class Tile
     {
         Vector3 pos = this.gameObject.transform.position;
 
-        if(direction == this.direction)
+        if (direction == this.direction)
         {
             return;
         }
@@ -48,12 +48,14 @@ public class Tile
             {
                 pos.x = this.x + world.tileSize;
                 pos.z = this.z + world.tileSize;
-            } else if(this.direction == 2)
+            }
+            else if (this.direction == 2)
             {
                 pos.x = this.x - world.tileSize;
                 pos.z = this.z + world.tileSize;
             }
-        } else if(direction == 1)
+        }
+        else if (direction == 1)
         {
             if (this.direction == 0)
             {
@@ -65,7 +67,8 @@ public class Tile
                 pos.x = this.x - 2 * world.tileSize;
                 pos.z = this.z;
             }
-        } else if(direction == 2)
+        }
+        else if (direction == 2)
         {
             if (this.direction == 0)
             {
@@ -79,9 +82,9 @@ public class Tile
             }
         }
 
-        this.x = (int) pos.x;
-        this.y = (int) pos.y;
-        this.z = (int) pos.z;
+        this.x = (int)pos.x;
+        this.y = (int)pos.y;
+        this.z = (int)pos.z;
         this.gameObject.transform.position = pos;
         this.direction = direction;
     }
@@ -132,7 +135,7 @@ public class Architect : Player
         {
             AI.enabled = true;
         }
-        if(isLocalPlayer || isSingleplayer)
+        if (isLocalPlayer || isSingleplayer)
         {
             GetComponent<Goals>().SetGoal(lastTile);
             GetComponent<Pathfinding>().SetPath(lastTile);
@@ -141,14 +144,22 @@ public class Architect : Player
 
 
 
-    [Command] public void CmdSpawnTile()
+    [Command]
+    public void CmdSpawnTile()
     {
         currentTile.gameObject = Instantiate(
             GameScene.Instance.tiles[nextTileId[currentStack]].tile,
             new Vector3(currentTile.x, GameScene.Instance.tiles[nextTileId[currentStack]].tile.transform.position.y, currentTile.z),
-            Quaternion.identity
+            GameScene.Instance.tiles[nextTileId[currentStack]].tile.transform.rotation
         );
         currentTile.gameObject.name = GameScene.Instance.tiles[nextTileId[currentStack]].tile.name;
+
+        if (AI.enabled)
+        {
+            currentTile.SetDirection(AI.Position(currentTile, lastTile));
+            currentTile.gameObject.transform.Rotate(0, AI.Rotation(currentTile, lastTile), 0);
+        }
+
         NetworkServer.SpawnWithClientAuthority(currentTile.gameObject, this.gameObject);
 
         // Delete too old tiles
@@ -167,16 +178,11 @@ public class Architect : Player
 
         RpcSetCurrentTileType(currentTile.gameObject, currentTile.x, currentTile.z, false, nextTileId[currentStack]);
 
-        Vector3 pos = currentTile.gameObject.transform.position;
-        if (AI.enabled)
-        {
-            currentTile.direction = AI.Position(currentTile, lastTile);
-            currentTile.gameObject.transform.position = pos;
-            currentTile.gameObject.transform.Rotate(0, AI.Rotation(currentTile, lastTile), 0);
-        }
+
     }
 
-    [Command] private void CmdCreateTile()
+    [Command]
+    private void CmdCreateTile()
     {
         nextTileId[currentStack] = GameScene.Instance.GetRandomTileId(nextTileId[currentStack]);
 
@@ -187,6 +193,8 @@ public class Architect : Player
         if (GetComponent<Goals>().CheckGoal(currentTile))
         {
             lastTile = new Tile(Goals.goal.x, Goals.goal.y, Goals.goal.z);
+            lastTile.gameObject = Instantiate(GameScene.Instance.tiles[3].tile, new Vector3(lastTile.x, lastTile.y - 60, lastTile.z), Quaternion.identity);
+            lastTile.gameObject.transform.localScale = new Vector3(0, 0, 0);
             GetComponent<Goals>().SetGoal(lastTile);
             GetComponent<Pathfinding>().SetPath(lastTile);
         }
@@ -197,7 +205,8 @@ public class Architect : Player
         currentTile = new Tile(lastTile.x, 0, lastTile.z + GameScene.Instance.tileSize);
     }
 
-    [ClientRpc] public void RpcSetCurrentTileType(GameObject tile, int x, int z, bool placed, int tileTypeId)
+    [ClientRpc]
+    public void RpcSetCurrentTileType(GameObject tile, int x, int z, bool placed, int tileTypeId)
     {
         if (placed)
         {
@@ -224,9 +233,10 @@ public class Architect : Player
 
 
 
-    [Command] public void CmdSpawnBoat()
+    [Command]
+    public void CmdSpawnBoat()
     {
-        if(GameScene.Instance.currentNumberOfBoats < GameScene.Instance.maxNumberOfBoats)
+        if (GameScene.Instance.currentNumberOfBoats < GameScene.Instance.maxNumberOfBoats)
         {
             GameObject boat = Instantiate(GameScene.Instance.boats[random.Next(0, 2)]);
             NetworkServer.SpawnWithClientAuthority(boat, this.gameObject);
@@ -251,7 +261,7 @@ public class Architect : Player
 
         CmdSpawnBoat();
 
-        if(!isSingleplayer)
+        if (!isSingleplayer)
         {
             if (Input.GetKeyDown(KeyCode.A))
             {
@@ -282,10 +292,11 @@ public class Architect : Player
                 CmdSpawnTile();
             }
         }
-        
+
     }
 
-    [Command] public void CmdSwitchStack()
+    [Command]
+    public void CmdSwitchStack()
     {
         currentStack = (currentStack + 1) % 2;
 
@@ -305,7 +316,8 @@ public class Architect : Player
 
         RpcSwitchStack(currentStack, nextTileId[currentStack]);
     }
-    [ClientRpc] public void RpcSwitchStack(int stackId, int tileId)
+    [ClientRpc]
+    public void RpcSwitchStack(int stackId, int tileId)
     {
         GameScene.Instance.currentStackLabel.GetComponent<TextMeshProUGUI>().SetText(stackId + "");
         //GameScene.Instance.nextTileLabel.GetComponent<TextMeshProUGUI>().SetText(GameScene.Instance.tiles[tileId].tile.name);
@@ -314,7 +326,7 @@ public class Architect : Player
 
     void updatePreviewTile()
     {
-        if(currentTile.gameObject == null || AI.enabled)
+        if (currentTile.gameObject == null || AI.enabled)
         {
             return;
         }

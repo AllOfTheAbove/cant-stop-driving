@@ -34,7 +34,7 @@ public class Server : NetworkManager
     {
         if(matchMaker)
         {
-            matchMaker.DropConnection(matchInfo.networkId, matchInfo.nodeId, 0, OnDropConnection);
+            //matchMaker.DropConnection(matchInfo.networkId, matchInfo.nodeId, 0, OnDropConnection);
         }
         StopHost();
         Destroy(gameObject);

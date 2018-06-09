@@ -67,6 +67,8 @@ public class Game : MonoBehaviour {
         audioMixer.SetFloat("musicVolume", PlayerPrefs.GetFloat("musicVolume"));
         audioMixer.SetFloat("soundVolume", PlayerPrefs.GetFloat("soundVolume"));
         titleMusic.Play();
+
+        PlayerPrefs.SetInt("scoreboard_highscore", 5);
     }
 
     private void Update()
@@ -201,6 +203,7 @@ public class Game : MonoBehaviour {
             GameScene.Instance.gameoverTimeLabel.GetComponent<TextMeshProUGUI>().SetText("Time: " + Mathf.Floor(Time.time - startTime));
             GameScene.Instance.gameoverUI.SetActive(true);
 
+            Debug.Log(score + " : " + PlayerPrefs.GetInt("scoreboard_highscore"));
             if (score > PlayerPrefs.GetInt("scoreboard_highscore"))
             {
                 GameScene.Instance.gameoverHighscore.SetActive(true);

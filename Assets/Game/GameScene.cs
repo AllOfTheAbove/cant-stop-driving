@@ -6,8 +6,7 @@ using UnityEngine;
 public class TileAndFrequency
 {
     public GameObject tile;
-    [Range(0, 10)]
-    public int frequency;
+    [Range(0, 10)] public int frequency;
 }
 
 public class GameScene : MonoBehaviour {

@@ -85,8 +85,8 @@ public class Scoreboard : MonoBehaviour {
     public void Register()
     {
         PlayerPrefs.SetString("scoreboard_username", username.text);
-        PlayerPrefs.SetInt("scoreboard_highscore", 0);
+        StartCoroutine(AddScore(PlayerPrefs.GetInt("scoreboard_highscore")));
         registerUI.SetActive(false);
-        StartCoroutine(GetScores());
+        RefreshScores();
     }
 }

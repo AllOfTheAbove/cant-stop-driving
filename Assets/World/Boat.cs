@@ -5,7 +5,7 @@ using UnityEngine.Networking;
 
 public class Boat : NetworkBehaviour {
 
-    public Vector3 direction = new Vector3(0, 0, 0);
+    public Vector3 direction;
     public float velocity = 5;
     public float distanceToDespawn = 100;
 
@@ -41,10 +41,22 @@ public class Boat : NetworkBehaviour {
         }
 
         transform.position = new Vector3(driverPosition.x + shift, transform.position.y, driverPosition.z);;
-	}
+
+        CmdTellDirection(direction, transform.position);
+    }
+
+    [Command] public void CmdTellDirection(Vector3 direction, Vector3 position)
+    {
+        RpcTellDirection(direction, position);
+    }
+    [ClientRpc] public void RpcTellDirection(Vector3 direction, Vector3 position)
+    {
+        transform.position = position;
+        this.direction = direction;
+    }
 	
 	void Update () {
-        if(!isServer)
+        if(direction == null)
         {
             return;
         }

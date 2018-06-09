@@ -8,7 +8,7 @@ public class Pathfinding : NetworkBehaviour
 {
 
     private Stack<Tile> placedTiles = new Stack<Tile>();
-    private Stack<GoalTile> currentPath = new Stack<GoalTile>();
+    public Stack<GoalTile> currentPath = new Stack<GoalTile>();
 
     private GoalTile pathStart = null;
 
@@ -74,7 +74,6 @@ public class Pathfinding : NetworkBehaviour
 
         Point start = GetComponent<Goals>().StartPoint(lastTile, previousTile);
         GoalTile startTile = new GoalTile(start.x, start.y, start.z);
-        //currentPath.Push(startTile);
 
         pathStart = startTile;
 
@@ -96,13 +95,6 @@ public class Pathfinding : NetworkBehaviour
             path.gameObject = GetComponent<Goals>().Create(point.x * blockSize + start.x, point.y * blockSize + start.y, point.z * blockSize + start.z, false, GameScene.Instance.Path);
             currentPath.Push(path);
         }
-        /*
-        if (start.x != lastTile.x || start.y != lastTile.y || start.z != lastTile.z)
-        {
-            GoalTile path = new GoalTile(start.x * blockSize, start.y * blockSize, start.z * blockSize);
-            path.gameObject = GetComponent<Goals>().Create(start.x * blockSize, start.y * blockSize, start.z * blockSize, false, GameScene.Instance.Path);
-            currentPath.Push(path);
-        }*/
     }
 
     public void Reset()
