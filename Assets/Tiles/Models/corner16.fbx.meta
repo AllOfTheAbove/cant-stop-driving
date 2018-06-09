@@ -1,7 +1,5 @@
 fileFormatVersion: 2
 guid: 6e5e85562bdc0ee4a85091161d6e6f49
-timeCreated: 1528550662
-licenseType: Free
 ModelImporter:
   serializedVersion: 22
   fileIDToRecycleName:
@@ -41,6 +39,7 @@ ModelImporter:
     6400004: ramp2
     6400006: ramp3.000
     6400008: ramp3.001
+    2186277476908879412: ImportLogs
   externalObjects: {}
   materials:
     importMaterials: 1
@@ -60,6 +59,7 @@ ModelImporter:
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
+    importConstraints: 0
     animationCompression: 1
     animationRotationError: 0.5
     animationPositionError: 0.5

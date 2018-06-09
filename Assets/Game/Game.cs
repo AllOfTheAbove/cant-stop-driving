@@ -67,8 +67,6 @@ public class Game : MonoBehaviour {
         audioMixer.SetFloat("musicVolume", PlayerPrefs.GetFloat("musicVolume"));
         audioMixer.SetFloat("soundVolume", PlayerPrefs.GetFloat("soundVolume"));
         titleMusic.Play();
-
-        PlayerPrefs.SetInt("scoreboard_highscore", 5);
     }
 
     private void Update()

@@ -42,16 +42,17 @@ public class Boat : NetworkBehaviour {
 
         transform.position = new Vector3(driverPosition.x + shift, transform.position.y, driverPosition.z);;
 
-        CmdTellDirection(direction, transform.position);
+        CmdTellDirection(direction, transform.position, transform.rotation);
     }
 
-    [Command] public void CmdTellDirection(Vector3 direction, Vector3 position)
+    [Command] public void CmdTellDirection(Vector3 direction, Vector3 position, Quaternion rotation)
     {
-        RpcTellDirection(direction, position);
+        RpcTellDirection(direction, position, rotation);
     }
-    [ClientRpc] public void RpcTellDirection(Vector3 direction, Vector3 position)
+    [ClientRpc] public void RpcTellDirection(Vector3 direction, Vector3 position, Quaternion rotation)
     {
         transform.position = position;
+        transform.rotation = rotation;
         this.direction = direction;
     }
 	

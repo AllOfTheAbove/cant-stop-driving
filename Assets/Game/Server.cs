@@ -32,10 +32,6 @@ public class Server : NetworkManager
 
     public void Disconnect()
     {
-        if(matchMaker)
-        {
-            //matchMaker.DropConnection(matchInfo.networkId, matchInfo.nodeId, 0, OnDropConnection);
-        }
         StopHost();
         Destroy(gameObject);
         Game.Instance.RestartServer();

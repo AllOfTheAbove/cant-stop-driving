@@ -19,6 +19,7 @@ public class Driver : Player
     public bool checkForDeath = true;
     public int vehicleId;
     private bool fallInWater = false;
+    private bool gameoverFallInWater = false;
 
     public List<Vector3> lastPositions;
     public List<Quaternion> lastRotations;
@@ -157,8 +158,9 @@ public class Driver : Player
                 CmdFallInWater();
             }
         }
-        if (transform.position.y < -10)
+        if (transform.position.y < -10 && !gameoverFallInWater)
         {
+            gameoverFallInWater = true;
             GameOver();
         }
     }

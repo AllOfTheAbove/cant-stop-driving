@@ -1,7 +1,5 @@
 fileFormatVersion: 2
 guid: f47192078f7231a4bb88d0eaa7b7f275
-timeCreated: 1528478599
-licenseType: Free
 ModelImporter:
   serializedVersion: 22
   fileIDToRecycleName:
@@ -43,6 +41,7 @@ ModelImporter:
     4300006: Mesh4 Group5 Group1 Model
     4300008: Mesh1 Group2 Group1 Model
     4300010: watercraftPack_020
+    2186277476908879412: ImportLogs
   externalObjects: {}
   materials:
     importMaterials: 1
@@ -62,6 +61,7 @@ ModelImporter:
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
+    importConstraints: 0
     animationCompression: 1
     animationRotationError: 0.5
     animationPositionError: 0.5
