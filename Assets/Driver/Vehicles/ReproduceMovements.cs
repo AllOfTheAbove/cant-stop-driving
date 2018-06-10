@@ -13,7 +13,10 @@ public class ReproduceMovements : MonoBehaviour {
     {
         if (currentPosition >= positions.Count)
         {
-            GetComponent<Vehicle>().Explode();
+            if(GetComponent<Vehicle>())
+            {
+                GetComponent<Vehicle>().Explode();
+            }
             StartCoroutine(Reset());
         } else
         {

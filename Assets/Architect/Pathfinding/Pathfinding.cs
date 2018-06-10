@@ -15,8 +15,9 @@ public class Pathfinding : NetworkBehaviour
     private static int blockSize = 16;
 
 
-    private void EmptyPath(Stack<GoalTile> path)
+    public void EmptyPath(Stack<GoalTile> path)
     {
+        Debug.Log("EMPTY");
         foreach (GoalTile tile in path)
         {
             NetworkServer.Destroy(tile.gameObject);
@@ -58,6 +59,10 @@ public class Pathfinding : NetworkBehaviour
 
     public void SetPath(Tile lastTile)
     {
+        Debug.Log("SET");
+
+
+
         if (currentPath.Count > 0)
         {
             GoalTile pathStart = currentPath.Pop();
@@ -99,7 +104,7 @@ public class Pathfinding : NetworkBehaviour
 
     public void Reset()
     {
-        currentPath = new Stack<GoalTile>();
+        EmptyPath(currentPath);
         placedTiles = new Stack<Tile>();
     }
 }

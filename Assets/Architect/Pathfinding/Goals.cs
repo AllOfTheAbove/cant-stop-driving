@@ -35,11 +35,14 @@ public class Goals : NetworkBehaviour
     static public bool goalExists = false;
     static int blockSize = 16;
 
+    public bool missedGoal = false;
+
     public Point StartPoint(Tile lastTile, Tile previousTile)
     {
         Point output = new Point(lastTile.x, lastTile.y, lastTile.z);
 
-        if (!lastTile.init && lastTile.gameObject.name == "CrossTile")
+
+        if (!lastTile.init && !missedGoal && lastTile.gameObject.name == "CrossTile")
         {
             GoalTile pathStart = GetComponent<Pathfinding>().currentPath.Peek();
             return new Point(pathStart.x, pathStart.y, pathStart.z);
@@ -158,11 +161,15 @@ public class Goals : NetworkBehaviour
 
         if (!output && currentTile.z > goal.z) //decreases score when goal missed, but keeps on generating goal
         {
-            output = true;
             Debug.Log("MISSED A GOAL !");
+            missedGoal = true;
+            Reset();
+            SetGoal(currentTile);
+            GetComponent<Pathfinding>().SetPath(currentTile);
             //FIXME decrease score
         }
 
+        missedGoal = false;
         goalExists = !output;
         if (output)
             ArchitectAI.lastGoal = goal;
