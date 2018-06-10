@@ -31,13 +31,16 @@ public class Driver : Player
     [Command] public void CmdSpawnVehicle(int vehicleId)
     {
         GameObject _vehicle = Instantiate(Game.Instance.vehicles[vehicleId]);
-        NetworkServer.SpawnWithClientAuthority(_vehicle, gameObject);
+        NetworkServer.SpawnWithClientAuthority(_vehicle, this.gameObject);
         RpcSpawnVehicle(_vehicle, vehicleId);
     }
     [ClientRpc] public void RpcSpawnVehicle(GameObject _vehicle, int _vehicleId)
     {
+        Debug.Log(_vehicle);
+        Debug.Log(this.gameObject);
+
         vehicle = _vehicle;
-        _vehicle.transform.parent = gameObject.transform;
+        _vehicle.transform.parent = this.gameObject.transform;
         vehicleId = _vehicleId;
     }
     public override void OnStartLocalPlayer()

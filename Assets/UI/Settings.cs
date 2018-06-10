@@ -69,11 +69,10 @@ public class Settings : MonoBehaviour {
 
     public void SetFullscreen()
     {
-            fullscreen = fullscreenToggle.isOn;
-            Screen.fullScreen = fullscreen;
-            Resolution resolution = Screen.currentResolution;
-            Screen.SetResolution(resolution.width, resolution.height, fullscreen);
-        Debug.Log(fullscreenToggle.isOn);
+        fullscreen = fullscreenToggle.isOn;
+        Screen.fullScreen = fullscreen;
+        Resolution resolution = Screen.currentResolution;
+        Screen.SetResolution(resolution.width, resolution.height, fullscreen);
     }
 
     public void SetResolution(int resolutionIndex)

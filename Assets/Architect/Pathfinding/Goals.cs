@@ -117,13 +117,15 @@ public class Goals : NetworkBehaviour
         bool output = ((Math.Abs(currentTile.x - goal.x) == blockSize) && (Math.Abs(currentTile.z - goal.z) == 0))
                         || ((Math.Abs(currentTile.x - goal.x) == 0) && (Math.Abs(currentTile.z - goal.z) == blockSize));
 
-        /*if(output && currentTile.gameObject.name != "CrossTile")
+        if (output && currentTile.gameObject.name != "CrossTile")
         {
-            int delta = currentTile.x;
-            
-            if(currentTile.gameObject.name == "CornerTile")
+            int delta = goal.x - currentTile.x;
+
+            if (currentTile.gameObject.name == "CornerTile")
             {
-                switch ((int) currentTile.gameObject.transform.eulerAngles.y)
+                Debug.Log(delta);
+                Debug.Log((int)currentTile.gameObject.transform.eulerAngles.y);
+                switch ((int)currentTile.gameObject.transform.eulerAngles.y)
                 {
                     case 180:
                         output = delta > 0;
@@ -152,7 +154,7 @@ public class Goals : NetworkBehaviour
                         break;
                 }
             }
-        }*/
+        }
 
 
         if (output) //increases score when goal reached
