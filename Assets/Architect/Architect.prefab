@@ -24,6 +24,7 @@ GameObject:
   - component: {fileID: 114797169893809830}
   - component: {fileID: 114252976805627584}
   - component: {fileID: 114165342357364646}
+  - component: {fileID: 114264080629184784}
   m_Layer: 0
   m_Name: Architect
   m_TagString: Architect
@@ -130,7 +131,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1076787189189672}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 250, y: 0, z: 250}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4638346205686632}
@@ -211,54 +212,69 @@ AudioSource:
   rolloffCustomCurve:
     serializedVersion: 2
     m_Curve:
-    - serializedVersion: 2
+    - serializedVersion: 3
       time: 0
       value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
-    - serializedVersion: 2
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
       time: 1
       value: 0
       inSlope: 0
       outSlope: 0
       tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
   panLevelCustomCurve:
     serializedVersion: 2
     m_Curve:
-    - serializedVersion: 2
+    - serializedVersion: 3
       time: 0
       value: 0
       inSlope: 0
       outSlope: 0
       tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
   spreadCustomCurve:
     serializedVersion: 2
     m_Curve:
-    - serializedVersion: 2
+    - serializedVersion: 3
       time: 0
       value: 0
       inSlope: 0
       outSlope: 0
       tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
   reverbZoneMixCustomCurve:
     serializedVersion: 2
     m_Curve:
-    - serializedVersion: 2
+    - serializedVersion: 3
       time: 0
       value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
@@ -304,6 +320,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cdb00da1aceb4ca47a134d31249ae424, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  missedGoal: 0
+--- !u!114 &114264080629184784
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1076787189189672}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f9c7319fd023d043881c2445ca2ae99, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  oldOcean: {fileID: 0}
+  newOcean: {fileID: 0}
+  oceanSize: 500
+  limit: 0
 --- !u!114 &114503408292223788
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -354,6 +386,7 @@ MonoBehaviour:
   tileSpawnSound: {fileID: 82289907345124418}
   tileSpawnAnimation: {fileID: 198685558625935434, guid: 5a97962f7d5ba4df0823334b52c7c02c,
     type: 2}
+  nextTileId: 0000000000000000
 --- !u!114 &114762140255612614
 MonoBehaviour:
   m_ObjectHideFlags: 1

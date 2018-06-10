@@ -127,9 +127,9 @@ public class Architect : Player
     {
         nextTileId = new int[2];
         AI = this.gameObject.GetComponent<ArchitectAI>();
-        architectDestination = new Vector3(0, 0, 0);
-        currentTile = new Tile(0, 0, GameScene.Instance.tileSize);
-        lastTile = new Tile(0, 0, 0);
+        architectDestination = new Vector3(250, 0, 250);
+        currentTile = new Tile(250, 0, 250 + GameScene.Instance.tileSize);
+        lastTile = new Tile(250, 0, 250);
         lastTile.init = true;
         if (isSingleplayer)
         {

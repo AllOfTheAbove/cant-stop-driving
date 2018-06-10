@@ -28,6 +28,7 @@ public class GameScene : MonoBehaviour {
     public int maxNumberOfBoats = 3;
     public int currentNumberOfBoats = 0;
     public GameObject[] boats;
+    public GameObject ocean;
 
     [Header("Tiles")]
     public GameObject tilesContainer;
@@ -90,7 +91,7 @@ public class GameScene : MonoBehaviour {
 
     public IEnumerator DayAndNight()
     {
-        yield return new WaitForSecondsRealtime(random.Next(3, 7));
+        yield return new WaitForSecondsRealtime(random.Next(3, 7) * 60);
         GameObject.FindGameObjectsWithTag("Architect")[0].GetComponent<Architect>().CmdToggleNight(!night);
         StartCoroutine(DayAndNight());
     }

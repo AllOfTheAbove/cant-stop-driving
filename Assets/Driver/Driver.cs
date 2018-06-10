@@ -34,12 +34,16 @@ public class Driver : Player
         GameObject _vehicle = Instantiate(Game.Instance.vehicles[vehicleId]);
         NetworkServer.SpawnWithClientAuthority(_vehicle, this.gameObject);
         RpcSpawnVehicle(_vehicle, vehicleId);
+
+        Debug.Log(_vehicle.transform.position);
     }
     [ClientRpc]
     public void RpcSpawnVehicle(GameObject _vehicle, int _vehicleId)
     {
+        Debug.Log(_vehicle.transform.position);
         vehicle = _vehicle;
         _vehicle.transform.parent = this.gameObject.transform;
+        vehicle.transform.position = new Vector3(250, 0, 250);
         vehicleId = _vehicleId;
     }
     public override void OnStartLocalPlayer()
@@ -59,6 +63,7 @@ public class Driver : Player
         {
             vehicle = Instantiate(Game.Instance.vehicles[Game.Instance.currentVehicleId]);
             vehicle.transform.parent = gameObject.transform;
+            vehicle.transform.position = new Vector3(250, 0, 250);
             vehicleId = Game.Instance.currentVehicleId;
             Game.Instance.ChangeState(0);
             checkForDeathCoroutine = StartCoroutine(CheckForDeath());
