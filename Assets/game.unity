@@ -141,6 +141,7 @@ Transform:
   m_Children:
   - {fileID: 2048182976}
   - {fileID: 929135829}
+  - {fileID: 297592032}
   - {fileID: 510408384}
   - {fileID: 838844893}
   m_Father: {fileID: 0}
@@ -383,12 +384,12 @@ RectTransform:
   - {fileID: 1398172691}
   - {fileID: 1665085868}
   m_Father: {fileID: 996620420}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 170}
+  m_AnchoredPosition: {x: -567, y: 0}
+  m_SizeDelta: {x: 1134, y: 170}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!225 &100480318
 CanvasGroup:
@@ -1873,6 +1874,71 @@ CanvasRenderer:
     type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 272800854}
+--- !u!1 &297592031
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 297592032}
+  - component: {fileID: 297592033}
+  m_Layer: 0
+  m_Name: NightLight
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &297592032
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 297592031}
+  m_LocalRotation: {x: 0.47475207, y: -0, z: -0, w: 0.8801196}
+  m_LocalPosition: {x: 0, y: 45.46, z: -71.02}
+  m_LocalScale: {x: 1, y: 0.99999994, z: 0.99999994}
+  m_Children: []
+  m_Father: {fileID: 1912965}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 56.686, y: 0, z: 0}
+--- !u!108 &297592033
+Light:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 297592031}
+  m_Enabled: 1
+  serializedVersion: 8
+  m_Type: 1
+  m_Color: {r: 0.41960785, g: 0.53333336, b: 0.98039216, a: 1}
+  m_Intensity: 0.5
+  m_Range: 10
+  m_SpotAngle: 30
+  m_CookieSize: 10
+  m_Shadows:
+    m_Type: 2
+    m_Resolution: -1
+    m_CustomResolution: -1
+    m_Strength: 1
+    m_Bias: 0.05
+    m_NormalBias: 0.4
+    m_NearPlane: 0.2
+  m_Cookie: {fileID: 0}
+  m_DrawHalo: 0
+  m_Flare: {fileID: 0}
+  m_RenderMode: 0
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_Lightmapping: 4
+  m_AreaSize: {x: 1, y: 1}
+  m_BounceIntensity: 1
+  m_ColorTemperature: 6570
+  m_UseColorTemperature: 0
+  m_ShadowRadius: 0
+  m_ShadowAngle: 0
 --- !u!1 &298246783
 GameObject:
   m_ObjectHideFlags: 0
@@ -3120,7 +3186,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1912965}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &510408385
 MonoBehaviour:
@@ -3496,6 +3562,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   camera: {fileID: 838844892}
+  night: 0
+  light: {fileID: 929135830}
+  nightLight: {fileID: 297592033}
   maxNumberOfBoats: 2
   currentNumberOfBoats: 0
   boats:
@@ -3800,7 +3869,7 @@ RectTransform:
   - {fileID: 1763973174}
   - {fileID: 197599743}
   m_Father: {fileID: 996620420}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
@@ -5052,7 +5121,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1912965}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 36.8, y: -128.3, z: 0}
 --- !u!114 &838844894
 MonoBehaviour:
@@ -5888,7 +5957,7 @@ Light:
   m_Enabled: 1
   serializedVersion: 8
   m_Type: 1
-  m_Color: {r: 1, g: 0.9837728, b: 0.9411765, a: 1}
+  m_Color: {r: 1, g: 0.9843137, b: 0.9411765, a: 1}
   m_Intensity: 1
   m_Range: 10
   m_SpotAngle: 30
@@ -6114,9 +6183,9 @@ RectTransform:
   - {fileID: 600327350}
   - {fileID: 573793727}
   - {fileID: 1120003561}
-  - {fileID: 1102233005}
   - {fileID: 100480317}
   - {fileID: 580352412}
+  - {fileID: 1102233005}
   - {fileID: 186328838}
   - {fileID: 217041948}
   - {fileID: 913308649}
@@ -6577,7 +6646,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 996620420}
-  m_RootOrder: 6
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}

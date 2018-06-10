@@ -123,8 +123,8 @@ public class Goals : NetworkBehaviour
 
             if (currentTile.gameObject.name == "CornerTile")
             {
-                Debug.Log(delta);
-                Debug.Log((int)currentTile.gameObject.transform.eulerAngles.y);
+                //Debug.Log(delta);
+                //Debug.Log((int)currentTile.gameObject.transform.eulerAngles.y);
                 switch ((int)currentTile.gameObject.transform.eulerAngles.y)
                 {
                     case 180:

@@ -698,7 +698,7 @@ MonoBehaviour:
   engineSound: {fileID: 82584536220772336}
   idleSound: {fileID: 82362162030487348}
   brakeSound: {fileID: 82362222151522394}
-  minSpeedToBeInDanger: 30
+  minSpeedToBeInDanger: -1000
   secondsAtMinSpeedBeforeDeath: 5
   durationRewind: 5
   checkForDeath: 1

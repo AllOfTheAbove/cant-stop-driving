@@ -244,6 +244,17 @@ public class Architect : Player
         }
     }
 
+    [Command]
+    public void CmdToggleNight(bool state)
+    {
+        RpcToggleNight(state);
+    }
+    [ClientRpc]
+    public void RpcToggleNight(bool state)
+    {
+        GameScene.Instance.ToggleNight(state);
+    }
+
 
     void Update()
     {

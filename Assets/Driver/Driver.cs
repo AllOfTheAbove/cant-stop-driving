@@ -28,13 +28,15 @@ public class Driver : Player
     private int[] maximumPositionsReached = new int[3];
 
 
-    [Command] public void CmdSpawnVehicle(int vehicleId)
+    [Command]
+    public void CmdSpawnVehicle(int vehicleId)
     {
         GameObject _vehicle = Instantiate(Game.Instance.vehicles[vehicleId]);
         NetworkServer.SpawnWithClientAuthority(_vehicle, this.gameObject);
         RpcSpawnVehicle(_vehicle, vehicleId);
     }
-    [ClientRpc] public void RpcSpawnVehicle(GameObject _vehicle, int _vehicleId)
+    [ClientRpc]
+    public void RpcSpawnVehicle(GameObject _vehicle, int _vehicleId)
     {
         vehicle = _vehicle;
         _vehicle.transform.parent = this.gameObject.transform;
@@ -67,7 +69,7 @@ public class Driver : Player
 
     void OnCollisionEnter(Collision col)
     {
-        if(Game.Instance.state == 1 && (col.gameObject.name.Contains("ramp") || col.gameObject.name.Contains("pillars")))
+        if (Game.Instance.state == 1 && (col.gameObject.name.Contains("ramp") || col.gameObject.name.Contains("pillars")))
         {
             GameScene.Instance.collisionTileSound.Play();
         }
@@ -89,12 +91,12 @@ public class Driver : Player
 
     void Update()
     {
-        if(vehicle == null)
+        if (vehicle == null)
         {
             return;
         }
 
-        if(!Game.Instance.paused && Game.Instance.state == 1)
+        if (!Game.Instance.paused && Game.Instance.state == 1)
         {
             GameScene.Instance.speedLabel.GetComponent<TextMeshProUGUI>().SetText(Mathf.Floor(GetComponent<Rigidbody>().velocity.sqrMagnitude) + "");
         }
@@ -126,12 +128,12 @@ public class Driver : Player
 
         // Score
         bool scoreIncreased = false;
-        if(Math.Floor(transform.position.z) > maximumPositionsReached[1] * 16)
+        if (Math.Floor(transform.position.z) > maximumPositionsReached[1] * 16)
         {
             maximumPositionsReached[1] += 1;
             scoreIncreased = true;
         }
-        if(Math.Floor(transform.position.x) > maximumPositionsReached[2] * 16)
+        if (Math.Floor(transform.position.x) > maximumPositionsReached[2] * 16)
         {
             maximumPositionsReached[2] += 1;
             scoreIncreased = true;
@@ -141,7 +143,7 @@ public class Driver : Player
             maximumPositionsReached[0] -= 1;
             scoreIncreased = true;
         }
-        if(scoreIncreased)
+        if (scoreIncreased)
         {
             IncreaseScore(1);
         }
@@ -150,10 +152,11 @@ public class Driver : Player
         if (transform.position.y < -4 && !fallInWater)
         {
             fallInWater = true;
-            if(isSingleplayer)
+            if (isSingleplayer)
             {
                 GameScene.Instance.fallInWaterSound.Play();
-            } else
+            }
+            else
             {
                 CmdFallInWater();
             }
@@ -166,20 +169,24 @@ public class Driver : Player
         }
     }
 
-    [Command] public void CmdGameoverFallInWater()
+    [Command]
+    public void CmdGameoverFallInWater()
     {
         RpcGameoverFallInWater();
     }
-    [ClientRpc] public void RpcGameoverFallInWater()
+    [ClientRpc]
+    public void RpcGameoverFallInWater()
     {
         gameoverFallInWater = true;
     }
 
-    [Command] public void CmdFallInWater()
+    [Command]
+    public void CmdFallInWater()
     {
         RpcFallInWater();
     }
-    [ClientRpc] public void RpcFallInWater()
+    [ClientRpc]
+    public void RpcFallInWater()
     {
         GameScene.Instance.fallInWaterSound.Play();
     }
@@ -197,12 +204,14 @@ public class Driver : Player
             GameScene.Instance.scoreLabel.GetComponent<Text>().text = Game.Instance.score + "";
         }
     }
-    [Command] public void CmdIncreaseScore(int points)
+    [Command]
+    public void CmdIncreaseScore(int points)
     {
         Game.Instance.score += points;
         RpcIncreaseScore(Game.Instance.score);
     }
-    [ClientRpc] public void RpcIncreaseScore(int score)
+    [ClientRpc]
+    public void RpcIncreaseScore(int score)
     {
         Game.Instance.score = score;
         GameScene.Instance.scoreLabel.GetComponent<Text>().text = score + "";
@@ -210,19 +219,22 @@ public class Driver : Player
 
     public void EnableCheckForDeath(bool state)
     {
-        if(isSingleplayer)
+        if (isSingleplayer)
         {
             checkForDeath = state;
-        } else
+        }
+        else
         {
             CmdEnableCheckForDeath(state);
         }
     }
-    [Command] public void CmdEnableCheckForDeath(bool state)
+    [Command]
+    public void CmdEnableCheckForDeath(bool state)
     {
         RpcEnableCheckForDeath(state);
     }
-    [ClientRpc] public void RpcEnableCheckForDeath(bool state)
+    [ClientRpc]
+    public void RpcEnableCheckForDeath(bool state)
     {
         checkForDeath = state;
     }
@@ -238,25 +250,27 @@ public class Driver : Player
             {
                 if (GetComponent<Rigidbody>().velocity.sqrMagnitude < minSpeedToBeInDanger)
                 {
-                    if(isSingleplayer)
+                    if (isSingleplayer)
                     {
                         GameScene.Instance.warningLabel.SetActive(true);
                         GameScene.Instance.warningLabel.GetComponent<TextMeshProUGUI>().SetText("Exploding in " + secondsLeftBeforeDeath);
                         GameScene.Instance.dangerSound.Play();
-                    } else
+                    }
+                    else
                     {
                         CmdExplodeSoon(true, secondsLeftBeforeDeath);
                     }
-                    
+
                     secondsLeftBeforeDeath--;
                 }
                 else
                 {
                     secondsLeftBeforeDeath = secondsAtMinSpeedBeforeDeath;
-                    if(isSingleplayer)
+                    if (isSingleplayer)
                     {
                         GameScene.Instance.warningLabel.SetActive(false);
-                    } else
+                    }
+                    else
                     {
                         CmdExplodeSoon(false, 0f);
                     }
@@ -265,17 +279,18 @@ public class Driver : Player
             yield return new WaitForSecondsRealtime(1);
         }
 
-        if(secondsLeftBeforeDeath <= 0)
+        if (secondsLeftBeforeDeath <= 0)
         {
             if (isSingleplayer)
             {
                 Game.Instance.state = 2;
-                StartCoroutine(Game.Instance.FadeOutAudio(Game.Instance.gameMusics[Game.Instance.currentMusicId]));
+                //StartCoroutine(Game.Instance.FadeOutAudio(Game.Instance.gameMusics[Game.Instance.currentMusicId]));
                 engineSound.Stop();
                 idleSound.Stop();
                 vehicle.GetComponent<Vehicle>().Explode();
                 GameScene.Instance.explosionSound.Play();
-            } else
+            }
+            else
             {
                 CmdExplodeSoon(true, -1);
             }
@@ -287,18 +302,20 @@ public class Driver : Player
             GameOver();
         }
     }
-    [Command] public void CmdExplodeSoon(bool state, float seconds)
+    [Command]
+    public void CmdExplodeSoon(bool state, float seconds)
     {
         RpcExplodeSoon(state, seconds);
     }
-    [ClientRpc] public void RpcExplodeSoon(bool state, float seconds)
+    [ClientRpc]
+    public void RpcExplodeSoon(bool state, float seconds)
     {
-        if(state)
+        if (state)
         {
-            if(seconds == -1)
+            if (seconds == -1)
             {
                 Game.Instance.state = 2;
-                StartCoroutine(Game.Instance.FadeOutAudio(Game.Instance.gameMusics[Game.Instance.currentMusicId]));
+                //StartCoroutine(Game.Instance.FadeOutAudio(Game.Instance.gameMusics[Game.Instance.currentMusicId]));
                 engineSound.Stop();
                 idleSound.Stop();
                 vehicle.GetComponent<Vehicle>().Explode();
@@ -308,7 +325,8 @@ public class Driver : Player
             GameScene.Instance.warningLabel.SetActive(true);
             GameScene.Instance.warningLabel.GetComponent<TextMeshProUGUI>().SetText("Explode in " + seconds);
             GameScene.Instance.dangerSound.Play();
-        } else
+        }
+        else
         {
             GameScene.Instance.warningLabel.SetActive(false);
         }
@@ -316,7 +334,7 @@ public class Driver : Player
 
     public void GameOver()
     {
-        if(Game.Instance.state >= 1)
+        if (Game.Instance.state >= 1)
         {
             StopCoroutine(checkForDeathCoroutine);
             GetComponent<Rigidbody>().isKinematic = true;

@@ -20,6 +20,9 @@ public class GameScene : MonoBehaviour {
     }
 
     public GameObject camera;
+    public bool night = false;
+    public Light light;
+    public Light nightLight;
 
     [Header("World")]
     public int maxNumberOfBoats = 3;
@@ -81,6 +84,15 @@ public class GameScene : MonoBehaviour {
                 pickTileId.Add(i);
             }
         }
+
+        StartCoroutine(DayAndNight());
+    }
+
+    public IEnumerator DayAndNight()
+    {
+        yield return new WaitForSecondsRealtime(random.Next(3, 7));
+        GameObject.FindGameObjectsWithTag("Architect")[0].GetComponent<Architect>().CmdToggleNight(!night);
+        StartCoroutine(DayAndNight());
     }
 
     public int GetRandomTileId(int oldId)
@@ -91,6 +103,29 @@ public class GameScene : MonoBehaviour {
             newId = pickTileId[random.Next(0, pickTileId.Count)];
         }
         return newId;
+    }
+
+    public void ToggleNight(bool state)
+    {
+        night = state;
+        if(night)
+        {
+            light.enabled = false;
+            nightLight.enabled = true;
+        } else
+        {
+            light.enabled = true;
+            nightLight.enabled = false;
+        }
+        
+        //GameObject.FindGameObjectsWithTag("Architect")[0].GetComponentInChildren<Camera>().backgroundColor = new Color(197, 220, 255);
+        //GameObject.FindGameObjectsWithTag("Driver")[0].GetComponentInChildren<Camera>().backgroundColor = new Color(255, 255, 255);
+    }
+
+    public void SetNight()
+    {
+        //GameObject.FindGameObjectsWithTag("Architect")[0].GetComponentInChildren<Camera>().backgroundColor = new Color(53, 82, 126);
+        //GameObject.Find("DriverCamera").GetComponentInChildren<Camera>().backgroundColor = new Color(34, 34, 34);
     }
 
     public void Solid(GameObject gameObject, bool solid)
