@@ -35,7 +35,6 @@ public class Goals : NetworkBehaviour
     static public bool goalExists = false;
     static int blockSize = 16;
 
-
     public Point StartPoint(Tile lastTile, Tile previousTile)
     {
         Point output = new Point(lastTile.x, lastTile.y, lastTile.z);
@@ -114,6 +113,56 @@ public class Goals : NetworkBehaviour
         GetComponent<Pathfinding>().SetPath(currentTile);
         bool output = ((Math.Abs(currentTile.x - goal.x) == blockSize) && (Math.Abs(currentTile.z - goal.z) == 0))
                         || ((Math.Abs(currentTile.x - goal.x) == 0) && (Math.Abs(currentTile.z - goal.z) == blockSize));
+
+        /*if(output && currentTile.gameObject.name != "CrossTile")
+        {
+            int delta = currentTile.x;
+            
+            if(currentTile.gameObject.name == "CornerTile")
+            {
+                switch ((int) currentTile.gameObject.transform.eulerAngles.y)
+                {
+                    case 180:
+                        output = delta > 0;
+                        break;
+                    case 270:
+                    case -90:
+                        output = delta < 0;
+                        break;
+                    default:
+                        output = delta == 0;
+                        break;
+                }
+            }
+            else
+            {
+                switch ((int)currentTile.gameObject.transform.eulerAngles.y - ArchitectAI.tileCompensation[currentTile.gameObject.name])
+                {
+                    case 180:
+                        output = delta > 0;
+                        break;
+                    case 0:
+                        output = delta < 0;
+                        break;
+                    default:
+                        output = delta == 0;
+                        break;
+                }
+            }
+        }*/
+
+
+        if (output) //increases score when goal reached
+            Debug.Log("goal reached");
+        //FIXME increase score
+
+        if (!output && currentTile.z > goal.z) //decreases score when goal missed, but keeps on generating goal
+        {
+            output = true;
+            Debug.Log("MISSED A GOAL !");
+            //FIXME decrease score
+        }
+
         goalExists = !output;
         if (output)
             ArchitectAI.lastGoal = goal;

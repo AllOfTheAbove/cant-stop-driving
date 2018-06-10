@@ -237,6 +237,7 @@ public class Driver : Player
                     {
                         CmdExplodeSoon(true, secondsLeftBeforeDeath);
                     }
+                    
                     secondsLeftBeforeDeath--;
                 }
                 else
@@ -256,7 +257,7 @@ public class Driver : Player
 
         if(secondsLeftBeforeDeath <= 0)
         {
-            if(isSingleplayer)
+            if (isSingleplayer)
             {
                 Game.Instance.state = 2;
                 StartCoroutine(Game.Instance.FadeOutAudio(Game.Instance.gameMusics[Game.Instance.currentMusicId]));

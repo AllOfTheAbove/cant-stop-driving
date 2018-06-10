@@ -23,20 +23,20 @@ public class Boat : NetworkBehaviour {
         if(d == 0)
         {
             direction = new Vector3(0, 0, velocity);
-            shift = random.Next(30) + 16;
+            shift = random.Next(60) + 16;
         } else if(d == 1)
         {
             direction = new Vector3(0, 0, -velocity);
-            shift = random.Next(30) + 16;
+            shift = random.Next(60) + 16;
             transform.Rotate(0, 180, 0);
         } else if(d == 2)
         {
             direction = new Vector3(0, 0, velocity);
-            shift = -random.Next(30) - 16;
+            shift = -random.Next(60) - 16;
         } else if(d == 3)
         {
             direction = new Vector3(0, 0, -velocity);
-            shift = -random.Next(30) - 16;
+            shift = -random.Next(60) - 16;
             transform.Rotate(0, 180, 0);
         }
 

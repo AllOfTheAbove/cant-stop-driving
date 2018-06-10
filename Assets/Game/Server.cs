@@ -32,6 +32,12 @@ public class Server : NetworkManager
 
     public void Disconnect()
     {
+        // NOT NORMAL !!!!!!!!!!!!
+        if(architect)
+        {
+            architect.GetComponent<Goals>().Reset();
+        }
+
         StopHost();
         Destroy(gameObject);
         Game.Instance.RestartServer();

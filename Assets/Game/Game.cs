@@ -180,16 +180,19 @@ public class Game : MonoBehaviour {
                 GameObject.FindGameObjectsWithTag("Architect")[0].GetComponent<Goals>().Reset();
             }
 
+            // Rewind
             GameObject driver = GameObject.FindGameObjectsWithTag("Driver")[0];
             List<Vector3> lastPositions = driver.GetComponent<Driver>().lastPositions;
             List<Quaternion> lastRotations = driver.GetComponent<Driver>().lastRotations;
             Destroy(driver.GetComponent<Driver>().vehicle);
             GameObject vehicle = Instantiate(vehicles[driver.GetComponent<Driver>().vehicleId], lastPositions[0], lastRotations[0]);
-            vehicle.GetComponent<Vehicle>().enabled = false;
+            vehicle.GetComponent<Vehicle>().rewind = true;
             vehicle.AddComponent<ReproduceMovements>();
             vehicle.GetComponent<ReproduceMovements>().positions = lastPositions;
             vehicle.GetComponent<ReproduceMovements>().rotations = lastRotations;
+            vehicle.GetComponent<ReproduceMovements>().vehicleId = driver.GetComponent<Driver>().vehicleId;
 
+            // GameOver UI
             GameScene.Instance.score.SetActive(false);
             GameScene.Instance.speed.SetActive(false);
             GameScene.Instance.currentStack.SetActive(false);
@@ -201,7 +204,7 @@ public class Game : MonoBehaviour {
             GameScene.Instance.gameoverTimeLabel.GetComponent<TextMeshProUGUI>().SetText("Time: " + Mathf.Floor(Time.time - startTime));
             GameScene.Instance.gameoverUI.SetActive(true);
 
-            Debug.Log(score + " : " + PlayerPrefs.GetInt("scoreboard_highscore"));
+            // Highscore
             if (score > PlayerPrefs.GetInt("scoreboard_highscore"))
             {
                 GameScene.Instance.gameoverHighscore.SetActive(true);
