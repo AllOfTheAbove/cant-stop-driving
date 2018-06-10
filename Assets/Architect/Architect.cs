@@ -348,6 +348,23 @@ public class Architect : Player
             currentTile.SetDirection(0);
         }
 
+        if (currentTile.x == Goals.goal.x && currentTile.z == Goals.goal.z)
+        {
+            switch (currentTile.direction)
+            {
+                case 0:
+                    if (lastTile.direction != 2)
+                        currentTile.SetDirection(1);
+                    else
+                        currentTile.SetDirection(2);
+                    break;
+                case 2:
+                case 1:
+                    currentTile.SetDirection(0);
+                    break;
+            }
+        }
+
         // Update rotation
         if (Input.GetAxis("Mouse ScrollWheel") > 0)
         {

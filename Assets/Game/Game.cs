@@ -5,7 +5,8 @@ using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
 
-public class Game : MonoBehaviour {
+public class Game : MonoBehaviour
+{
 
     private static Game instance;
     public static Game Instance
@@ -42,6 +43,8 @@ public class Game : MonoBehaviour {
     public AudioSource[] gameMusics;
     public AudioSource waterBackgroundSound;
 
+    public bool keepMusicPlaying = false;
+
 
 
     private void Awake()
@@ -71,10 +74,27 @@ public class Game : MonoBehaviour {
 
     private void Update()
     {
-        if(!gameMusics[currentMusicId].isPlaying && state == 1 && !titleMusic.isPlaying)
+        if (!keepMusicPlaying && state == 1)
+            keepMusicPlaying = true;
+        if (keepMusicPlaying && state == -1)
+            keepMusicPlaying = false;
+
+        switch (state)
+        {
+            case 1:
+                gameMusics[currentMusicId].volume = titleMusic.volume;
+                break;
+            case 0:
+            case 2:
+                if (gameMusics[currentMusicId].volume > 0.5f)
+                    gameMusics[currentMusicId].volume = 0.5f;
+                break;
+        }
+
+        if (!gameMusics[currentMusicId].isPlaying && keepMusicPlaying && !titleMusic.isPlaying)
         {
             int id = random.Next(0, gameMusics.Length);
-            while (id  == currentMusicId)
+            while (id == currentMusicId)
             {
                 id = random.Next(0, gameMusics.Length);
             }
@@ -123,7 +143,7 @@ public class Game : MonoBehaviour {
             }
         }
         GameScene.Instance.pauseUI.SetActive(paused);
-        
+
     }
 
     public void ChangeState(int state)
@@ -137,13 +157,15 @@ public class Game : MonoBehaviour {
                 fadeUI = StartCoroutine(FadeCanvas(GameScene.Instance.driverTutorial.GetComponent<CanvasGroup>(), 0f, 1f, 0.5f));
             }
             SwitchAudio("game");
-        } else if (state == 0)
+        }
+        else if (state == 0)
         {
             this.state = state;
             startTime = Time.time;
             GameScene.Instance.waitingUI.GetComponent<TextMeshProUGUI>().SetText("(client)");
             countdownCoroutine = StartCoroutine(StartCountdown());
-        } else if (state == 1)
+        }
+        else if (state == 1)
         {
             this.state = state;
             GameScene.Instance.countdownEndSound.Play();
@@ -157,10 +179,12 @@ public class Game : MonoBehaviour {
                 fadeUI = StartCoroutine(FadeCanvas(GameScene.Instance.architectTutorial.GetComponent<CanvasGroup>(), 1f, 0f, 1f));
                 fadeUI = StartCoroutine(FadeCanvas(GameScene.Instance.driverTutorial.GetComponent<CanvasGroup>(), 1f, 0f, 1f));
             }
-        } else if (state == 2)
+        }
+        else if (state == 2)
         {
             this.state = state;
-            StartCoroutine(FadeOutAudio(gameMusics[currentMusicId]));
+            GetServer().firstGame = false;
+            //StartCoroutine(FadeOutAudio(gameMusics[currentMusicId]));
             if (paused)
             {
                 Pause();
@@ -175,7 +199,7 @@ public class Game : MonoBehaviour {
                 GameObject.FindGameObjectsWithTag("Architect")[0].GetComponentInChildren<AudioListener>().enabled = false;
             }
 
-            if(GameObject.FindGameObjectsWithTag("Architect")[0].GetComponent<Goals>())
+            if (GameObject.FindGameObjectsWithTag("Architect")[0].GetComponent<Goals>())
             {
                 GameObject.FindGameObjectsWithTag("Architect")[0].GetComponent<Goals>().Reset();
             }
@@ -191,6 +215,7 @@ public class Game : MonoBehaviour {
             vehicle.GetComponent<ReproduceMovements>().positions = lastPositions;
             vehicle.GetComponent<ReproduceMovements>().rotations = lastRotations;
             vehicle.GetComponent<ReproduceMovements>().vehicleId = driver.GetComponent<Driver>().vehicleId;
+            vehicle.GetComponent<ReproduceMovements>().fallInWater = driver.GetComponent<Driver>().gameoverFallInWater;
 
             // GameOver UI
             GameScene.Instance.score.SetActive(false);

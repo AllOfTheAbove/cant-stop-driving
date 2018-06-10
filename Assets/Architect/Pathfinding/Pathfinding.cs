@@ -17,7 +17,7 @@ public class Pathfinding : NetworkBehaviour
 
     public void EmptyPath(Stack<GoalTile> path)
     {
-        Debug.Log("EMPTY");
+        //Debug.Log("EMPTY");
         foreach (GoalTile tile in path)
         {
             NetworkServer.Destroy(tile.gameObject);
@@ -59,7 +59,7 @@ public class Pathfinding : NetworkBehaviour
 
     public void SetPath(Tile lastTile)
     {
-        Debug.Log("SET");
+        //Debug.Log("SET");
 
 
 

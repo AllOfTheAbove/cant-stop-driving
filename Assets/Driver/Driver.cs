@@ -19,7 +19,7 @@ public class Driver : Player
     public bool checkForDeath = true;
     public int vehicleId;
     private bool fallInWater = false;
-    private bool gameoverFallInWater = false;
+    public bool gameoverFallInWater = false;
 
     public List<Vector3> lastPositions;
     public List<Quaternion> lastRotations;
@@ -36,9 +36,6 @@ public class Driver : Player
     }
     [ClientRpc] public void RpcSpawnVehicle(GameObject _vehicle, int _vehicleId)
     {
-        Debug.Log(_vehicle);
-        Debug.Log(this.gameObject);
-
         vehicle = _vehicle;
         _vehicle.transform.parent = this.gameObject.transform;
         vehicleId = _vehicleId;
@@ -164,8 +161,18 @@ public class Driver : Player
         if (transform.position.y < -10 && !gameoverFallInWater)
         {
             gameoverFallInWater = true;
+            CmdGameoverFallInWater();
             GameOver();
         }
+    }
+
+    [Command] public void CmdGameoverFallInWater()
+    {
+        RpcGameoverFallInWater();
+    }
+    [ClientRpc] public void RpcGameoverFallInWater()
+    {
+        gameoverFallInWater = true;
     }
 
     [Command] public void CmdFallInWater()

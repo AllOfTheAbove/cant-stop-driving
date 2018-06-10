@@ -8,16 +8,23 @@ public class ReproduceMovements : MonoBehaviour {
     public List<Vector3> positions;
     public List<Quaternion> rotations;
     public int vehicleId;
+    public bool fallInWater = false;
+
+    private bool exploding = false;
 
     void FixedUpdate ()
     {
         if (currentPosition >= positions.Count)
         {
-            if(GetComponent<Vehicle>())
+            if(!exploding)
             {
-                GetComponent<Vehicle>().Explode();
+                if(!fallInWater)
+                {
+                    GetComponent<Vehicle>().Explode();
+                }
+                exploding = true;
+                StartCoroutine(Reset());
             }
-            StartCoroutine(Reset());
         } else
         {
             transform.position = positions[currentPosition];
@@ -36,7 +43,9 @@ public class ReproduceMovements : MonoBehaviour {
         vehicle.GetComponent<ReproduceMovements>().positions = positions;
         vehicle.GetComponent<ReproduceMovements>().rotations = rotations;
         vehicle.GetComponent<ReproduceMovements>().vehicleId = vehicleId;
+        vehicle.GetComponent<ReproduceMovements>().fallInWater = fallInWater;
         GameScene.Instance.camera.GetComponent<DeathCamera>().target = vehicle;
         Destroy(this.gameObject);
+        exploding = false;
     }
 }
