@@ -7,10 +7,17 @@ using UnityEngine.UI;
 
 public class Scoreboard : MonoBehaviour {
 
+    public static Scoreboard instance;
+
     public GameObject registerUI;
     public InputField username;
     public TextMeshProUGUI localuser;
     public GameObject loading;
+
+    private void Awake()
+    {
+        instance = this;
+    }
 
     public void Start()
     {
@@ -19,12 +26,17 @@ public class Scoreboard : MonoBehaviour {
             registerUI.SetActive(true);
         } else
         {
-            StartCoroutine(GetScores());
+            RefreshScores();
         }
     }
 
     public void RefreshScores()
     {
+        if(APISettings.getRankUrl == null || APISettings.getScoresUrl == null)
+        {
+            return;
+        }
+
         loading.SetActive(true);
         localuser.SetText("");
         for (int i = 1; i <= 10; i++)
@@ -32,6 +44,7 @@ public class Scoreboard : MonoBehaviour {
             GameObject.Find("user" + i).GetComponent<TextMeshProUGUI>().SetText("");
         }
         StartCoroutine(GetScores());
+        StartCoroutine(GetRank());
     }
 
     public IEnumerator GetRank()
@@ -59,8 +72,6 @@ public class Scoreboard : MonoBehaviour {
 
     public IEnumerator GetScores()
     {
-        StartCoroutine(GetRank());
-
         WWW hs_get = new WWW(APISettings.getScoresUrl);
         yield return hs_get;
         if (hs_get.error == null)
@@ -76,17 +87,27 @@ public class Scoreboard : MonoBehaviour {
         }
     }
 
-    public static IEnumerator AddScore(int score)
+    public static IEnumerator SetScore(int score)
     {
         string add_highscore_url = APISettings.addScoreUrl + "?score=" + score + "&username=" + WWW.EscapeURL(PlayerPrefs.GetString("scoreboard_username")) + "&hash=" + APISettings.hash;
         WWW hs_post = new WWW(add_highscore_url);
         yield return hs_post;
     }
 
+    public static void AddScore(int score)
+    {
+        if(APISettings.addScoreUrl == null || APISettings.hash == null)
+        {
+            return;
+        }
+
+        instance.StartCoroutine(SetScore(score));
+    }
+
     public void Register()
     {
         PlayerPrefs.SetString("scoreboard_username", username.text);
-        StartCoroutine(AddScore(PlayerPrefs.GetInt("scoreboard_highscore")));
+        AddScore(PlayerPrefs.GetInt("scoreboard_highscore"));
         registerUI.SetActive(false);
         RefreshScores();
     }

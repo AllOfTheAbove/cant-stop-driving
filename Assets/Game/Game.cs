@@ -236,7 +236,7 @@ public class Game : MonoBehaviour
                 PlayerPrefs.SetInt("scoreboard_highscore", score);
                 if (PlayerPrefs.HasKey("scoreboard_username"))
                 {
-                    StartCoroutine(Scoreboard.AddScore(score));
+                    Scoreboard.AddScore(score);
                 }
             }
         }
