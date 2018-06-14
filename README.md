@@ -1,10 +1,12 @@
 ## Can't Stop Driving
 
-#### Regarding players
+![screenshot](https://raw.githubusercontent.com/AllOfTheAbove/CantStopDriving/master/screenshot.png)
+
+#### Play
 
 Please consider downloading lastest version on [our website]( http://cant-stop-driving.com/play.html).
 
-#### Regarding the team
+### Regarding the team
 
 ##### I encourage you to work on an empty Unity project but if you need to work on the project follow these steps:
 1. Install Unity and Git on your computer (obviously).
