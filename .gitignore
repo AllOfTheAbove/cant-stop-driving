@@ -35,4 +35,4 @@ sysinfo.txt
 *.unitypackage
 
 # Private settings
-Assets/APISettings.*
+# Assets/APISettings.*
