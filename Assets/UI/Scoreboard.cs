@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -35,7 +36,7 @@ public class Scoreboard : MonoBehaviour {
 
     public IEnumerator GetRank()
     {
-        WWW hs_get = new WWW("http://northwaterman.com/csd/apiscoreboard/getrank.php?score=" + PlayerPrefs.GetInt("scoreboard_highscore") + "&username=" + PlayerPrefs.GetString("scoreboard_username"));
+        WWW hs_get = new WWW(APISettings.getRankUrl + "?score=" + PlayerPrefs.GetInt("scoreboard_highscore") + "&username=" + PlayerPrefs.GetString("scoreboard_username"));
         yield return hs_get;
         if (hs_get.error == null)
         {
@@ -60,7 +61,7 @@ public class Scoreboard : MonoBehaviour {
     {
         StartCoroutine(GetRank());
 
-        WWW hs_get = new WWW("http://northwaterman.com/csd/apiscoreboard/get.php");
+        WWW hs_get = new WWW(APISettings.getScoresUrl);
         yield return hs_get;
         if (hs_get.error == null)
         {
@@ -77,7 +78,7 @@ public class Scoreboard : MonoBehaviour {
 
     public static IEnumerator AddScore(int score)
     {
-        string add_highscore_url = "http://northwaterman.com/csd/apiscoreboard/add.php?score=" + score + "&username=" + WWW.EscapeURL(PlayerPrefs.GetString("scoreboard_username")) + "&hash=capefreioubliedeleverlancre";
+        string add_highscore_url = APISettings.addScoreUrl + "?score=" + score + "&username=" + WWW.EscapeURL(PlayerPrefs.GetString("scoreboard_username")) + "&hash=" + APISettings.hash;
         WWW hs_post = new WWW(add_highscore_url);
         yield return hs_post;
     }
