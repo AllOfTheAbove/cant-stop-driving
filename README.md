@@ -2,7 +2,7 @@
 
 #### Regarding players
 
-Please consider downloading lastest version on [our website]( http://cant-stop-driving.com).
+Please consider downloading lastest version on [our website]( http://cant-stop-driving.com/play.html).
 
 #### Regarding the team
 
@@ -13,6 +13,7 @@ Please consider downloading lastest version on [our website]( http://cant-stop-d
 ~~~~
 git clone https://github.com/AllOfTheAbove/CantStopDriving.git
 ~~~~
-4. Open Unity and select your workspace. *(If you build from your clone of this repo the multiplayer won't work except in local. Furthermore, in order to have the scoreboard system to work you need to have a proper APISettings.cs. The one in this repo is blank for obvious security concerns.)*
+4. Open Unity and select your workspace.
+*(If you build from your clone of this repo the multiplayer won't work except in local. Furthermore, in order to have the scoreboard system to work you need to have a proper APISettings.cs. The one in this repo is blank for obvious security concerns.)*
 5. When you have finished implementing your feature send me your zipped project (with a detail of modifications, if possible).
 
