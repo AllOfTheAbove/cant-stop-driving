@@ -1,13 +1,13 @@
-## Can't Stop Driving
+# Can't Stop Driving
 
 ![screenshot](https://raw.githubusercontent.com/AllOfTheAbove/CantStopDriving/master/screenshot.png)
 
-### Play
+## Play
 
 Please consider downloading lastest version on [our website]( http://cant-stop-driving.com/play.html).
 You can build the game from Unity to your desired platform but the multiplayer won't work except on local networks.
 
-### Regarding the team
+## Regarding the team
 
 ##### I encourage you to work on an empty Unity project but if you need to work on the project follow these steps:
 1. Install Unity and Git on your computer (obviously).
