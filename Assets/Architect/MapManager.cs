@@ -36,7 +36,7 @@ public class MapManager : NetworkBehaviour {
         Vector3 pos = new Vector3((int)(x / oceanSize), 0, (int)(z / oceanSize));
         Vector3 posFloat = new Vector3((x / oceanSize), 0, (z / oceanSize));
 
-        Debug.Log(pos);
+        //Debug.Log(pos);
 
         float xLimit = 0;
         if(posFloat.x > 0)

@@ -87,13 +87,6 @@ public class Scoreboard : MonoBehaviour {
         }
     }
 
-    public static IEnumerator SetScore(int score)
-    {
-        string add_highscore_url = APISettings.addScoreUrl + "?score=" + score + "&username=" + WWW.EscapeURL(PlayerPrefs.GetString("scoreboard_username")) + "&hash=" + APISettings.hash;
-        WWW hs_post = new WWW(add_highscore_url);
-        yield return hs_post;
-    }
-
     public static void AddScore(int score)
     {
         if(APISettings.addScoreUrl == null || APISettings.hash == null)
@@ -101,7 +94,8 @@ public class Scoreboard : MonoBehaviour {
             return;
         }
 
-        instance.StartCoroutine(SetScore(score));
+        string add_highscore_url = APISettings.addScoreUrl + "?score=" + score + "&username=" + WWW.EscapeURL(PlayerPrefs.GetString("scoreboard_username")) + "&hash=" + APISettings.hash;
+        WWW hs_post = new WWW(add_highscore_url);
     }
 
     public void Register()
