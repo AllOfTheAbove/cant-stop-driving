@@ -1,10 +1,10 @@
 # Can't Stop Driving
 
-![screenshot](https://raw.githubusercontent.com/AllOfTheAbove/CantStopDriving/master/screenshot.png)
+![screenshot](https://raw.githubusercontent.com/AllOfTheAbove/cant-stop-driving/master/screenshot.png)
 
 ## Play
 
-Please consider downloading lastest version on [our website]( http://cant-stop-driving.com/play.html).
+Please consider downloading lastest version on [our website](https://cantstopdriving.thdoteo.com/play.html).
 You can build the game from Unity to your desired platform but the multiplayer won't work except on local networks.
 
 ## Roadmap
@@ -37,7 +37,7 @@ You can build the game from Unity to your desired platform but the multiplayer w
 2. Go inside an empty directory and open a terminal there.
 3. Type this command:
 ~~~~
-git clone https://github.com/AllOfTheAbove/CantStopDriving.git
+git clone https://github.com/AllOfTheAbove/cant-stop-driving.git
 ~~~~
 4. Open Unity and select your workspace.
 *(If you build from your clone of this repo the multiplayer won't work except on local networks. Furthermore, in order to have the scoreboard system to work you need to have a proper APISettings.cs. The one in this repo is blank for obvious security concerns.)*
